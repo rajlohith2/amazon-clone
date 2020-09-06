@@ -7,6 +7,9 @@ body {
   height: 100vh;
   margin: 0;
 }
+#root {
+  height: 100%;
+}
 .grid-container {
   display: grid;
   grid-template-areas: 
@@ -129,4 +132,36 @@ font-weight: bold;
   right: .5rem;
   top: 1.5rem;
   position: absolute;
+}
+
+/* Product details */
+.details {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
+.detail-image {
+  flex:2 1 60rem;
+}
+.detail-image img {
+  max-width: 60rem;
+  width:100% ;
+}
+.detail-info {
+  flex: 1 1 30rem;
+}
+.detail-action {
+  flex: 1 1 30rem;
+}
+.details-info ul, .details-action ul {
+  list-style:none;
+  padding:0;
+}
+.details-info li, .details-action li {
+  margin-bottom: 1rem;
+}
+.back-to-result {
+  padding:1rem;
 }
