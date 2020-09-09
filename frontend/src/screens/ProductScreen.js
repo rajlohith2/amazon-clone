@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import {  detailsProduct } from "../actions/productActions";
 import { useSelector, useDispatch } from 'react-redux';
 
-
-
 function ProductScreen(props){
 
     const [qty, setQty] =  useState(1);
@@ -13,14 +11,12 @@ function ProductScreen(props){
     const dispatch = useDispatch();
 
     useEffect(()=> {
-
         dispatch(detailsProduct(props.match.params.id));
-
         return () => {
 
         }
     },[])
-    const handleAddToCart =() => {
+    const handleAddToCart = () => {
         props.history.push("/cart/"+ props.match.params.id + "?qty=" + qty)
     }
 
@@ -65,8 +61,8 @@ function ProductScreen(props){
                                 </li>
                                 <li> 
                                     Qty: <select value={qty} onChange={(e) => setQty(e.target.value)}>
-                                           {[... Array(product.numInStock).keys()].map(stock => 
-                                               <option value={ stock+1 }>{ stock + 1 }</option>
+                                             {[... Array(product.numInStock).keys()].map(stock => 
+                                               <option key={stock+1} value={ stock+1 }>{ stock + 1 }</option>
                                             )}
                                         </select>
                                 </li>
