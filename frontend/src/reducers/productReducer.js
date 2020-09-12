@@ -12,6 +12,7 @@ function productListReducer( state = { products: [] }, action) {
          return state;
  }   
 }
+
 function productDetailsReducer(state = { product: {} }, action) {
     switch(action.type) {
         case pl.PRODUCT_DETAILS_REQUEST:
@@ -24,5 +25,17 @@ function productDetailsReducer(state = { product: {} }, action) {
              return state;        
     }
 }
+function productSaveReducer(state = { product: {} }, action) {
+    switch(action.type) {
+        case pl.PRODUCT_SAVE_REQUEST:
+            return { loading: true };
+        case pl.PRODUCT_SAVE_SUCCESS: 
+            return { loading: false, success: true, product: action.payload };
+        case pl.PRODUCT_SAVE_FAIL:
+            return { loading: false, error: action.payload };
+        default:
+            return state;        
+    }
+}
 
-export { productListReducer, productDetailsReducer };  
+export { productListReducer, productDetailsReducer, productSaveReducer };

@@ -13,7 +13,7 @@ try {
     });
     if(signinUser) {
         
-        res.send({
+       return res.send({
             _id: signinUser._id,
             name: signinUser.name,
             email: signinUser.email,
@@ -31,6 +31,7 @@ try {
 
 });
 route.post('/register', async (req, res)=>{
+    try {
     const {name, email, password} = req.body;
     const user = new User({
         name,
@@ -46,6 +47,11 @@ route.post('/register', async (req, res)=>{
     } else {
         return res.send({msg: 'invalid user data '});
     }
+        
+    } catch (error) {
+       return res.send({msg: error.message}); 
+    }
+    
 });
 
 route.get('/createadmin', async(req, res) => {
@@ -64,4 +70,5 @@ route.get('/createadmin', async(req, res) => {
         res.send({msg: error.message});
     }
 });
+
 export default route;

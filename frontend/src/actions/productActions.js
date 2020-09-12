@@ -24,6 +24,20 @@ try {
 } catch (error) {
     dispatch({type: pl.PRODUCT_DETAILS_FAIL, payload: error.message });
 }
-
 }
-export { listProducts, detailsProduct }; 
+ 
+const saveProduct = (product) => async (dispatch, getState) => {
+    try {
+        dispatch({type: pl.PRODUCT_SAVE_REQUEST });
+        const { userSignin: { userInfo} } =  getState();
+        const {data} = await axios.post("/api/products", product,{
+            headers: {
+                'Authorization': 'Bearer '+ userInfo.token
+            }
+        });
+        dispatch({type: pl.PRODUCT_SAVE_SUCCESS, payload: data});
+    } catch(error) {
+        dispatch({type: pl.PRODUCT_SAVE_FAIL, payload: error.message});
+    }
+}
+export { listProducts, detailsProduct, saveProduct }; 

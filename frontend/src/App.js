@@ -1,15 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import data from './data';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
-import ProductScreen from './screens/ProductScreen';
+import ProductScreen from './screens/ProductsScreen';
 import CartScreen  from './screens/CartScreen';
 import SigninScreen from './screens/SigninScreen';
 import RegisterScreen from './screens/RegisterScreen';
-
 import { useSelector } from 'react-redux';
+
 
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -56,6 +55,7 @@ function App() {
         </aside>
         <main className="main">  
             <div className="content"> 
+                <Route path="/products" component={ProductScreen} />
                 <Route path="/product/:id" component={ProductScreen} />
                 <Route path="/cart/:id?" component={CartScreen} /> 
                 <Route path="/" exact={true} component={HomeScreen} />    
