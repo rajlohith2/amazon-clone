@@ -71,4 +71,8 @@ route.get('/createadmin', async(req, res) => {
     }
 });
 
+route.get('/all', async(req, res)=> {
+    return res.send({data:await User.find()});
+})
+
 export default route;
