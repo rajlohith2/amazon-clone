@@ -8,6 +8,11 @@ productRoute.get('/', async(req, res)=> {
    const products = await Product.find();
    return res.send( products);
 });
+productRoute.get('/:id', async(req, res)=> {
+    console.log(req.params.id)
+    const products = await Product.findById(req.params.id);
+    return res.status(200).send( products);
+ });
 
 productRoute.post('/', isAuth, isAdmin, async(req, res)=> {
     const {

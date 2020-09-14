@@ -7,7 +7,7 @@ function ProductScreen(props){
 
     const [qty, setQty] =  useState(1);
     const productDetails = useSelector(state => state.productDetails);
-    const { product, loading, error} = productDetails;
+    const {  loading, product, error} = productDetails;
     const dispatch = useDispatch();
 
     useEffect(()=> {
