@@ -28,7 +28,7 @@ function SigninScreen(props){
         return () => {
 
         }
-    },[userInfo]) //if user state info change then useeffect() will executes it's code
+    },[userInfo]) //if user state info change then useEffect() will executes it's code
     
 
     return ( 

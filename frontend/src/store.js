@@ -9,8 +9,7 @@ const cartItems = Cookie.getJSON("cartItems") || [];
 const userInfo = Cookie.getJSON("userInfo") || null;
 
  const initialState = { cart: { cartItems }, userSignin: { userInfo } };
-
-
+  
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reducer = combineReducers({
     productList: productListReducer,

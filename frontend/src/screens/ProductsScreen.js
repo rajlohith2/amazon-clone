@@ -39,7 +39,7 @@ function ProductsScreen(props){
         dispatch(deleteProduct(product._id));
     };
 
-    useEffect(()=> {
+    useEffect(() => {
         if(successSave){
             setModalVisible(false);
         }
@@ -134,7 +134,7 @@ function ProductsScreen(props){
                     { error && <div>{error}</div> }
                     { loading && <div>Loadig ...</div> }
                 
-                <table>
+                <table className="table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -148,15 +148,16 @@ function ProductsScreen(props){
                     <tbody>
                         {
                             products.map(product => (
-                            <tr>
-                                <td key={product._id}>    {product._id}       </td>
+                            <tr key={product._id}>
+                                <td>    {product._id}       </td>
                                 <td>    {product.name}      </td>
                                 <td>    {product.price}     </td>
                                 <td>    {product.category}  </td>
                                 <td>    {product.brand}     </td>
                                 <td>
-                                    <button onClick={ () =>openModal(product)}> Edit   </button>
-                                    <button onClick={ () => deleteHandler(product)}> Delete     </button>
+                                    <button className="button" onClick={ () =>openModal(product)}> Edit   </button>
+                                     {''}
+                                    <button className="button" onClick={ () => deleteHandler(product)}> Delete     </button>
                                 </td>
                             </tr>
                             ))

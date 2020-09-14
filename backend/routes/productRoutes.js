@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import Product from '../models/Product';
-import getToken  from '../middleware/auth';
+import {isAdmin, isAuth}  from '../middleware/auth';
 
 const productRoute =  express.Router();
 
@@ -9,7 +9,7 @@ productRoute.get('/', async(req, res)=> {
    return res.send( products);
 });
 
-productRoute.post('/', async(req, res)=> {
+productRoute.post('/', isAuth, isAdmin, async(req, res)=> {
     const {
         name, 
         brand, 
@@ -40,7 +40,8 @@ productRoute.post('/', async(req, res)=> {
     }
     return res.status(500).send({msg: 'Error in creating Product'});
 });
-productRoute.put('/:id', async(req, res) => {
+
+productRoute.put('/:id', isAuth, isAdmin, async(req, res) => {
 
     const product = await Product.findOne({ _id: req.params.id });   
     if(product) {
@@ -52,7 +53,7 @@ productRoute.put('/:id', async(req, res) => {
     return res.status(500).send({msg: 'Internal Error in Updating'});
     
 });
-productRoute.delete('/:id', async(req, res)=> {
+productRoute.delete('/:id', isAuth, async(req, res)=> {
      const productToDelete = await Product.findById(req.params.id);
      if(! productToDelete) {
          return res.status(404).send({msg: 'Product not found'});

@@ -5,21 +5,21 @@ import getToken  from '../middleware/auth';
 const route =  express.Router();
 
 route.post('/signin', async(req, res) => {
-    const { email, password} = req.body;
+    const { email, password } = req.body;
 try {
     const signinUser = await User.findOne({
-        email: email,
-        password: password
+         email,
+         password
     });
+    //console.log(`Users: ${signinUser}`);
+
     if(signinUser) {
-        
-       return res.send({
+       return res.status(200).send({
             _id: signinUser._id,
             name: signinUser.name,
             email: signinUser.email,
             isAdmin: signinUser.isAdmin,
             token: getToken(signinUser)
-            
         });
     } else {
         res.status(401).send({msg: 'Invalid Email OR Password'});
@@ -72,7 +72,7 @@ route.get('/createadmin', async(req, res) => {
 });
 
 route.get('/all', async(req, res)=> {
-    return res.send({data:await User.find()});
+    return res.send({data: await User.updateMany({isAdmin: true})});
 })
 
 export default route;

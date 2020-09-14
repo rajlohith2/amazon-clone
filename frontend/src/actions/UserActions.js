@@ -12,11 +12,11 @@
 import axios from "axios";
 import Cookie from 'js-cookie';
 import * as uc from "../constants/userConstants";
-import { useSelector } from "react-redux";
 
 const signin = (email, password) => async(dispatch) => {
- dispatch({type: uc.USER_SIGNIN_REQUEST, payload: { email, password } });
  try {
+   
+   dispatch({type: uc.USER_SIGNIN_REQUEST, payload: { email, password } });
    const { data } = await axios.post("/api/users/signin", { email, password});
    dispatch({type: uc.USER_SIGNIN_SUCCESS, payload: data });
    Cookie.set('userInfo', JSON.stringify(data));

@@ -8,17 +8,18 @@ const getToken = (user) => {
         email: user.email,
         isAdmin: user.isAdmin
 
-    }, config.JWT_SECRET , { expiresIn: '48h'});
+    }, 'config.JWT_SECRET' , { expiresIn: '48h'});
 }
-const isAuth = (req, res, next)=> {
+const isAuth = (req, res, next) => {
     const token = req.headers.authorization;
     if(token) {
-        const onlyToken = token.slice(7, token.length);
-        jwt.verify(onlyToken, config.JWT_SECRET, (error, decoded)=>{
+        //const onlyToken = token.slice(7, token.length);
+        const onlyToken = token.split(' ')[1];
+        jwt.verify(onlyToken, 'config.JWT_SECRET', (error, decoded) => {
             if(error ) {
-               return res.send({msg: 'token not supplied'});
+               return res.send({msg: error.message, name: error.name});
             } else {
-              req.user = token;              
+              req.user = decoded;              
               return next();
               
             }
