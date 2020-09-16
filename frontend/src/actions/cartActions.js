@@ -4,14 +4,14 @@ import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
 
 const addToCart = (productId, qty) => async (dispatch, getState)=> {
     try {
-        const { data } = await axios.get('/api/product/' + productId);
+        const { data } = await axios.get('/api/products/' + productId);
         dispatch({
             type:CART_ADD_ITEM, payload: {
                 product: data._id,
                 name: data.name,
                 image: data.image,
                 price: data.price,
-                countInStock: data.numInStock,
+                countInStock: data.countInStock,
                 qty
             }
         });
@@ -21,7 +21,7 @@ const addToCart = (productId, qty) => async (dispatch, getState)=> {
         Cookie.set("cartItems", JSON.stringify(cartItems));
     
     } catch (error) {
-        
+        console.log(error.message); 
     }
 }
 const removeFromCart = (productId) => async (dispatch, getState) => {

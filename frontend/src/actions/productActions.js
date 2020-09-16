@@ -57,7 +57,7 @@ const deleteProduct = (productId) => async(dispatch, getState) => {
        dispatch({ type: pl.PRODUCT_DELETE_REQUEST, payload: productId });
        const { data } = await axios.delete(`/api/products/${productId}`,{
            headers: {
-               Authorization: 'Bearer'+ userInfo.token
+               Authorization: 'Bearer '+ userInfo.token
            }
        });
        dispatch({type: pl.PRODUCT_DELETE_SUCCESS, payload: data, success: true});
