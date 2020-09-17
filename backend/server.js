@@ -3,10 +3,13 @@ import data from './data';
 import dotenv from 'dotenv';
 import config from './config';
 import mongoose from 'mongoose';
-import route from './routes/userRoutes.js';
+import route from './routes/userRoutes';
+import productRoutes from './routes/productRoutes';
+import bodyParser from 'body-parser';
 
 dotenv.config();
 const mongodbUrl = config.MONGODB_URL;
+
 mongoose.connect(mongodbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -15,18 +18,11 @@ mongoose.connect(mongodbUrl, {
 
 const app = express();
 
-app.use('/api/users/', route)
+app.use(bodyParser.json());
 
-app.get('/api/products',(req, res)=>{
-    return res.send(data.products);
-});
-app.get('/api/product/:id', (req, res) => {
-    const productId = req.params.id;
-    const product = data.products.find( product => product._id === parseInt(productId));
-    if(product) {
-        res.send(product);
-    } else {
-        res.status(404).send({msg: 'Product Not Found..'});
-    }
-});
+app.use('/api/users', route);
+app.use('/api/products', productRoutes);
+
+
+
 app.listen(5000,()=> { console.log(`Server started at https:localhost:5000`) });

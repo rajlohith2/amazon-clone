@@ -7,7 +7,7 @@ function ProductScreen(props){
 
     const [qty, setQty] =  useState(1);
     const productDetails = useSelector(state => state.productDetails);
-    const { product, loading, error} = productDetails;
+    const {  loading, product, error} = productDetails;
     const dispatch = useDispatch();
 
     useEffect(()=> {
@@ -57,17 +57,17 @@ function ProductScreen(props){
                                     Price: {product.price}
                                 </li>
                                 <li>
-                                    status: {product.numInStock > 0 ? 'In Stock' :'Unavailable'}
+                                    status: {product.countInStock > 0 ? 'In Stock' :'Unavailable'}
                                 </li>
                                 <li> 
                                     Qty: <select value={qty} onChange={(e) => setQty(e.target.value)}>
-                                             {[... Array(product.numInStock).keys()].map(stock => 
+                                             {[...Array(product.countInStock).keys()].map(stock => 
                                                <option key={stock+1} value={ stock+1 }>{ stock + 1 }</option>
                                             )}
                                         </select>
                                 </li>
                                 <li>{
-                                        product.numInStock > 0 && <button onClick={handleAddToCart} className="button primary">Add to Cart</button>
+                                        product.countInStock > 0 && <button onClick={handleAddToCart} className="button primary">Add to Cart</button>
                                         
                                     }
                                     
