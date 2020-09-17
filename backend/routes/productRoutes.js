@@ -14,7 +14,7 @@ productRoute.get('/:id', async(req, res)=> {
     return res.status(200).send( products);
  });
 
-productRoute.post('/', isAuth, isAdmin, async(req, res)=> {
+productRoute.post('/', async(req, res)=> {
     const {
         name, 
         brand, 
@@ -46,7 +46,7 @@ productRoute.post('/', isAuth, isAdmin, async(req, res)=> {
     return res.status(500).send({msg: 'Error in creating Product'});
 });
 
-productRoute.put('/:id', isAuth, isAdmin, async(req, res) => {
+productRoute.put('/:id', async(req, res) => {
 
     const product = await Product.findOne({ _id: req.params.id });   
     if(product) {
@@ -58,7 +58,7 @@ productRoute.put('/:id', isAuth, isAdmin, async(req, res) => {
     return res.status(500).send({msg: 'Internal Error in Updating'});
     
 });
-productRoute.delete('/:id', isAuth, async(req, res)=> {
+productRoute.delete('/:id',  async(req, res)=> {
      const productToDelete = await Product.findById(req.params.id);
      if(! productToDelete) {
          return res.status(404).send({msg: 'Product not found'});

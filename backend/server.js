@@ -20,7 +20,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/api/users/', route);
+app.use('/api/users', route);
 app.use('/api/products', productRoutes);
 
 

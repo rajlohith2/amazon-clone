@@ -5,29 +5,29 @@ import getToken  from '../middleware/auth';
 const route =  express.Router();
 
 route.post('/signin', async(req, res) => {
-    const { email, password } = req.body;
-try {
-    const signinUser = await User.findOne({
-         email,
-         password
-    });
-    //console.log(`Users: ${signinUser}`);
+   
+   try {
+        const { email, password } = req.body;        
+        const userLogin = await User.findOne({ email, password });
 
-    if(signinUser) {
-       return res.status(200).send({
-            _id: signinUser._id,
-            name: signinUser.name,
-            email: signinUser.email,
-            isAdmin: signinUser.isAdmin,
-            token: getToken(signinUser)
+        if(!userLogin) {
+            return res.status(404).send({ msg: 'User not found' });  
+        } else {
+            
+            return res.status(200).send({ 
+                _id: userLogin._id,
+                name: userLogin.name,
+                email: userLogin.email,
+                isAdmin: userLogin.isAdmin,
+                token:getToken(userLogin)
+            });
+        }
+   } catch (error) {
+        return res.status(500).send({
+            msg: error.message
         });
-    } else {
-        res.status(401).send({msg: 'Invalid Email OR Password'});
-    } 
-    
-} catch (error) {
-  res.send({error: error.message});  
-}
+   }     
+
 
 });
 route.post('/register', async (req, res)=>{
@@ -72,7 +72,7 @@ route.get('/createadmin', async(req, res) => {
 });
 
 route.get('/all', async(req, res)=> {
-    return res.send({data: await User.updateMany({isAdmin: true})});
+    return res.send({data: await User.find({isAdmin: true})});
 })
 
 export default route;
