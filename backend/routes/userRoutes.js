@@ -1,6 +1,6 @@
 import express from "express";
 import User from '../models/userModel';
-import getToken  from '../middleware/auth';
+import {getToken}  from '../middleware/auth';
 
 const route =  express.Router();
 
