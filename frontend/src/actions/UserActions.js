@@ -21,13 +21,10 @@ const signin = (email, password) => async(dispatch) => {
    dispatch({type: uc.USER_SIGNIN_SUCCESS, payload: data });
    Cookie.set('userInfo', JSON.stringify(data));
    console.log(data);
-   
-   
-
+    
  } catch (error) {
      dispatch({type: uc.USER_SIGNIN_FAIL, payload: error.message});
  }
-
 }
 const register = (name, email, password,) => async(dispatch) => {
   dispatch({type: uc.USER_REGISTER_REQUEST, payload: {name, email, password } });
