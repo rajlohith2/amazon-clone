@@ -8,23 +8,19 @@ import { $CombinedState } from "redux";
 function PlaceOrderScreen(props) {
 
     const cart = useSelector(state => state.cart);
-    const { cartItems, shipping, payment } = cart;
+    const { cartItems, payment } = cart;
+    
     const dispatch = useDispatch();
     
-    if(!shipping) {
-        props.history.push("/shipping");
-    }
     if(!payment) {
         props.history.push("payment");
     }
+    
     const itemsPrice = cartItems.reduce((a, c)=> a + c.price * c.qty, 0);
     const shippingPrice = itemsPrice > 100 ? 0: 10;
     const taxPrice = 0.15 * itemsPrice;
     const totalPrice = itemsPrice + shippingPrice + taxPrice;
-    
-    useEffect(() => {
-        
-    }, []);
+     
     const submitHandler =() => {
         props.history.push('/signin?redirect=shipping');
     }
@@ -36,9 +32,11 @@ function PlaceOrderScreen(props) {
         <CheckoutSteps step1 step2 step3 step4/>
         <div className="placeorder">
             <div className="placeorder-info">
-                <div>
+                <div> 
                     <h3> Shipping </h3>
                     <div>
+                        <strong>  Name:</strong> Name of buyer                      
+                        <strong> Address:</strong>                       
                         { cart.shipping.address } , { cart.shipping.city }
                         { cart.shipping.postalCode } , { cart.shipping.country }
                     </div>
@@ -51,7 +49,7 @@ function PlaceOrderScreen(props) {
                 </div>
                 <div>
                     <ul className="cart-list-container">
-                        <li>
+                        <li> 
                             <h3> Shopping Cart</h3>
                             <div> Price</div>
 
@@ -68,22 +66,14 @@ function PlaceOrderScreen(props) {
                                 <div className="cart-image">
                                     <img src={item.image} alt="product" />
                                 </div>    
-                                <div className="cart-name">   
-                                    <div>   
-                                        <Link to={`/product/`+ item.product}> 
-                                            {item.name} 
-                                        </Link>     
-                                    </div>
-                                    
-                                    <div>
-                                        Qty: {item.qty}
-                                        
-                                       
-                                    </div>
+                                <div className="cart-name"> 
+                                    <Link to={`/product/`+ item.product}>   </Link> 
+                                    {item.name} 
                                 </div>    
                                 <div className="cart-price">
-                                    ${ item.price }
+                                { item.qty } x ${ item.price } = ${ item.qty * item.price }
                                 </div>
+                                <div></div>
                             </li>
                             )
                         }
@@ -102,19 +92,19 @@ function PlaceOrderScreen(props) {
                 </li>
                 <li>
                     <div>Items</div>
-                    <div>${itemsPrice}</div>
+                    <div>${itemsPrice.toFixed(2)}</div>
                 </li>
                 <li>
                     <div>Shipping</div>
-                    <div>${shippingPrice}</div>
+                    <div>${shippingPrice.toFixed(2)}</div>
                 </li>
                 <li>
                     <div>Tax</div>
-                    <div>${taxPrice}</div>
+                    <div>${taxPrice.toFixed(2)}</div>
                 </li>
                 <li>
                     <div>Order Total</div>
-                    <div>${totalPrice}</div>
+                    <div>${totalPrice.toFixed(2)}</div>
                 </li>
             </ul>
                 <h3>

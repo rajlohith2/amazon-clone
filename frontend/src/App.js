@@ -8,11 +8,11 @@ import ProductScreen from './screens/ProductScreen';
 import CartScreen  from './screens/CartScreen';
 import SigninScreen from './screens/SigninScreen';
 import RegisterScreen from './screens/RegisterScreen';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ShippingScreen from './screens/ShippingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
-
+import { signout } from './actions/UserActions';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -25,8 +25,14 @@ function App() {
 
     const userSignin = useSelector(state => state.userSignin);
     const { userInfo } = userSignin;
-    console.log(userInfo);
-
+    const cartInfo = useSelector(state=>state.cart);
+    const { cartItems } = cartInfo;
+    const dispatch = useDispatch();
+    const signoutHandler = () => {
+        dispatch(signout());
+        
+      };
+      
   return (
     <BrowserRouter>
     <div className="grid-container">
@@ -37,12 +43,31 @@ function App() {
                 <Link to="/">Amazona </Link>
             </div>
             <div className="header-links">
-                <a href="cart.html">Cart</a>
-                {
-                    userInfo ?<Link to="/profile"> {userInfo.name} </Link>:
+                <Link to="/cart"> Cart {cartItems.length > 0 && ( <span className="badge">{cartItems.length}</span>)}</Link>  
+                { userInfo ?(
+                    <div className="dropdown">
+                        <Link to="#">
+                            {userInfo.name} <i className="fa fa-caret-down"></i>{' '}
+                        </Link>
+                        <ul className="dropdown-content">
+                            <li>
+                            <Link to="/profile">User Profile</Link>
+                            </li>
+                            <li>
+                            <Link to="/orderhistory">Order History</Link>
+                            </li>
+                            <li>
+                            <Link onClick={signoutHandler}>
+                                Sign Out
+                            </Link>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                   ):(
                     <Link to="/signin"> Sign in </Link>  
 
-                }
+                    )}
             </div>            
         </header>
         <aside className="sidebar">
@@ -71,6 +96,7 @@ function App() {
                 <Route path="/register" component={RegisterScreen} />
                 <Route path="/payment" component={PaymentScreen} /> 
                 <Route path="/placeorder" component={PlaceOrderScreen} />   
+               
                 
             </div>            
         </main>

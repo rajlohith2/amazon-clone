@@ -5,10 +5,11 @@ import { productListReducer, productDetailsReducer, productSaveReducer, productD
 import {  cartReducer } from "./reducers/cartReducers";
 import  {userSigninReducer, UserRegisterReducer }  from './reducers/userSigninReducer';
 
-const cartItems = Cookie.getJSON("cartItems") || [];
-const userInfo = Cookie.getJSON("userInfo") || null;
+const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
+const shipping = JSON.parse(localStorage.getItem("shipping")) || null;
 
- const initialState = { cart: { cartItems, payment: {}, shipping: {} }, userSignin: { userInfo } };
+ const initialState = { cart: { cartItems, payment: {}, shipping, paymentMethod: 'Paypal' }, userSignin: { userInfo } };
   
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reducer = combineReducers({

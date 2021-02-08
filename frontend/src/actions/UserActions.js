@@ -10,7 +10,6 @@
 */  
 
 import axios from "axios";
-import Cookie from 'js-cookie';
 import * as uc from "../constants/userConstants";
 
 const signin = (email, password) => async(dispatch) => {
@@ -18,9 +17,8 @@ const signin = (email, password) => async(dispatch) => {
    
    dispatch({type: uc.USER_SIGNIN_REQUEST, payload: { email, password } });
    const { data } = await axios.post("/api/users/signin", { email, password});
-   dispatch({type: uc.USER_SIGNIN_SUCCESS, payload: data });
-   Cookie.set('userInfo', JSON.stringify(data));
-   console.log(data);
+   dispatch({type: uc.USER_SIGNIN_SUCCESS, payload: data });  
+   localStorage.setItem('userInfo', JSON.stringify(data));
     
  } catch (error) {
      dispatch({type: uc.USER_SIGNIN_FAIL, payload: error.message});
@@ -38,4 +36,10 @@ const register = (name, email, password,) => async(dispatch) => {
   }
   
 }
-export { signin, register };
+const signout =() =>(dispatch) => {
+  localStorage.removeItem("userInfo");
+  localStorage.removeItem("cartItems");
+  dispatch({type: uc.USER_SIGNOUT});
+  window.location.assign("/");
+}
+export { signin, register, signout };
