@@ -12,9 +12,14 @@ function ShippingScreen(props){
     const [city, setCity] = useState('');
 
     const userRegister = useSelector(state => state.userRegister);
-    const { loading, userInfo, error } = userRegister;
+    // after having entire feature working I will make function to check signed in user
+    /*  const { loading, userInfo, error } = userRegister;
+            if(!userInfo) {
+                props.history.push("/signin");
+            }
+    */
+   
     const dispatch = useDispatch();
-
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(saveShipping({address, postalCode, country, city}));

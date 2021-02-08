@@ -5,13 +5,19 @@ import CheckoutSteps from '../components/CheckoutSteps';
 
 function PaymentScreen(props){
 
-    const [paymentMethod, setPaymentMethod] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState('paypal');
     
     const userRegister = useSelector(state => state.userRegister);
     const { loading, userInfo, error } = userRegister;
+    
+    const shippingInfo = useSelector(state=>state.cart);
+    const { shipping } = shippingInfo;
+    if(!shipping.address || !shipping.city || !shipping.country) {
+        props.history.push('shipping');
+    }
     const dispatch = useDispatch();
     
-    const submitHandler = (e) => {
+    const submitHandler = (e) => {      
         e.preventDefault();
         dispatch(savePayment({paymentMethod}));
         props.history.push('placeorder');
@@ -24,13 +30,19 @@ function PaymentScreen(props){
                 <form onSubmit={submitHandler}>
                     <ul className="form-container">
                         <li>
-                            <h2> Payment </h2>
+                            <h2> Payment Method </h2>
                         </li>
                         <li>
                             <div>
                                 <input type="radio" name="paymentMethod" id="paymentMethod" value='paypal'
                                        onChange={(e)=> setPaymentMethod(e.target.value)} />
-                                <label htmlFor="paymentMethod">  Paypal </label>                          
+                                <label htmlFor="paypal">  Paypal </label>                          
+
+                            </div>
+                            <div>
+                                <input type="radio" name="paymentMethod" id="paymentMethod" value='stripe'
+                                       onChange={(e)=> setPaymentMethod(e.target.value)} />
+                                <label htmlFor="stripe"> Stripe </label>                          
 
                             </div>
                         </li>

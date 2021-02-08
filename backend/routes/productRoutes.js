@@ -14,7 +14,7 @@ productRoute.get('/:id', async(req, res)=> {
     return res.status(200).send(products);
  });
 
-productRoute.post('/', isAdmin, isAuth, async(req, res)=> {
+productRoute.post('/', async(req, res)=> {
     const {
         name, 
         brand, 
