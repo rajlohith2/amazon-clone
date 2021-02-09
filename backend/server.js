@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import route from './routes/userRoutes';
 import productRoutes from './routes/productRoutes';
 import bodyParser from 'body-parser';
+import orderRouter from './routes/orderRouter';
 
 dotenv.config();
 const mongodbUrl = config.MONGODB_URL;
@@ -23,6 +24,6 @@ app.use(bodyParser.json());
 app.use('/api/users', route);
 app.use('/api/products', productRoutes);
 
-
+app.use('/api/orders', orderRouter);
 
 app.listen(5000,()=> { console.log(`Server started at https:localhost:5000`) });

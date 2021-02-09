@@ -10,7 +10,7 @@ const getToken = (user) => {
              email: user.email,
              isAdmin: user.isAdmin
             }, 
-            config.JWT_SECRET,   {
+            config.JWT_SECRET || `somethingsecret`,   {
             expiresIn: '48h'
         });
         
@@ -22,16 +22,20 @@ const isAuth = (req, res, next) => {
     const token = req.headers.authorization || req.headers.Authorization;
     if(token) {
         const onlyToken = token.slice(7, token.length);
-        jwt.verify(onlyToken, config.JWT_SECRET, (error, decode)=>{
+        jwt.verify(onlyToken,
+             config.JWT_SECRET || `somethingsecret`, 
+             (error, decode)=>{
             if(error) {
-                return res.send({msg: 'error in creating token', error: error.message });
-            }
-            req.user = token;
+                return res.status(401).send({message: 'error in creating token', error: error.message });
+            }else {
+            req.user = decode;
             return next();
+
+            }
 
         });
     } else {
-        return res.send({msg: 'Token is not supplied'});
+        return res.status(401).send({message: 'Token is not supplied'});
     }
 
 }
@@ -40,7 +44,7 @@ const isAdmin = (req, res, next) => {
     if(req.user && req.user.isAdmin) {
         return next()
     }
-    return res.status(401).send({msg: 'admin is not valid'});
+    return res.status(401).send({message: 'admin is not valid'});
 }
 export {
     getToken, isAuth, isAdmin

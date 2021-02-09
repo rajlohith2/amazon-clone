@@ -20,7 +20,7 @@ const addToCart = (productId, qty) => async (dispatch, getState)=> {
         const {cart: {cartItems}} = getState();
         
         localStorage.setItem("cartItems", JSON.stringify(cartItems));
-        localStorage.setItem('userInfo', JSON.stringify(data));   
+        //localStorage.setItem('userInfo', JSON.stringify(data));   
 
     
     } catch (error) {

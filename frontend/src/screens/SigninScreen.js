@@ -22,7 +22,7 @@ function SigninScreen(props){
 
     };
 
-    useEffect(()=> {
+    useEffect(()=> { 
         if(userInfo) {
             props.history.push(redirect);
         }
