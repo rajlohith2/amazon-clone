@@ -1,0 +1,1 @@
+export const shipping = JSON.parse(localStorage.getItem("shipping"))?JSON.parse(localStorage.getItem("shipping")):null;

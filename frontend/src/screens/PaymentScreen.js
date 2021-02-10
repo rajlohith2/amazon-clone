@@ -3,6 +3,7 @@ import { savePayment } from "../actions/cartActions";
 import { useSelector, useDispatch } from 'react-redux';
 import CheckoutSteps from '../components/CheckoutSteps';
 
+
 function PaymentScreen(props){
 
     const [paymentMethod, setPaymentMethod] = useState('paypal');
@@ -12,15 +13,16 @@ function PaymentScreen(props){
     
     const shippingInfo = useSelector(state=>state.cart);
     const { shipping } = shippingInfo;
+
+    const dispatch = useDispatch();
+
     if(!shipping.address || !shipping.city || !shipping.country) {
         props.history.push('shipping');
     }
-    const dispatch = useDispatch();
-    
     const submitHandler = (e) => {      
         e.preventDefault();
         dispatch(savePayment({paymentMethod}));
-        props.history.push('placeorder');
+        props.history.push('/placeorder');
     }
 
     return (

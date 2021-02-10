@@ -13,6 +13,7 @@ import ShippingScreen from './screens/ShippingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import { signout } from './actions/UserActions';
+import { user } from './config/userInfo';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -22,9 +23,6 @@ const closeMenu = () => {
 }
 
 function App() {
-
-    const userSignin = useSelector(state => state.userSignin);
-    const { userInfo } = userSignin;
     const cartInfo = useSelector(state=>state.cart);
     const { cartItems } = cartInfo;
     const dispatch = useDispatch();
@@ -44,10 +42,10 @@ function App() {
             </div>
             <div className="header-links">
                 <Link to="/cart"> Cart {cartItems.length > 0 && ( <span className="badge">{cartItems.length}</span>)}</Link>  
-                { userInfo ?(
+                { user ?(
                     <div className="dropdown">
                         <Link to="#">
-                            {userInfo.name} <i className="fa fa-caret-down"></i>{' '}
+                            {user} <i className="fa fa-caret-down"></i>{' '}
                         </Link>
                         <ul className="dropdown-content">
                             <li>

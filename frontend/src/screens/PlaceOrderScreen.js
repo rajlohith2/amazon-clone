@@ -1,41 +1,53 @@
 import React, { useEffect } from "react";
-import {  } from '../actions/cartActions';
+import { createOrder } from '../actions/orderActions';
 import {Link} from 'react-router-dom';
 import {  useDispatch, useSelector} from "react-redux";
 import CheckoutSteps from '../components/CheckoutSteps';
-import { $CombinedState } from "redux";
+import { ORDER_CREATE_RESET } from "../constants/OrderConstants";
+import { LoadingBox } from "../components/LoadingBox";
+import { MessageBox } from "../components/MessageBox";
+import { headers, user } from "../config/userInfo";
 
 function PlaceOrderScreen(props) {
 
     const cart = useSelector(state => state.cart);
-    const { cartItems, payment } = cart;
+    const { cartItems, shipping, payment } = cart;
+
+    const orderInfo = useSelector(state=> state.orderCreate);
+    const {success, error, loading, order} = orderInfo;
     
     const dispatch = useDispatch();
-    
     if(!payment) {
         props.history.push("payment");
     }
+    useEffect(() => {
+        if(success) {
+            props.history.push(`/order/${order._id}`);
+            dispatch({ type: ORDER_CREATE_RESET });
+            console.log(`hiii: ${props.history}`)
+        }
+    },[dispatch, order, props.history, success]);
+    //},[dispatch, order, props.history, success]);
     
     const itemsPrice = cartItems.reduce((a, c)=> a + c.price * c.qty, 0);
-    const shippingPrice = itemsPrice > 100 ? 0: 10;
+    const shippingPrice = itemsPrice < 100 ? 0: 10;
     const taxPrice = 0.15 * itemsPrice;
     const totalPrice = itemsPrice + shippingPrice + taxPrice;
-     
-    const submitHandler =() => {
-        props.history.push('/signin?redirect=shipping');
-    }
-    const placeOrderHandler = () => {
-        
+    
+   
+    const placeOrderHandler = () => {  
+        const shippingAddress = {...shipping, fullName: user};  
+        dispatch(createOrder({orderItems: cartItems, shippingAddress, payment, itemsPrice, shippingPrice, taxPrice, totalPrice})); 
     }
     return (
-    <div>
+    <>
         <CheckoutSteps step1 step2 step3 step4/>
         <div className="placeorder">
             <div className="placeorder-info">
                 <div> 
                     <h3> Shipping </h3>
                     <div>
-                        <strong>  Name:</strong> Name of buyer                      
+                        <strong>  Name:</strong> {user} <br />                   
                         <strong> Address:</strong>                       
                         { cart.shipping.address } , { cart.shipping.city }
                         { cart.shipping.postalCode } , { cart.shipping.country }
@@ -44,7 +56,7 @@ function PlaceOrderScreen(props) {
                 <div>
                     <h3>Payment</h3>
                     <div>
-                        Payment Method: {cart.payment.paymentMethod }
+                        Payment Method: {payment }
                     </div>
                 </div>
                 <div>
@@ -85,8 +97,10 @@ function PlaceOrderScreen(props) {
             <div className="placeorder-action"> 
             <ul>
                 <li>
-                    <button className="button primary full-width" onClick={placeOrderHandler}>Place Order</button>
+                    <button className="button primary full-width" onClick={placeOrderHandler} disabled={cart.cartItems.length === 0}>Place Order</button>
                 </li>
+                  {loading && <LoadingBox />}
+                  {error && <MessageBox variant="danger">{error}</MessageBox>}
                 <li>
                     <h3> Order Summary</h3>
                 </li>
@@ -115,7 +129,8 @@ function PlaceOrderScreen(props) {
             </div>
 
         </div>
-    </div>    
+    </>    
     )
 }
+
 export default PlaceOrderScreen;
