@@ -3,7 +3,6 @@ import { createOrder } from '../actions/orderActions';
 import {Link} from 'react-router-dom';
 import {  useDispatch, useSelector} from "react-redux";
 import CheckoutSteps from '../components/CheckoutSteps';
-import { $CombinedState } from "redux";
 import { ORDER_CREATE_RESET } from "../constants/OrderConstants";
 import { LoadingBox } from "../components/LoadingBox";
 import { MessageBox } from "../components/MessageBox";
@@ -12,13 +11,12 @@ import { headers, user } from "../config/userInfo";
 function PlaceOrderScreen(props) {
 
     const cart = useSelector(state => state.cart);
-    const { cartItems, payment } = cart;
+    const { cartItems, shipping, payment } = cart;
+
     const orderInfo = useSelector(state=> state.orderCreate);
-    const {success, error, loading, order}= orderInfo;
-    
+    const {success, error, loading, order} = orderInfo;
     
     const dispatch = useDispatch();
-    
     if(!payment) {
         props.history.push("payment");
     }
@@ -26,30 +24,23 @@ function PlaceOrderScreen(props) {
         if(success) {
             props.history.push(`/order/${order._id}`);
             dispatch({ type: ORDER_CREATE_RESET });
+            console.log(`hiii: ${props.history}`)
         }
     },[dispatch, order, props.history, success]);
+    //},[dispatch, order, props.history, success]);
     
     const itemsPrice = cartItems.reduce((a, c)=> a + c.price * c.qty, 0);
     const shippingPrice = itemsPrice < 100 ? 0: 10;
     const taxPrice = 0.15 * itemsPrice;
     const totalPrice = itemsPrice + shippingPrice + taxPrice;
     
-    const submitHandler =() => {
-        props.history.push('/signin?redirect=shipping');
-    }
-    const placeOrderHandler = () => {
-        const cartItems = {...cart, orderItems:cart.cartItems}; //object cart is renamed orderItems
-        let {shipping: shippingAddress} =  cartItems; // rename object key shipping= shippingAddres
-        delete cartItems.shipping; 
-        shippingAddress = {...shippingAddress, fullName:user}; //append new key on address
-        console.log({cartItems, shippingAddress,itemsPrice, taxPrice,totalPrice,shippingPrice });
-       
-        //dispatch(createOrder({...cartItems, shippingAddress,itemsPrice, taxPrice,totalPrice,shippingPrice })); 
-        dispatch(createOrder({cartItems, shippingAddress,itemsPrice, taxPrice,totalPrice,shippingPrice })); 
-     
+   
+    const placeOrderHandler = () => {  
+        const shippingAddress = {...shipping, fullName: user};  
+        dispatch(createOrder({orderItems: cartItems, shippingAddress, payment, itemsPrice, shippingPrice, taxPrice, totalPrice})); 
     }
     return (
-    <div>
+    <>
         <CheckoutSteps step1 step2 step3 step4/>
         <div className="placeorder">
             <div className="placeorder-info">
@@ -65,7 +56,7 @@ function PlaceOrderScreen(props) {
                 <div>
                     <h3>Payment</h3>
                     <div>
-                        Payment Method: {cart.payment.paymentMethod }
+                        Payment Method: {payment }
                     </div>
                 </div>
                 <div>
@@ -138,7 +129,8 @@ function PlaceOrderScreen(props) {
             </div>
 
         </div>
-    </div>    
+    </>    
     )
 }
+
 export default PlaceOrderScreen;

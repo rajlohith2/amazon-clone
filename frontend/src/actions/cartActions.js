@@ -16,13 +16,9 @@ const addToCart = (productId, qty) => async (dispatch, getState)=> {
             }
         });
     
-        //saving cart items in cookie so that I can see them when I refresh the page
-        const {cart: {cartItems}} = getState();
-        
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));
-        //localStorage.setItem('userInfo', JSON.stringify(data));   
+        const {cart: {cartItems}} = getState();        
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));         
 
-    
     } catch (error) {
         console.log(error.message); 
     }

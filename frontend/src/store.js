@@ -9,7 +9,7 @@ const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
 const shipping = JSON.parse(localStorage.getItem("shipping")) || null;
 
- const initialState = { cart: { cartItems, payment: {}, shipping, paymentMethod: 'Paypal' }, userSignin: { userInfo }};
+ const initialState = { cart: { cartItems, payment: 'Paypal', shipping}, userSignin: { userInfo }};
   
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reducer = combineReducers({
