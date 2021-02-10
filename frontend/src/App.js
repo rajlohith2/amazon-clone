@@ -14,6 +14,7 @@ import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import { signout } from './actions/UserActions';
 import { user } from './config/userInfo';
+import OrderScreen from './screens/OrderScreen';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -94,6 +95,7 @@ function App() {
                 <Route path="/register" component={RegisterScreen} />
                 <Route path="/payment" component={PaymentScreen} /> 
                 <Route path="/placeorder" component={PlaceOrderScreen} />   
+                <Route path="/order/:id" component={OrderScreen} />   
                
                 
             </div>            

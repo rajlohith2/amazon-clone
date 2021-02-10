@@ -3,13 +3,13 @@ import  thunk from 'redux-thunk';
 import { productListReducer, productDetailsReducer, productSaveReducer, productDeleteReducer } from './reducers/productReducer';
 import {  cartReducer } from "./reducers/cartReducers";
 import  {userSigninReducer, UserRegisterReducer }  from './reducers/userSigninReducer';
-import { orderCreateReducer } from "./reducers/orderReducers";
+import { orderCreateReducer, orderDetailsReducer } from "./reducers/orderReducers";
 
 const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
-const shipping = JSON.parse(localStorage.getItem("shipping")) || null;
+const userInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
+const shippingAddress = JSON.parse(localStorage.getItem('shipping')) || {};
 
- const initialState = { cart: { cartItems, payment: 'Paypal', shipping}, userSignin: { userInfo }};
+ const initialState = { cart: { cartItems, payment: 'Paypal', shippingAddress }, userSignin: { userInfo }};
   
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const reducer = combineReducers({
@@ -20,7 +20,8 @@ const reducer = combineReducers({
     userRegister: UserRegisterReducer,
     productSave: productSaveReducer,
     productDelete: productDeleteReducer,
-    orderCreate: orderCreateReducer
+    orderCreate: orderCreateReducer,
+    orderDetails: orderDetailsReducer
 
 });
 
