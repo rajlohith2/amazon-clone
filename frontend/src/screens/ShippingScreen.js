@@ -2,20 +2,21 @@ import React, { useEffect, useState } from 'react';
 import {  saveShipping } from "../actions/cartActions";
 import { useSelector, useDispatch } from 'react-redux';
 import CheckoutSteps from '../components/CheckoutSteps';
-import { shipping } from '../config/shipping';
 
 
 function ShippingScreen(props){
 
-   const cartInfo =  useSelector((state)=>state.cart);
-
+   const shipping =  useSelector((state)=>state.cart.shippingAddress);
+  // const {shipping} = cartInfo;
+   console.log(shipping);
+   const [fullName, setFullName] = useState(shipping ? shipping.fullName:'');
    const [address, setAddress] = useState(shipping ? shipping.address:'');
    const [country, setCountry] = useState(shipping ? shipping.country:'');
    const [postalCode, setPostalCode] = useState(shipping ? shipping.postalCode:'');
    const [city, setCity] = useState(shipping ? shipping.city:'');
 
     const { userInfo } = useSelector(state => state.userSignin);
-    // after having entire feature working I will make function to check signed in user
+    // after having entire  feature working I will make function to check signed in user
     
         if(!userInfo) {
             props.history.push("/signin");
@@ -24,7 +25,7 @@ function ShippingScreen(props){
     const dispatch = useDispatch();
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(saveShipping({address, postalCode, country, city}));
+        dispatch(saveShipping({address, postalCode, country, city,fullName}));
         props.history.push('payment');
     }
     
@@ -37,7 +38,10 @@ function ShippingScreen(props){
                         <li>
                             <h2> Shipping </h2>
                         </li>
-                        
+                        <li>
+                            <label htmlFor="fullName">  Full Name </label>                          
+                            <input type="text" name="fullName" id="fullName" onChange={(e)=> setFullName(e.target.value)} value={fullName}/>
+                        </li>
                         <li>
                             <label htmlFor="address">  Address </label>                          
                             <input type="text" name="address" id="address" onChange={(e)=> setAddress(e.target.value)} value={address}/>
