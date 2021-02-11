@@ -15,6 +15,7 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import { signout } from './actions/UserActions';
 import { user } from './config/userInfo';
 import OrderScreen from './screens/OrderScreen';
+import OrderHistory from './screens/OrderHistory';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -53,7 +54,7 @@ function App() {
                             <Link to="/profile">User Profile</Link>
                             </li>
                             <li>
-                            <Link to="/orderhistory">Order History</Link>
+                                 <Link to="/orderhistory">Order History</Link>
                             </li>
                             <li>
                             <Link onClick={signoutHandler}>
@@ -96,6 +97,7 @@ function App() {
                 <Route path="/payment" component={PaymentScreen} /> 
                 <Route path="/placeorder" component={PlaceOrderScreen} />   
                 <Route path="/order/:id" component={OrderScreen} />   
+                <Route path="/orderHistory" component={OrderHistory} />   
                
                 
             </div>            
