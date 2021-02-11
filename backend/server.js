@@ -25,5 +25,8 @@ app.use('/api/users', route);
 app.use('/api/products', productRoutes);
 
 app.use('/api/orders', orderRouter);
+app.get('/api/config/paypal', (req, res)=>{
+    return res.send(process.env.PAYPAL_CLIENT_ID || 'sb');
+})
 
 app.listen(5000,()=> { console.log(`Server started at https:localhost:5000`) });

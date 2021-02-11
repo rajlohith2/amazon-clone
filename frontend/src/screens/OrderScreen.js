@@ -1,29 +1,60 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { PayPalButton } from'react-paypal-button-v2';
 import { detailsOrder } from '../actions/orderActions';
 import {  useDispatch, useSelector} from "react-redux";
 import { LoadingBox } from "../components/LoadingBox";
 import { MessageBox } from "../components/MessageBox";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function OrderScreen(props) {
     const orderId = props.match.params.id;
+    const[sdkReady, setSdkReady] = useState(false);
     const orderDetails = useSelector(state => state.orderDetails);
     const { error, order, loading } = orderDetails;
 
     const dispatch = useDispatch();
-    useEffect(()=>{
-        dispatch(detailsOrder(orderId));
-    }, [dispatch, orderId]);
+
+    useEffect(() => {
+        const addPayPalScript = async ()=> {
+            const { data } = await axios.get(`/api/config/paypal`);
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = `https://wwww.paypal.com/sdk/js?client-id=${data}`;
+            script.async = true;
+            script.onload = () => {
+                setSdkReady(true);
+            };
+            document.body.appendChild(script);
+        };
+        if(!order) {
+            dispatch(detailsOrder(orderId));
+        }else {
+            if(!order.isPaid) {
+                if(!window.paypal){
+                    addPayPalScript();
+                } else {
+                    setSdkReady(true);
+                }
+            }
+        }
+
+    }, [dispatch, order, orderId, sdkReady]);
+    
+    const successPaymentHandler = () =>{
+        //TODO: set payment handler
+
+    }
 
    return loading ? (<LoadingBox /> ):
-         error ? (<MessageBox variant="message"> {error} </MessageBox>):
+         error ? (<MessageBox variant="message" variant="danger" msg={error} /> ):
          (
     <>
         <h1>Order: {order._id}</h1>
         <div className="placeorder">
             <div className="placeorder-info">
                 <div> 
-                    <h3> S hipping </h3>
+                    <h3> Shipping </h3>
                     <div>
                         <strong>  Name:</strong> {order.shippingAddress.fullName} <br />                   
                         <strong> Address:</strong>                       
@@ -45,19 +76,9 @@ function OrderScreen(props) {
                      
                 </div>
                 <div>
-                    <ul className="cart-list-container">
-                        <li> 
-                            <h3> Shopping Cart</h3>
-                            <div> Price</div>
-
-                        </li>
-                        {
-                            
-                            order.orderItems.length === 0 ?
-                            <div>
-                                Cart is empty
-                            </div>
-                            :
+                     <h3> Order Items</h3>  
+                    <ul className="cart-list-container">                        
+                        {                                    
                             order.orderItems.map(item =>
                             <li>
                                 <div className="cart-image">
@@ -100,12 +121,13 @@ function OrderScreen(props) {
                     <div>Order Total</div>
                     <div>${order.totalPrice.toFixed(2)}</div>
                 </li>
+                {!order.isPaid && ( 
+               
+                    !sdkReady === false ?  <LoadingBox /> :  <PayPalButton  amount={order.totalPrice} onSuccess={successPaymentHandler} /> 
+              
+              )}
             </ul>
-                <h3>
-                      Subtotal ( { order.orderItems.reduce((accumulator, currentItems) => accumulator + currentItems.qty, 0) } items)
-                      :
-                      $ ({ order.orderItems.reduce((accumulator, currentItems) => accumulator + currentItems.price* currentItems.qty, 0)} )
-                </h3>  
+               
             </div>
 
         </div>
