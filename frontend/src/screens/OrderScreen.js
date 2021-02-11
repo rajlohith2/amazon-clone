@@ -16,25 +16,33 @@ function OrderScreen(props) {
     }, [dispatch, orderId]);
 
    return loading ? (<LoadingBox /> ):
-         error ? (<MessageBox variant="message"> {error} </MessageBox>):(
+         error ? (<MessageBox variant="message"> {error} </MessageBox>):
+         (
     <>
         <h1>Order: {order._id}</h1>
         <div className="placeorder">
             <div className="placeorder-info">
                 <div> 
-                    <h3> shippingAddress </h3>
+                    <h3> S hipping </h3>
                     <div>
                         <strong>  Name:</strong> {order.shippingAddress.fullName} <br />                   
                         <strong> Address:</strong>                       
                         { order.shippingAddress.address } , { order.shippingAddress.city }
                         { order.shippingAddress.postalCode } , { order.shippingAddress.country }
                     </div>
+                     {order.isDelivered ? <MessageBox variant="success" msg={`Delivered at ${order.deliveredAt}`} />:
+                       <MessageBox variant="danger" msg={'order is not delivered'} />
+                     } 
                 </div> 
                 <div>
-                    <h3>Payment</h3>
+                    
                     <div>
-                        Payment Method: {order.paymentMethod }
+                    <strong> Payment Method:</strong>  {order.paymentMethod }                       
                     </div>
+                    {order.isPaid ? <MessageBox msg={`Paid at ${order.paidAt}`} />  :
+                       <MessageBox msg={'Not paid'} variant="danger"/>
+                     } 
+                     
                 </div>
                 <div>
                     <ul className="cart-list-container">
