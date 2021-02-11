@@ -393,3 +393,6 @@ tbody > tr:nth-child(odd) {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+.danger, .success { padding: 8px; color: #96613d; font-weight: 900;}
+.danger { background: #fbdaef; }
+.success {  background: #aff5b2; }

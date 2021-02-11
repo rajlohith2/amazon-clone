@@ -1,4 +1,4 @@
 import React from 'react';
-export const MessageBox = ({error}) => (
-    <div>{error}</div>
+export const MessageBox = ({msg, variant}) => (
+<div className={variant}>{msg}</div>
 )
