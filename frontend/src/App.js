@@ -15,7 +15,7 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import { signout } from './actions/UserActions';
 import { user } from './config/userInfo';
 import OrderScreen from './screens/OrderScreen';
-// import OrderHistory from './screens/OrderHistory';
+import OrderHistory from './screens/OrderHistory';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -97,7 +97,7 @@ function App() {
                 <Route path="/payment" component={PaymentScreen} /> 
                 <Route path="/placeorder" component={PlaceOrderScreen} />   
                 <Route path="/order/:id" component={OrderScreen} />   
-                {/* <Route path="/orderHistory" component={OrderHistory} />    */}
+                <Route path="/orderHistory" component={OrderHistory} />   
                
                 
             </div>            

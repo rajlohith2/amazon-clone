@@ -46,7 +46,7 @@ export const payOrder = (order, paymentResult) => async(dispatch) => {
 export const listMyOrders = () => async(dispatch) => {
     dispatch({type: oc.ORDER_MINE_LIST_REQUEST });
     try {
-        const {data } = await axios.get('api/orders/userOrders', headers);
+        const {data } = await axios.get('/api/orders/client/orders', headers);
         dispatch({type: oc.ORDER_MINE_LIST_SUCCESS, payload: data});
         
     } catch (error) {

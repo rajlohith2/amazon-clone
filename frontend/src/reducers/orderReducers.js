@@ -41,7 +41,7 @@ export const orderPayReducer = (state = {}, action) => {
     }
 }
 
-export const myOrdersReducer =(state = {orders:{} }, action) => {
+export const myOrdersReducer =(state = {orders:[] }, action) => {
   switch(action.type) {
     case oc.ORDER_MINE_LIST_REQUEST: 
     return {loading: true};
