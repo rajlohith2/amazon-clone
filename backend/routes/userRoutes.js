@@ -1,6 +1,6 @@
 import express from "express";
 import User from '../models/userModel';
-import {getToken}  from '../middleware/auth';
+import {getToken, isAuth}  from '../middleware/auth';
 
 const route =  express.Router();
 
@@ -78,5 +78,13 @@ route.get('/all', async(req, res)=> {
 route.get('/admins',async(req, res)=>{
     return res.send({data: await User.find({isAdmin:true})});
 });
-
+route.get('/:id/details', isAuth, async(req, res)=> {
+    try {
+        const user = await User.findById(req.params.id)
+        return user ? res.status(200).send(user):res.status(404).send({message: 'User Not found'}); 
+    } catch (error) {
+        return res.send({message:'byanze man', error:error.message })
+    }
+    
+})
 export default route;

@@ -34,10 +34,11 @@ export default function OrderHistory(props){
                             { orders &&
                                 orders.map((order) => (
                                     <tr>
+                                        <td>{order._id}</td>
                                         <td>{order.createdAt.substring(0, 10)}</td>
                                         <td>{order.totalPrice}</td>
-                                        <td>{'payment has to be retrieved'}</td>
-                                        {/* <td>{order.isPaid ? order.paidAt.substring(0, 10):'No' }</td> */}
+                                        
+                                        <td>{order.isPaid && order.paidAt ? order.paidAt.substring(0, 10):'No' }</td>
                                         <td>{order.isDelivered ? order.deliveredAt.substring(0, 10):'No' }</td>
                                         <td>
                                             <button type="submit" className="small"

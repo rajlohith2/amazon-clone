@@ -11,6 +11,7 @@
 
 import axios from "axios";
 import * as uc from "../constants/userConstants";
+import { headers } from "../config/userInfo"
 
 const signin = (email, password) => async(dispatch) => {
  try {
@@ -34,12 +35,27 @@ const register = (name, email, password,) => async(dispatch) => {
     dispatch({type: uc.USER_REGISTER_FAIL, payload: error.message});
     
   }
-  
 }
+  export const userDetails = (userId) => async(dispatch)=> {
+     dispatch({type: uc.USER_DETAILS_REQUEST,payload:userId});     
+     try {
+       
+           const { data } = await axios.get(`/api/users/${userId}/details`, headers);
+           console.log("from action", data);
+           dispatch({type: uc.USER_DETAILS_SUCCESS, payload: data});
+     } catch (error) {
+       // TODO: I will change this message once project is complete to one function of response error 
+       const message = error.response && error.response.data.message ?error.response.data.message :error.message;
+       dispatch({type: uc.USER_DETAILS_FAIL, payload: message});
+       console.log(message);
+     }
+     
+  }
 const signout =() =>(dispatch) => {
   localStorage.removeItem("userInfo");
   localStorage.removeItem("cartItems");
   dispatch({type: uc.USER_SIGNOUT});
   window.location.assign("/");
 }
+
 export { signin, register, signout };

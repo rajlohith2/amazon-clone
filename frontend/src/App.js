@@ -16,6 +16,7 @@ import { signout } from './actions/UserActions';
 import { user } from './config/userInfo';
 import OrderScreen from './screens/OrderScreen';
 import OrderHistory from './screens/OrderHistory';
+import ProfileSCreen from './screens/ProfileScreen';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -98,6 +99,7 @@ function App() {
                 <Route path="/placeorder" component={PlaceOrderScreen} />   
                 <Route path="/order/:id" component={OrderScreen} />   
                 <Route path="/orderHistory" component={OrderHistory} />   
+                <Route path="/profile" component={ProfileSCreen} />   
                
                 
             </div>            
