@@ -1,4 +1,4 @@
-import React, { useDebugValue, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { listMyOrders } from "../actions/orderActions";
 import { LoadingBox}  from "../components/LoadingBox";
@@ -8,9 +8,11 @@ export default function OrderHistory(props){
     const myOrders = useSelector(state => state.myOrders);
     const {error, loading, orders} = myOrders;
     const dispatch = useDispatch();
+    
     useEffect( () => {
         dispatch(listMyOrders());
     } , [dispatch])
+    console.log(orders);
     return (
         <div>
             <h1>Order History</h1>  
@@ -34,7 +36,8 @@ export default function OrderHistory(props){
                                     <tr>
                                         <td>{order.createdAt.substring(0, 10)}</td>
                                         <td>{order.totalPrice}</td>
-                                        <td>{order.isPaid ? order.paidAt.substring(0, 10):'No' }</td>
+                                        <td>{'payment has to be retrieved'}</td>
+                                        {/* <td>{order.isPaid ? order.paidAt.substring(0, 10):'No' }</td> */}
                                         <td>{order.isDelivered ? order.deliveredAt.substring(0, 10):'No' }</td>
                                         <td>
                                             <button type="submit" className="small"
