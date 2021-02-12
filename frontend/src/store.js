@@ -6,8 +6,8 @@ import  {userSigninReducer, UserRegisterReducer }  from './reducers/userSigninRe
 import { myOrdersReducer, orderCreateReducer, orderDetailsReducer, orderPayReducer } from "./reducers/orderReducers";
 
 const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-const userInfo = JSON.parse(localStorage.getItem('userInfo')) || [];
-const shippingAddress = JSON.parse(localStorage.getItem('shipping')) || [];
+const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
+const shippingAddress = JSON.parse(localStorage.getItem('shipping')) || null;
 
  const initialState = { cart: { cartItems, payment: 'Paypal', shippingAddress }, userSignin: { userInfo }};
   
@@ -23,7 +23,8 @@ const reducer = combineReducers({
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
-    myOrders: myOrdersReducer
+    myOrders: myOrdersReducer,
+
 
 });
 

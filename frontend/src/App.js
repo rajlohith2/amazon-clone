@@ -43,11 +43,11 @@ function App() {
                 <Link to="/">Amazona </Link>
             </div>
             <div className="header-links">
-                <Link to="/cart"> Cart {cartItems.length > 0 && ( <span className="badge">{cartItems.length}</span>)}</Link>  
-                { user ?(
+                <Link to="/cart"> Cart { cartItems && cartItems.length > 0 &&  <span className="badge">{cartItems.length}</span>}</Link>  
+                {  user ?(
                     <div className="dropdown">
-                        <Link to="#">
-                            {user} <i className="fa fa-caret-down"></i>{' '}
+                        <Link to="/">
+                            {user} <i className="fa fa-caret-down"></i>
                         </Link>
                         <ul className="dropdown-content">
                             <li>
