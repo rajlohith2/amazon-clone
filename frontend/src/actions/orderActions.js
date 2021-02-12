@@ -32,15 +32,15 @@ export const detailsOrder = (orderId)=> async(dispatch, getState)=>{
 }
 export const payOrder = (order, paymentResult) => async(dispatch) => {
     dispatch({type: oc.ORDER_PAY_REQUEST, payload: {order, paymentResult } } );
+    console.log(`and paymentResult ${paymentResult}`);
     try {
         const { data } = await axios.put(`/api/orders/${order._id}/pay`, paymentResult, headers);
         dispatch({type: oc.ORDER_PAY_SUCCESS, payload: data});
         console.log(data);
-    } catch (error) {
         
+    } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message: error.message;
         dispatch({type:oc.ORDER_PAY_FAIL, payload: message});
-        
     }
 } 
 export const listMyOrders = () => async(dispatch) => {
