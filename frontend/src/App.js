@@ -15,6 +15,7 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import { signout } from './actions/UserActions';
 import { user } from './config/userInfo';
 import OrderScreen from './screens/OrderScreen';
+import OrderHistory from './screens/OrderHistory';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -42,18 +43,18 @@ function App() {
                 <Link to="/">Amazona </Link>
             </div>
             <div className="header-links">
-                <Link to="/cart"> Cart {cartItems.length > 0 && ( <span className="badge">{cartItems.length}</span>)}</Link>  
-                { user ?(
+                <Link to="/cart"> Cart { cartItems && cartItems.length > 0 &&  <span className="badge">{cartItems.length}</span>}</Link>  
+                {  user ?(
                     <div className="dropdown">
-                        <Link to="#">
-                            {user} <i className="fa fa-caret-down"></i>{' '}
+                        <Link to="/">
+                            {user} <i className="fa fa-caret-down"></i>
                         </Link>
                         <ul className="dropdown-content">
                             <li>
                             <Link to="/profile">User Profile</Link>
                             </li>
                             <li>
-                            <Link to="/orderhistory">Order History</Link>
+                                 <Link to="/orderhistory">Order History</Link>
                             </li>
                             <li>
                             <Link onClick={signoutHandler}>
@@ -96,6 +97,7 @@ function App() {
                 <Route path="/payment" component={PaymentScreen} /> 
                 <Route path="/placeorder" component={PlaceOrderScreen} />   
                 <Route path="/order/:id" component={OrderScreen} />   
+                <Route path="/orderHistory" component={OrderHistory} />   
                
                 
             </div>            

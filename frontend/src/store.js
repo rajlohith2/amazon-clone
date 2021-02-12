@@ -3,11 +3,11 @@ import  thunk from 'redux-thunk';
 import { productListReducer, productDetailsReducer, productSaveReducer, productDeleteReducer } from './reducers/productReducer';
 import {  cartReducer } from "./reducers/cartReducers";
 import  {userSigninReducer, UserRegisterReducer }  from './reducers/userSigninReducer';
-import { orderCreateReducer, orderDetailsReducer } from "./reducers/orderReducers";
+import { myOrdersReducer, orderCreateReducer, orderDetailsReducer, orderPayReducer } from "./reducers/orderReducers";
 
 const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-const userInfo = JSON.parse(localStorage.getItem('userInfo')) || {};
-const shippingAddress = JSON.parse(localStorage.getItem('shipping')) || {};
+const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
+const shippingAddress = JSON.parse(localStorage.getItem('shipping')) || null;
 
  const initialState = { cart: { cartItems, payment: 'Paypal', shippingAddress }, userSignin: { userInfo }};
   
@@ -21,7 +21,10 @@ const reducer = combineReducers({
     productSave: productSaveReducer,
     productDelete: productDeleteReducer,
     orderCreate: orderCreateReducer,
-    orderDetails: orderDetailsReducer
+    orderDetails: orderDetailsReducer,
+    orderPay: orderPayReducer,
+    myOrders: myOrdersReducer,
+
 
 });
 

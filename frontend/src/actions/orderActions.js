@@ -10,7 +10,7 @@ export const createOrder = (order)=> async(dispatch, getState) => {
         dispatch({type: oc.ORDER_CREATE_SUCCESS, payload: data.order});
         dispatch({type: CART_EMPTY});
         localStorage.removeItem("cartItems");
-        localStorage.removeItem("shipping");
+        //localStorage.removeItem("shipping");
     } catch (error) {
         dispatch({type: oc.ORDER_CREATE_FAIL, 
         payload: error.response && error.response.message? error.response.message: error.message});
@@ -18,10 +18,8 @@ export const createOrder = (order)=> async(dispatch, getState) => {
 }
 export const detailsOrder = (orderId)=> async(dispatch, getState)=>{
     dispatch({type: oc.ORDER_DETAILS_REQUEST, payload: orderId});
-    try {
-        //after using getState I will use variable headers defined in user infor file
-        const {userSignin: {userInfo}} = getState();
-        const { data } = await axios.get(`/api/orders/${orderId}`, {headers: {Authorization: `Bearer ${userInfo.token}`},});        
+    try {        
+        const { data } = await axios.get(`/api/orders/${orderId}`, headers);        
         dispatch({ type: oc.ORDER_DETAILS_SUCCESS, payload: data });       
 
     } catch (error) {
@@ -30,5 +28,31 @@ export const detailsOrder = (orderId)=> async(dispatch, getState)=>{
         error.response.data.message: 
         error.message;
         dispatch({type:oc.ORDER_DETAILS_FAIL, payload:message});
+    }  
+}
+export const payOrder = (order, paymentResult) => async(dispatch) => {
+    dispatch({type: oc.ORDER_PAY_REQUEST, payload: {order, paymentResult } } );
+    try {
+        const { data } = await axios.put(`/api/orders/${order._id}/pay`, paymentResult, headers);
+        dispatch({type: oc.ORDER_PAY_SUCCESS, payload: data});
+        console.log(data);
+    } catch (error) {
+        
+        const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+        dispatch({type:oc.ORDER_PAY_FAIL, payload: message});
+        
     }
+} 
+export const listMyOrders = () => async(dispatch) => {
+    dispatch({type: oc.ORDER_MINE_LIST_REQUEST });
+    try {
+        const {data } = await axios.get('api/orders/userOrders', headers);
+        dispatch({type: oc.ORDER_MINE_LIST_SUCCESS, payload: data});
+        
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+        dispatch({type:oc.ORDER_MINE_LIST_FAIL, payload: message});
+
+    }
+ 
 }

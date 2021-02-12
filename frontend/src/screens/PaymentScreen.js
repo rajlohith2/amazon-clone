@@ -12,7 +12,7 @@ function PaymentScreen(props){
     const { loading, userInfo, error } = userRegister;
     
     const shippingInfo = useSelector(state=>state.cart);
-    const { shipping } = shippingInfo;
+    const { shippingAddress: shipping } = shippingInfo;
 
     const dispatch = useDispatch();
 
