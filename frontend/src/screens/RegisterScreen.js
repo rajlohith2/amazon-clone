@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
   
 import {  register } from "../actions/UserActions";
 import { useSelector, useDispatch } from 'react-redux';
+import { LoadingBox } from "../components/LoadingBox";
+import { MessageBox } from "../components/MessageBox";
+
 
 
 function RegisterScreen(props){
@@ -15,15 +18,15 @@ function RegisterScreen(props){
     const userRegister = useSelector(state => state.userRegister);
     const { loading, userInfo, error } = userRegister;
     const dispatch = useDispatch();
-    const redirect = props.location.search ? props.location.search.split("=")[1]:'/';
-    useEffect(()=> {
-        if(userInfo) {
-            props.history.push(redirect);
-        }
-        return () => {
+    // const redirect = props.location.search ? props.location.search.split("=")[1]:'/';
+    // useEffect(()=> {
+    //     if(userInfo) {
+    //         props.history.push(redirect);
+    //     }
+    //     return () => {
 
-        }
-    },[userInfo]) //if user state info change then useEffect() will executes it's code
+    //     }
+    // },[userInfo]) //if user state info change then useEffect() will executes it's code
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(register(name, email,password));
@@ -33,15 +36,13 @@ function RegisterScreen(props){
     return ( 
         <div className="form">
             <form onSubmit={submitHandler}>
+                { loading && <LoadingBox />}
+                { error && <MessageBox variant="danger" msg={error} /> }
                 <ul className="form-container">
                     <li>
                         <h2>Create Account</h2>
                     </li>
-                    <li>{ loading && <div>Please wait ...</div>}             
-                        { error && <div>{ error } </div> }
                     
-                    
-                    </li>
                     <li>
                         <label htmlFor="name">  Name </label>                          
                         <input type="text" name="name" id="name" onChange={(e)=> setName(e.target.value)}/>
@@ -62,9 +63,9 @@ function RegisterScreen(props){
                         <button className="button primary" type="submit"> Register</button>
                     </li>
                     <li> Already has an Account ?
-                        <Link to={redirect === "/" ? 'signin': 'signin/redirect=' + redirect} 
+                        {/* <Link to={redirect === "/" ? 'signin': 'signin/redirect=' + redirect} 
                             className="button text-center secondary">
-                        </Link>
+                        </Link> */}
 
                     </li>
                     
