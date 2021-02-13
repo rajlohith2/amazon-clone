@@ -17,6 +17,7 @@ import { user } from './config/userInfo';
 import OrderScreen from './screens/OrderScreen';
 import OrderHistory from './screens/OrderHistory';
 import ProfileSCreen from './screens/ProfileScreen';
+import PrivateRoute from './components/PrivateRoute';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -28,6 +29,8 @@ const closeMenu = () => {
 function App() {
     const cartInfo = useSelector(state=>state.cart);
     const { cartItems } = cartInfo;
+    const signIn = useSelector(state=>state.userSignin)
+    const { userInfo } = signIn;
     const dispatch = useDispatch();
     const signoutHandler = () => {
         dispatch(signout());
@@ -69,6 +72,19 @@ function App() {
                     <Link to="/signin"> Sign in </Link>  
 
                     )}
+                    {userInfo && userInfo.isAdmin &&(
+                        <div className="dropdown">
+                            <Link to="/#admin"> Admin <i classname="fa fa-caret"></i>
+                            </Link>
+                         <ul className="dropdown-content">
+                             <li><Link to="/dashboard"> Dashboard </Link></li>
+                             <li><Link to="/productlist"> Products </Link></li>
+                             <li><Link to="/orderlist"> Orders </Link></li>
+                             <li><Link to="/userlist"> Users </Link></li>
+                         </ul>   
+                        </div>
+
+                    )}
             </div>            
         </header>
         <aside className="sidebar">
@@ -99,7 +115,7 @@ function App() {
                 <Route path="/placeorder" component={PlaceOrderScreen} />   
                 <Route path="/order/:id" component={OrderScreen} />   
                 <Route path="/orderHistory" component={OrderHistory} />   
-                <Route path="/profile" component={ProfileSCreen} />   
+                <PrivateRoute path="/profile" component={ProfileSCreen} />   
                
                 
             </div>            

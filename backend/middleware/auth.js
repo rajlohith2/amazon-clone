@@ -39,13 +39,10 @@ const isAuth = (req, res, next) => {
     }
 
 }
-const isAdmin = (req, res, next) => {
-    console.log(req.user);
+const isAdmin = (req, res, next) => {    
     if(req.user && req.user.isAdmin) {
-        return next()
+        return next();
     }
-    return res.status(401).send({message: 'admin is not valid'});
+    return res.status(403).send({message: 'Admin is not valid'});
 }
-export {
-    getToken, isAuth, isAdmin
-} ;
+export { getToken, isAuth, isAdmin } ;

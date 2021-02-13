@@ -11,6 +11,7 @@ export default function ProfileSCreen() {
     const[email, setEmail] = useState('');
     const[password, setPassword] = useState('');
     const[confirmationPassword, setConfirmationPassword] = useState('');
+ 
 
     const signedInUser = useSelector(state => state.userSignin);
     const { userInfo } = signedInUser;
@@ -41,7 +42,8 @@ export default function ProfileSCreen() {
             setEmail(user.email); 
         }
         
-     }, [user]);
+     }, [user, dispatch]);
+     //}, [user, userInfo._id, dispatch]); TODO: I userinfor id has to be changed as it reloads
    
     return  (
             <li>
@@ -50,7 +52,7 @@ export default function ProfileSCreen() {
                     }
                     { loadingUpdate ? <LoadingBox /> :
                       errorUpdate ? <MessageBox variant="danger" msg={errorUpdate} /> :
-                      successUpdate && <MessageBox variant="success" msg={'Profile updated successfully'} />      
+                      successUpdate && <MessageBox variant="success" msg={"Profile updated"} />      
                     }
                     { user && (
                       <form onSubmit={submitHandler} className="form">
