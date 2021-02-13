@@ -4,38 +4,30 @@ import {getToken, isAuth}  from '../middleware/auth';
 import  bcrypt  from "bcrypt";
 const route =  express.Router();
 
-route.post('/signin', async(req, res) => {
-  console.log(req.body);
+route.post('/signin', async(req, res) => { 
    try {
         const { email, password } = req.body;        
         const loggedUser = await User.findOne({email: email});  
         
          if(!loggedUser){
-            return res.status(404).send({ message: 'User not found' })
+            return res.status(404).send({ message: 'Invalid Email or Password ' })
          } else {
                 if(bcrypt.compareSync(password, loggedUser.password)) {
-                    const {_id, name, email, isAdmin}= loggedUser;
-                    return res.status(200).send({ 
-                        _id: loggedUser._id,  
-                        name: loggedUser.name,
-                        email: loggedUser.email,
-                        isAdmin: loggedUser.isAdmin,
-                        token:getToken(loggedUser)
-                    })
+                    const {_id, name, email, isAdmin} = loggedUser;
+                    return res.status(200).send({ _id, name,email, isAdmin,token:getToken(loggedUser)});
                 }else {
-                    return res.status(404).send({message: 'invalid user name or passwod'});
+                    return res.status(404).send({message: 'Invalid Credentials'});
                 }
          }
    } catch (error) {     
-        return res.status(500).send({error: error.message, message:"internal server error"});
+        return res.status(500).send({error: error.message, message:"Internal Server Error"});
    }     
 });
 route.post('/register', async (req, res)=>{
     try {
     const {name, email, password} = req.body;
    
-    const user = new User({
-        name,
+    const user = new User({  name,
         email,
         password: await bcrypt.hashSync(password, 10)
     });
@@ -53,8 +45,8 @@ route.get('/createadmin', async(req, res) => {
     try {
         const user = new User({
             name: 'Janvier',
-            email:'Janvier1@example.com',
-            password: 'safepassword',
+            email:'Janvier102@example.com',
+            password: bcrypt.hashSync('safepassword', 10),
             isAdmin: true
         });
         const newUser = await user.save();
@@ -78,7 +70,7 @@ route.get('/:id/details', isAuth, async(req, res)=> {
 });
 
 route.put('/profile', isAuth, async(req, res)=> {
-    console.log(req.body.password);
+ 
     try {
     const user = await User.findById(req.user._id);
     if(user) {
@@ -89,7 +81,7 @@ route.put('/profile', isAuth, async(req, res)=> {
         }
         const updatedUser = await user.save();
         const {_id, name, email, isAdmin} = updatedUser;
-        return res.status(200).send({_id, name, email, isAdmin, token:getToken(updatedUser)});
+        return res.status(200).send({_id, name, email, isAdmin, token:getToken(updatedUser), message:'Profile updated successfully'});
 
     }
     } catch (error) {

@@ -18,18 +18,16 @@ function RegisterScreen(props){
     const userRegister = useSelector(state => state.userRegister);
     const { loading, userInfo, error } = userRegister;
     const dispatch = useDispatch();
-    // const redirect = props.location.search ? props.location.search.split("=")[1]:'/';
-    // useEffect(()=> {
-    //     if(userInfo) {
-    //         props.history.push(redirect);
-    //     }
-    //     return () => {
+    const redirect = props.location.search ? props.location.search.split("=")[1]:'/';
+    useEffect(()=> {
+        if(userInfo) {
+            props.history.push(redirect);
+        }
 
-    //     }
-    // },[userInfo]) //if user state info change then useEffect() will executes it's code
+    },[userInfo]) //if user state info change then useEffect() will executes it's code
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(register(name, email,password));
+        dispatch(register({name, email,password}));
 
     }
 
@@ -63,9 +61,9 @@ function RegisterScreen(props){
                         <button className="button primary" type="submit"> Register</button>
                     </li>
                     <li> Already has an Account ?
-                        {/* <Link to={redirect === "/" ? 'signin': 'signin/redirect=' + redirect} 
-                            className="button text-center secondary">
-                        </Link> */}
+                        <Link to={redirect === "/" ? 'signin': 'signin/redirect=' + redirect} 
+                            className="button text-center secondary"> Sign in
+                        </Link>
 
                     </li>
                     

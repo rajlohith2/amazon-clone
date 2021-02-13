@@ -27,11 +27,12 @@ const signin = (email, password) => async(dispatch) => {
     dispatch({type: uc.USER_SIGNIN_FAIL, payload: message});
  }
 }
-const register = (name, email, password,) => async(dispatch) => {
-  dispatch({type: uc.USER_REGISTER_REQUEST, payload: {name, email, password } });
+const register = (userData) => async(dispatch) => {
+  dispatch({type: uc.USER_REGISTER_REQUEST, payload: userData });
   try {
-    const { data } = await axios.post("/api/users/register", {name, email, password});
+    const { data } = await axios.post("/api/users/register", userData);
     dispatch({type: uc.USER_REGISTER_SUCCESS, payload: data});
+    
 
   } catch (error) {
     const message = error.response && error.response.data.message ? error.response.data.message: error.message;
