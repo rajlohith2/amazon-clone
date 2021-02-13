@@ -4,8 +4,7 @@ import {getToken, isAuth}  from '../middleware/auth';
 import  bcrypt  from "bcrypt";
 const route =  express.Router();
 
-route.post('/signin', async(req, res) => {
-  console.log(req.body);
+route.post('/signin', async(req, res) => { 
    try {
         const { email, password } = req.body;        
         const loggedUser = await User.findOne({email: email});  
@@ -15,15 +14,9 @@ route.post('/signin', async(req, res) => {
          } else {
                 if(bcrypt.compareSync(password, loggedUser.password)) {
                     const {_id, name, email, isAdmin}= loggedUser;
-                    return res.status(200).send({ 
-                        _id: loggedUser._id,  
-                        name: loggedUser.name,
-                        email: loggedUser.email,
-                        isAdmin: loggedUser.isAdmin,
-                        token:getToken(loggedUser)
-                    })
+                    return res.status(200).send({ _id, name,email, isAdmin,token:getToken(loggedUser)})
                 }else {
-                    return res.status(404).send({message: 'invalid user name or passwod'});
+                    return res.status(404).send({message: 'Invalid user name or passwod'});
                 }
          }
    } catch (error) {     
