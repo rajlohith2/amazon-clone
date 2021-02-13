@@ -13,6 +13,7 @@ import axios from "axios";
 import * as uc from "../constants/userConstants";
 import { headers } from "../config/userInfo"
 
+
 const signin = (email, password) => async(dispatch) => {
  try {
    
@@ -22,7 +23,8 @@ const signin = (email, password) => async(dispatch) => {
    localStorage.setItem('userInfo', JSON.stringify(data));
     
  } catch (error) {
-     dispatch({type: uc.USER_SIGNIN_FAIL, payload: error.message});
+   const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+    dispatch({type: uc.USER_SIGNIN_FAIL, payload: message});
  }
 }
 const register = (name, email, password,) => async(dispatch) => {
@@ -32,11 +34,13 @@ const register = (name, email, password,) => async(dispatch) => {
     dispatch({type: uc.USER_REGISTER_SUCCESS, payload: data});
 
   } catch (error) {
-    dispatch({type: uc.USER_REGISTER_FAIL, payload: error.message});
+    const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+    dispatch({type: uc.USER_REGISTER_FAIL, payload: message});
+    alert(message);
     
   }
 }
-  export const userDetails = (userId) => async(dispatch)=> {
+   const userDetails = (userId) => async(dispatch)=> {
      dispatch({type: uc.USER_DETAILS_REQUEST,payload:userId});     
      try {
        
@@ -51,6 +55,20 @@ const register = (name, email, password,) => async(dispatch) => {
      }
      
   }
+  const updateUserProfile = (updateUserData)=> async (dispatch)=> {
+    dispatch({type: uc.USER_UPDATE_PROFILE_REQUEST,payload: updateUserData});
+    try {
+       const { data } = await axios.put(`/api/users/profile`, updateUserData, headers);
+       dispatch({type: uc.USER_UPDATE_PROFILE_SUCCESS, payload: data});
+       dispatch({type: uc.USER_SIGNIN_SUCCESS});       
+       localStorage.setItem('userInfo', JSON.stringify(data));
+
+    } catch (error) {
+      const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+      dispatch({type: uc.USER_UPDATE_PROFILE_FAIL, payload: message});
+    }
+  }
+
 const signout =() =>(dispatch) => {
   localStorage.removeItem("userInfo");
   localStorage.removeItem("cartItems");
@@ -58,4 +76,4 @@ const signout =() =>(dispatch) => {
   window.location.assign("/");
 }
 
-export { signin, register, signout };
+export { signin, register, signout,userDetails, updateUserProfile };

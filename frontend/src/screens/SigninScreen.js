@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
   
 import { signin } from "../actions/UserActions";
 import { useSelector, useDispatch } from 'react-redux';
-
+import { LoadingBox } from "../components/LoadingBox";
+import { MessageBox } from "../components/MessageBox";
 
 function SigninScreen(props){
 
@@ -34,15 +35,13 @@ function SigninScreen(props){
 
     return ( 
         <div className="form">
+            
             <form onSubmit={submitHandler}>
                 <ul className="form-container">
+                { loading && <LoadingBox />}
+                 { error && <MessageBox variant="danger" msg={error} /> }
                     <li>
                         <h2>Sign-In</h2>
-                    </li>
-                    <li>
-                    { loading && <div>Loading...</div> }
-                    { error && <div> { error } </div> }
-                    
                     </li>
                     <li>
                         <label htmlFor="email">  Email </label>                          

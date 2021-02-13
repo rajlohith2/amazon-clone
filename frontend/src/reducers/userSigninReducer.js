@@ -26,7 +26,19 @@
      }
 
  }
- export  {
-     userSigninReducer, UserRegisterReducer
+ function updateProfileReducer(state = {}, action) {
+     switch (action.type) {
+         case uc.USER_UPDATE_PROFILE_REQUEST:
+             return { loading: true };
+         case uc.USER_UPDATE_PROFILE_SUCCESS:
+            return { loading: false, succes: true};  
+         case uc.USER_UPDATE_PROFILE_FAIL:
+             return { loading:false, error: action.payload };
+          case uc.USER_UPDATE_PROFILE_RESET:
+              return {};   
+         default:
+             return state;
+     }
  }
+ export  {userSigninReducer, UserRegisterReducer, updateProfileReducer }
  
