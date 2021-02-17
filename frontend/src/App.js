@@ -30,15 +30,11 @@ const closeMenu = () => {
 function App() {
     const cartInfo = useSelector(state=>state.cart);
     const { cartItems } = cartInfo;
-    const signIn = useSelector(state=>state.userSignin)
-    const { userInfo } = signIn;
+    const { userInfo } = useSelector(state => state.userSignin);    
     const [user, setUser] = useState(null);
     const dispatch = useDispatch();
-    const signoutHandler = () => {
-        dispatch(signout());
-        
-      };
-      useEffect(() =>  setUser(userInfo) )
+    const signoutHandler = () => dispatch(signout());       
+    useEffect(() =>  setUser(userInfo) )
 
   return (
     <BrowserRouter>

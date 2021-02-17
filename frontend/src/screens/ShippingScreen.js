@@ -6,21 +6,34 @@ import CheckoutSteps from '../components/CheckoutSteps';
 
 function ShippingScreen(props){
 
-   const shipping =  useSelector((state)=>state.cart.shippingAddress);
-  // const {shipping} = cartInfo;
-   console.log(shipping);
-   const [fullName, setFullName] = useState(shipping ? shipping.fullName:'');
-   const [address, setAddress] = useState(shipping ? shipping.address:'');
-   const [country, setCountry] = useState(shipping ? shipping.country:'');
-   const [postalCode, setPostalCode] = useState(shipping ? shipping.postalCode:'');
-   const [city, setCity] = useState(shipping ? shipping.city:'');
+   const shippingAddress =  useSelector((state)=>state.cart.shippingAddress);
+   const [shipping, setShippingInfo] = useState(shippingAddress);
+   const [fullName, setFullName] = useState('')
+   const [address, setAddress] = useState('');
+   const [country, setCountry] = useState('');
+   const [postalCode, setPostalCode] = useState('');
+   const [city, setCity] = useState('');
 
     const { userInfo } = useSelector(state => state.userSignin);
     // after having entire  feature working I will make function to check signed in user
+  // console.log(shipping.address);
+    useEffect(() =>   {
+        if(!shipping) {
+            setShippingInfo(shipping);            
+        }else{
+            setFullName(shipping.fullName);
+            setAddress(shipping.address);
+            setCity(shipping.city);
+            setCountry(shipping.country);
+            setPostalCode(shipping.postalCode);
+        }
+        
+    });
     
         if(!userInfo) {
             props.history.push("/signin");
         }
+        
     
     const dispatch = useDispatch();
     const submitHandler = (e) => {
