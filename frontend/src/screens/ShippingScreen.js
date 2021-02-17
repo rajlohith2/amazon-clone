@@ -6,33 +6,31 @@ import CheckoutSteps from '../components/CheckoutSteps';
 
 function ShippingScreen(props){
 
-   const shippingAddress =  useSelector((state)=>state.cart.shippingAddress);
-   const [shipping, setShippingInfo] = useState(shippingAddress);
+   const { shippingAddress } =  useSelector(state=>state.cart);
+   const [shipping, setShippingInfo] = useState(null);
+   
    const [fullName, setFullName] = useState('')
    const [address, setAddress] = useState('');
    const [country, setCountry] = useState('');
    const [postalCode, setPostalCode] = useState('');
    const [city, setCity] = useState('');
+   const { userInfo } = useSelector(state => state.userSignin);
 
-    const { userInfo } = useSelector(state => state.userSignin);
-    // after having entire  feature working I will make function to check signed in user
-  // console.log(shipping.address);
     useEffect(() =>   {
-        if(!shipping) {
-            setShippingInfo(shipping);            
-        }else{
-            setFullName(shipping.fullName);
-            setAddress(shipping.address);
-            setCity(shipping.city);
-            setCountry(shipping.country);
-            setPostalCode(shipping.postalCode);
+        setShippingInfo(shippingAddress);    
+            
+        if(shipping)  {
+        setFullName(shipping.fullName);
+        setAddress(shipping.address);
+        setCity(shipping.city);
+        setCountry(shipping.country);
+        setPostalCode(shipping.postalCode);    
         }
-        
-    });
-    
-        if(!userInfo) {
-            props.history.push("/signin");
-        }
+    },[shipping]);
+  
+    if(!userInfo) {
+        props.history.push("/signin");
+    }
         
     
     const dispatch = useDispatch();
@@ -53,7 +51,7 @@ function ShippingScreen(props){
                         </li>
                         <li>
                             <label htmlFor="fullName">  Full Name </label>                          
-                            <input type="text" name="fullName" id="fullName" onChange={(e)=> setFullName(e.target.value)} value={fullName}/>
+                            <input type="text" name="fullName" id="fullName" onChange={(e)=> setFullName(e.target.value)} value={fullName} />
                         </li>
                         <li>
                             <label htmlFor="address">  Address </label>                          

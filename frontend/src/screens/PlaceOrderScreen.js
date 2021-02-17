@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createOrder } from '../actions/orderActions';
 import {Link} from 'react-router-dom';
 import {  useDispatch, useSelector} from "react-redux";
@@ -11,7 +11,11 @@ import { headers, user } from "../config/userInfo";
 function PlaceOrderScreen(props) {
 
     const cart = useSelector(state => state.cart);
-    const { cartItems, shippingAddress, payment } = cart;
+   // const { cartItems, shippingAddress, payment } = cart;
+   const { payment } = cart;
+   
+    const [shippingAddress, setShippingAddress ] = useState(cart.shippingAddress?? null);
+    const[cartItems, setCartItems] = useState(cart.cartItems ?? null);
 
     const orderInfo = useSelector(state=> state.orderCreate);
     const {success, error, loading, order} = orderInfo;
@@ -26,8 +30,13 @@ function PlaceOrderScreen(props) {
             dispatch({ type: ORDER_CREATE_RESET });
         
         }
+        if(!cartItems || !shippingAddress) {
+            //setShippingAddress(cart.shippingAddress);
+            //setCartItems(cart.setCartItems);
+           // window.location.assign('/placeorder');
+        }
     },[dispatch, order, props.history, success]);
-    //},[dispatch, order, props.history, success]);
+    
     
     const itemsPrice = cartItems.reduce((a, c)=> a + c.price * c.qty, 0);
     const shippingPrice = itemsPrice < 100 ? 0: 10;

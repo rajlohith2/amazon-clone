@@ -60,9 +60,9 @@ function App() {
                                  <Link to="/orderhistory">Order History</Link>
                             </li>
                             <li>
-                            <Link onClick={signoutHandler}>
+                            <a onClick={signoutHandler}>
                                 Sign Out
-                            </Link>
+                            </a>
                             </li>
                         </ul>
                     </div>
