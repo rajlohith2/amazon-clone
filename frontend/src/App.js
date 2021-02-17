@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import data from './data';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
@@ -18,6 +18,7 @@ import OrderScreen from './screens/OrderScreen';
 import OrderHistory from './screens/OrderHistory';
 import ProfileSCreen from './screens/ProfileScreen';
 import PrivateRoute from './components/PrivateRoute';
+import { useState } from 'react';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -31,12 +32,14 @@ function App() {
     const { cartItems } = cartInfo;
     const signIn = useSelector(state=>state.userSignin)
     const { userInfo } = signIn;
+    const [user, setUser] = useState(null);
     const dispatch = useDispatch();
     const signoutHandler = () => {
         dispatch(signout());
         
       };
-      
+      useEffect(() =>  setUser(userInfo) )
+
   return (
     <BrowserRouter>
     <div className="grid-container">
@@ -51,7 +54,7 @@ function App() {
                 {  user ?(
                     <div className="dropdown">
                         <Link to="/">
-                            {user} <i className="fa fa-caret-down"></i>
+                            {user.name} <i className="fa fa-caret-down"></i>
                         </Link>
                         <ul className="dropdown-content">
                             <li>
