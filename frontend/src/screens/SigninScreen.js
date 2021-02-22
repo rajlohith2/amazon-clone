@@ -27,10 +27,7 @@ function SigninScreen(props){
         if(userInfo) {
             props.history.push(redirect);
         }
-        return () => {
-
-        }
-    },[userInfo]) //if user state info change then useEffect() will executes it's code
+    },[userInfo, props.history, redirect]) //if user state info change then useEffect() will executes it's code
     
 
     return ( 

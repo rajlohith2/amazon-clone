@@ -35,7 +35,8 @@ function App() {
     const dispatch = useDispatch();
     const signoutHandler = () => dispatch(signout());       
     useEffect(() =>  setUser(userInfo) )
-
+    
+    
   return (
     <BrowserRouter>
     <div className="grid-container">

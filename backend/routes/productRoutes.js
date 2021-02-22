@@ -9,9 +9,14 @@ productRoute.get('/', async(req, res)=> {
    return res.send( products);
 });
 productRoute.get('/:id', async(req, res)=> {
+    try {
+        const product = await Product.findById(req.params.id);
+        return product ?  res.status(200).send(product): res.status(404).send({message: 'Product not Found'});
+    } catch (error) {
+              
+        return res.status(500).send({message:'Product not found'});
+    }
     
-    const products = await Product.findById(req.params.id);
-    return res.status(200).send(products);
  });
 
 productRoute.post('/', async(req, res)=> {
@@ -39,11 +44,11 @@ productRoute.post('/', async(req, res)=> {
 
     if(newProduct) {
         return res.status(201).send({
-                msg: 'New product is created',
+                message: 'New product is created',
                 data: newProduct
             });
     }
-    return res.status(500).send({msg: 'Error in creating Product'});
+    return res.status(500).send({message: 'Error in creating Product'});
 });
 
 productRoute.put('/:id',isAdmin, isAuth, async(req, res) => {
@@ -52,22 +57,22 @@ productRoute.put('/:id',isAdmin, isAuth, async(req, res) => {
     if(product) {
         const updatedProduct = await Product.findOneAndUpdate({_id: req.params.id}, req.body);        
         if(updatedProduct) {
-            return res.status(201).send({msg: 'Product updated', data: updatedProduct});
+            return res.status(201).send({message: 'Product updated', data: updatedProduct});
         }     
     }
-    return res.status(500).send({msg: 'Internal Error in Updating'});
+    return res.status(500).send({message: 'Internal Error in Updating'});
     
 });
 productRoute.delete('/:id', isAdmin, isAuth, async(req, res)=> {
      const productToDelete = await Product.findById(req.params.id);
      if(! productToDelete) {
-         return res.status(404).send({msg: 'Product not found'});
+         return res.status(404).send({message: 'Product not found'});
      }
      const deleteProduct = await productToDelete.remove(req.params.id);
      if(deleteProduct) {
-         return res.status(200).send({msg: 'Product is deleted'});
+         return res.status(200).send({message: 'Product is deleted'});
      }
-     return res.status(500).send({msg: 'Internal Server Error'});
+     return res.status(500).send({message: 'Internal Server Error'});
 });
 
 export default productRoute;

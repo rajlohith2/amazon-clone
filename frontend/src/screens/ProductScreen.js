@@ -2,22 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {  detailsProduct } from "../actions/productActions";
 import { useSelector, useDispatch } from 'react-redux';
+import Rating from '../components/Rating';
+import { MessageBox } from '../components/MessageBox';
+import { LoadingBox } from '../components/LoadingBox';
 
 function ProductScreen(props){
-
+    const productId = props.match.params.id;
     const [qty, setQty] =  useState(1);
     const productDetails = useSelector(state => state.productDetails);
     const {  loading, product, error} = productDetails;
     const dispatch = useDispatch();
 
     useEffect(()=> {
-        dispatch(detailsProduct(props.match.params.id));
-        return () => {
-
-        }
-    },[])
+        dispatch(detailsProduct(productId));
+  
+    },[dispatch, productId])
     const handleAddToCart = () => {
-        props.history.push("/cart/"+ props.match.params.id + "?qty=" + qty)
+        props.history.push("/cart/"+ productId + "?qty=" + qty)
     }
 
     return (
@@ -26,9 +27,9 @@ function ProductScreen(props){
             <Link to="/">  Back to result </Link>
         </div> 
             {       
-                loading ?  <div>Please wait...</div> :
-                error ? <div> { error } </div> :
-                (
+                loading ?  <LoadingBox /> :
+                error ? <MessageBox variant="danger" msg={ error } /> :
+                ( product && 
                     <div className="details">
                         <div className="details-image">
                             <img src={product.image} alt="product"></img>
@@ -39,8 +40,8 @@ function ProductScreen(props){
                                 <li>
                                     <h4>{product.name}</h4>
                                 </li>
-                                <li>
-                                    {product.rating} stars {product.numReviews} Reviews
+                                <li>                                    
+                                    <Rating rates={product.rating} numReviews={product.numReviews} />
                                 </li>
                                 <li>
                                     <b>${product.price} </b>
@@ -54,10 +55,10 @@ function ProductScreen(props){
                         <div className="details-action">
                             <ul>
                                 <li>
-                                    Price: {product.price}
+                                    Price: ${product.price}
                                 </li>
                                 <li>
-                                    status: {product.countInStock > 0 ? 'In Stock' :'Unavailable'}
+                                    status: {product.countInStock > 0 ?<span className="text-success"> In Stock </span>  : <span className="text-danger">Unavailable</span>}
                                 </li>
                                 <li> 
                                     Qty: <select value={qty} onChange={(e) => setQty(e.target.value)}>

@@ -53,7 +53,7 @@ route.get('/createadmin', async(req, res) => {
         return res.send(user);
         
     } catch (error) {
-        res.send({msg: error.message});
+        res.send({message: error.message});
     }
 });
 

@@ -22,7 +22,9 @@ try {
     dispatch({ type: pl.PRODUCT_DETAILS_SUCCESS, payload: data });
 
 } catch (error) {
-    dispatch({type: pl.PRODUCT_DETAILS_FAIL, payload: error.message });
+    const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+    console.error(message);
+    dispatch({type: pl.PRODUCT_DETAILS_FAIL, payload: message });
 }
 }
  
