@@ -6,38 +6,34 @@ import CheckoutSteps from '../components/CheckoutSteps';
 
 function ShippingScreen(props){
 
-   const { shippingAddress } =  useSelector(state=>state.cart);
-   const [shipping, setShippingInfo] = useState(null);
-   
-   const [fullName, setFullName] = useState('')
-   const [address, setAddress] = useState('');
-   const [country, setCountry] = useState('');
-   const [postalCode, setPostalCode] = useState('');
-   const [city, setCity] = useState('');
-   const { userInfo } = useSelector(state => state.userSignin);
+    const cart = useSelector(state =>state.cart);
+    const { shippingAddress } = cart;
 
-    useEffect(() =>   {
-        setShippingInfo(shippingAddress);    
-            
-        if(shipping)  {
-        setFullName(shipping.fullName);
-        setAddress(shipping.address);
-        setCity(shipping.city);
-        setCountry(shipping.country);
-        setPostalCode(shipping.postalCode);    
-        }
-    },[shipping]);
+   const [fullName, setFullName] = useState(shippingAddress.fullName);
+   const [address, setAddress] = useState(shippingAddress.address);
+   const [country, setCountry] = useState(shippingAddress.country);
+   const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
+   const [city, setCity] = useState(shippingAddress.country);
+   const { userInfo } = useSelector(state => state.userSignin);
+  
+
+
+    useEffect(() =>   { });
+     
   
     if(!userInfo) {
         props.history.push("/signin");
+        // window.location.assign("/signin");
     }
-        
+  
     
     const dispatch = useDispatch();
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(saveShipping({address, postalCode, country, city,fullName}));
         props.history.push('payment');
+        // window.location.assign("/payment");
+
     }
     
     return (
