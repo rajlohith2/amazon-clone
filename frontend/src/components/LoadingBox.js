@@ -1,4 +1,6 @@
 import React from 'react';
 export const LoadingBox = () => (
-    <div>Loading</div>
+    <div className="loading fa-3x">
+        <span><i className="fas fa-spinner fa-pulse"></i></span>
+    </div>
 )
