@@ -11,14 +11,13 @@ import { headers, user } from "../config/userInfo";
 function PlaceOrderScreen(props) {
 
     const cart = useSelector(state => state.cart);
-   // const { cartItems, shippingAddress, payment } = cart;
-   const { payment } = cart;
+    const { cartItems, shippingAddress, payment } = cart;
    
-    const [shippingAddress, setShippingAddress ] = useState(cart.shippingAddress?? null);
-    const[cartItems, setCartItems] = useState(cart.cartItems ?? null);
-
     const orderInfo = useSelector(state=> state.orderCreate);
     const {success, error, loading, order} = orderInfo;
+   
+    const { userInfo } = useSelector(state => state.userSignin);    
+    const [user, setUser] = useState(null);
     
     const dispatch = useDispatch();
     if(!payment) {

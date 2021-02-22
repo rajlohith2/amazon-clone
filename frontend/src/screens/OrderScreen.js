@@ -13,7 +13,7 @@ function OrderScreen(props) {
     const[sdkReady, setSdkReady] = useState(false);
     const orderDetails = useSelector(state => state.orderDetails);
     const { error, order, loading } = orderDetails;
-
+    
     const dispatch = useDispatch();
     const orderPay = useSelector( state => state.orderPay);
     const { success:successPay, error:errorPay, loading:loadingPay } = orderPay;
@@ -32,6 +32,7 @@ function OrderScreen(props) {
         if(!order || successPay || (order && order._id !== orderId)) {
             dispatch({ type: ORDER_PAY_RESET });
             dispatch(detailsOrder(orderId));
+            
         }else {
             if(!order.isPaid) {
                 if(!window.paypal){
