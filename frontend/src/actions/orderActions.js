@@ -32,7 +32,7 @@ export const detailsOrder = (orderId)=> async(dispatch, getState)=>{
 }
 export const payOrder = (order, paymentResult) => async(dispatch) => {
     dispatch({type: oc.ORDER_PAY_REQUEST, payload: {order, paymentResult } } );
-    console.log(`and paymentResult ${paymentResult}`);
+   
     try {
         const { data } = await axios.put(`/api/orders/${order._id}/pay`, paymentResult, headers);
         dispatch({type: oc.ORDER_PAY_SUCCESS, payload: data});
