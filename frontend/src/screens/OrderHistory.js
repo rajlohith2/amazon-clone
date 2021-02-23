@@ -28,6 +28,7 @@ export default function OrderHistory(props){
                                 <td>TOTAL</td>
                                 <td>PAID</td>
                                 <td>DELIVERED</td>
+                                <td>ACTION</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,7 +37,7 @@ export default function OrderHistory(props){
                                     <tr>
                                         <td>{order._id}</td>
                                         <td>{order.createdAt.substring(0, 10)}</td>
-                                        <td>{order.totalPrice}</td>
+                                        <td>{order.totalPrice.toFixed(2)}</td>
                                         
                                         <td>{order.isPaid && order.paidAt ? order.paidAt.substring(0, 10):'No' }</td>
                                         <td>{order.isDelivered ? order.deliveredAt.substring(0, 10):'No' }</td>
