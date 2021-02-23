@@ -42,12 +42,12 @@ const register = (userData) => async(dispatch) => {
   }
 }
    const userDetails = (userId) => async(dispatch)=> {
-     dispatch({type: uc.USER_DETAILS_REQUEST,payload:userId});     
+     dispatch({type: uc.USER_DETAILS_REQUEST, payload:userId});     
      try {
        
-           const { data } = await axios.get(`/api/users/${userId}/details`, headers);
-           console.log("from action", data);
+           const { data } = await axios.get(`/api/users/${userId}/details`, headers);           
            dispatch({type: uc.USER_DETAILS_SUCCESS, payload: data});
+           
      } catch (error) {
        // TODO: I will change this message once project is complete to one function of response error 
        const message = error.response && error.response.data.message ?error.response.data.message :error.message;
@@ -61,8 +61,8 @@ const register = (userData) => async(dispatch) => {
     try {
        const { data } = await axios.put(`/api/users/profile`, updateUserData, headers);
        dispatch({type: uc.USER_UPDATE_PROFILE_SUCCESS, payload: data});
-       dispatch({type: uc.USER_SIGNIN_SUCCESS});       
-       localStorage.setItem('userInfo', JSON.stringify(data));
+       dispatch({type: uc.USER_SIGNIN_SUCCESS, payload:data});       
+       localStorage.setItem("userInfo", JSON.stringify(data));
 
     } catch (error) {
       const message = error.response && error.response.data.message ? error.response.data.message : error.message;
@@ -71,7 +71,7 @@ const register = (userData) => async(dispatch) => {
   }
 
 const signout =() =>(dispatch) => {
-  localStorage.removeItem("userInfo");
+  localStorage.removeItem("userInfo"); 
   localStorage.removeItem("cartItems");
   localStorage.removeItem("shippingAddress");
   dispatch({type: uc.USER_SIGNOUT});

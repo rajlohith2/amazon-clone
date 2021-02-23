@@ -17,32 +17,32 @@ function OrderScreen(props) {
     const dispatch = useDispatch();
     const orderPay = useSelector( state => state.orderPay);
     const { success:successPay, error:errorPay, loading:loadingPay } = orderPay;
+    
     useEffect(() => {
+         
         const addPayPalScript = async ()=> {
             const { data } = await axios.get(`/api/config/paypal`);
             const script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = `https://wwww.paypal.com/sdk/js?client-id=${data}`;
             script.async = true;
-            script.onload = () => {
-                setSdkReady(true);
-            };
+            script.onload = () => setSdkReady(true);            
             document.body.appendChild(script);
-        };
+        };        
         if(!order || successPay || (order && order._id !== orderId)) {
             dispatch({ type: ORDER_PAY_RESET });
-            dispatch(detailsOrder(orderId));
+            dispatch(detailsOrder(orderId));            
             
         }else {
             if(!order.isPaid) {
                 if(!window.paypal){
                     addPayPalScript();
                 } else {
-                    setSdkReady(true);
+                    setSdkReady(true);                    
                 }
             }
         }
-
+       
     }, [dispatch, order, orderId, sdkReady]);
     
     const successPaymentHandler = (paymentResult) =>{
@@ -125,8 +125,8 @@ function OrderScreen(props) {
                     <div>${order.totalPrice.toFixed(2)}</div>
                 </li>
                 {!order.isPaid && ( 
-               
-                    !sdkReady === false ?  <LoadingBox /> : 
+                    
+                    !sdkReady===false ?  <LoadingBox /> : 
                     <>
                         {errorPay && (
                             <MessageBox variant="danger" msg={error} />

@@ -31,7 +31,7 @@
          case uc.USER_UPDATE_PROFILE_REQUEST:
              return { loading: true };
          case uc.USER_UPDATE_PROFILE_SUCCESS:
-            return { loading: false, succes: true};  
+            return { loading: false, success: true};  
          case uc.USER_UPDATE_PROFILE_FAIL:
              return { loading:false, error: action.payload };
           case uc.USER_UPDATE_PROFILE_RESET:

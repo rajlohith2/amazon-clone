@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
   
 import { saveProduct, listProducts, deleteProduct } from "../actions/productActions";
 import { useSelector, useDispatch } from 'react-redux';
+import { LoadingBox } from '../components/LoadingBox';
+import { MessageBox } from '../components/MessageBox';
 
 
 function ProductsScreen(props){
@@ -76,8 +78,8 @@ function ProductsScreen(props){
                             <h2>Product Registration</h2>
                         </li>
                         <li>
-                        { loadingSave && <div>Loading...</div> }
-                        { errorSave && <div> { errorSave } </div> }
+                        { loadingSave && <LoadingBox />}
+                        { errorSave && <MessageBox variant="danger" msg={errorSave}/> }
                         
                         </li>
                         <li>
@@ -131,8 +133,8 @@ function ProductsScreen(props){
     
             <div className="product-list">
                 
-                    { error && <div>{error}</div> }
-                    { loading && <div>Loadig ...</div> }
+                    { error && <MessageBox variant="danger" msg={error} /> }
+                    { loading && <LoadingBox />}
                 
                 <table className="table">
                     <thead>
@@ -147,7 +149,7 @@ function ProductsScreen(props){
                     </thead>
                     <tbody>
                         {
-                            products.map(product => (
+                         products && products.map(product => (
                             <tr key={product._id}>
                                 <td>    {product._id}       </td>
                                 <td>    {product.name}      </td>

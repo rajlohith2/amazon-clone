@@ -21,7 +21,7 @@ export const orderDetailsReducer = (state = {loading: true}, action)=> {
         case oc.ORDER_DETAILS_SUCCESS:
             return {loading: false, order: action.payload };
         case oc.ORDER_DETAILS_FAIL:   
-            return {loading: false, error: action.palyload}
+            return {loading: false, error: action.palyload};
         default:
             return state; 
     }
@@ -29,13 +29,13 @@ export const orderDetailsReducer = (state = {loading: true}, action)=> {
 export const orderPayReducer = (state = {}, action) => {
     switch(action.type) {
         case oc.ORDER_PAY_REQUEST: 
-            return {loading: true};
+            return { loading: true };
         case oc.ORDER_PAY_SUCCESS:
-            return { loading: false, success: true};
+            return { loading: false, success: true };
         case oc.ORDER_PAY_FAIL:
-            return {loading:false, error: action.payload};
+            return { loading:false, error: action.payload };
         case oc.ORDER_PAY_RESET:
-            return {};
+            return { };
         default:
             return state;
     }

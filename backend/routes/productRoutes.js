@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import Product from '../models/Product';
 import {isAdmin, isAuth}  from '../middleware/auth';
+import expressAsyncHandler from "express-async-handler";
 
 const productRoute =  express.Router();
 
@@ -19,7 +20,7 @@ productRoute.get('/:id', async(req, res)=> {
     
  });
 
-productRoute.post('/', async(req, res)=> {
+productRoute.post('/', isAuth, isAdmin, expressAsyncHandler( async(req, res)=> {
     const {
         name, 
         brand, 
@@ -49,10 +50,10 @@ productRoute.post('/', async(req, res)=> {
             });
     }
     return res.status(500).send({message: 'Error in creating Product'});
-});
+}));
 
-productRoute.put('/:id',isAdmin, isAuth, async(req, res) => {
-
+productRoute.put('/:id', isAuth,isAdmin, async(req, res) => {
+    
     const product = await Product.findOne({ _id: req.params.id });   
     if(product) {
         const updatedProduct = await Product.findOneAndUpdate({_id: req.params.id}, req.body);        
@@ -63,7 +64,7 @@ productRoute.put('/:id',isAdmin, isAuth, async(req, res) => {
     return res.status(500).send({message: 'Internal Error in Updating'});
     
 });
-productRoute.delete('/:id', isAdmin, isAuth, async(req, res)=> {
+productRoute.delete('/:id', isAuth,isAdmin, async(req, res)=> {
      const productToDelete = await Product.findById(req.params.id);
      if(! productToDelete) {
          return res.status(404).send({message: 'Product not found'});
@@ -74,5 +75,6 @@ productRoute.delete('/:id', isAdmin, isAuth, async(req, res)=> {
      }
      return res.status(500).send({message: 'Internal Server Error'});
 });
+
 
 export default productRoute;

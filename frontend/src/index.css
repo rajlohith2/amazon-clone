@@ -309,13 +309,43 @@ input {
 }
 .table {
   width: 100%;
+  border-collapse:collapse;
 }
 th {
   text-align: left;
 }
-tbody > tr:nth-child(odd) {
-  background-color: #f0f0f0 ;
+.table td, .table td {
+  text-align: left;
+  border: 0.1rem solid #e4e4e4;
+  padding: 0.5rem;
 }
+.table button {
+  margin: 0 0.2rem;
+}
+tbody > tr:nth-child(odd) {
+  background-color: #f4f4f4;
+}
+button {
+  background-color: #f8f8f8;
+  cursor:pointer;
+}
+button.small {
+  font-size: 1.2rem;
+}
+input, textarea, button, select{
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 0.1rem #A4A4A4 solid;font-size: 1.6rem; font-family: Arial, Helvetica, sans-serif;
+  --webkit-font-smoothing: antialiased;
+  --webkit-moz-osx-font-smoothing: grayscale;
+}
+button.block {
+  width: 100%;
+}
+input:hover, select:hover,textarea:hover, button:hover{
+  border: 0.1rem #404040 solid;
+}
+
 
 /* checkout steps */
 .checkout-steps {
