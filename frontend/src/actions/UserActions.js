@@ -73,6 +73,7 @@ const register = (userData) => async(dispatch) => {
 const signout =() =>(dispatch) => {
   localStorage.removeItem("userInfo");
   localStorage.removeItem("cartItems");
+  localStorage.removeItem("shippingAddress");
   dispatch({type: uc.USER_SIGNOUT});
   window.location.assign("/");
 }

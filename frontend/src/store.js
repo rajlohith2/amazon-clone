@@ -8,7 +8,8 @@ import { profileReducer } from "./reducers/userDetailsReducers";
 
 const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 const userInfo = JSON.parse(localStorage.getItem('userInfo')) || null;
-const shippingAddress = JSON.parse(localStorage.getItem('shipping')) || null;
+// const shippingAddress = JSON.parse(localStorage.getItem('shipping')) || null;
+const shippingAddress = localStorage.getItem('shippingAddress')? JSON.parse(localStorage.getItem('shippingAddress')): {};
 
  const initialState = { cart: { cartItems, payment: 'Paypal', shippingAddress }, userSignin: { userInfo }};
   

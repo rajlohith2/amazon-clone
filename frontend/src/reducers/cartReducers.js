@@ -18,8 +18,8 @@ function cartReducer(state= { cartItems: [], shippingAddress: { }, payment:{} },
         case CART_SAVE_SHIPPING:           
             return {...state, shippingAddress: action.payload }; 
             
-        case CART_SAVE_PAYMENT:
-            return {...state, payment: action.payload };    
+        case CART_SAVE_PAYMENT:                    
+            return {...state, payment: action.payload };
         case CART_EMPTY:
             return {...state, cartItems: []};
         default:

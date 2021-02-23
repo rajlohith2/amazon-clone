@@ -16,8 +16,8 @@ function PlaceOrderScreen(props) {
     const orderInfo = useSelector(state=> state.orderCreate);
     const {success, error, loading, order} = orderInfo;
    
-    const { userInfo } = useSelector(state => state.userSignin);    
-    const [user, setUser] = useState(null);
+//    alert(shippingAddress);
+    
     
     const dispatch = useDispatch();
     if(!payment) {
@@ -34,7 +34,7 @@ function PlaceOrderScreen(props) {
             //setCartItems(cart.setCartItems);
            // window.location.assign('/placeorder');
         }
-    },[dispatch, order, props.history, success]);
+    },[dispatch, order, props.history, success,payment]);
     
     
     const itemsPrice = cartItems.reduce((a, c)=> a + c.price * c.qty, 0);
@@ -45,20 +45,20 @@ function PlaceOrderScreen(props) {
    
     const placeOrderHandler = () => {  
         
-        dispatch(createOrder({orderItems: cartItems, shippingAddress, payment, itemsPrice, shippingPrice, taxPrice, totalPrice})); 
-    }
+         dispatch(createOrder({orderItems: cartItems, shippingAddress, payment, itemsPrice, shippingPrice, taxPrice, totalPrice})); 
+    } 
     return (
     <>
         <CheckoutSteps step1 step2 step3 step4/>
         <div className="placeorder">
             <div className="placeorder-info">
                 <div> 
-                    <h3> shippingAddress </h3>
+                    <h3> Shipping Address </h3>
                     <div>
                         <strong>  Name:</strong> {shippingAddress.fullName} <br />                   
                         <strong> Address:</strong>                       
-                        { cart.shippingAddress.address } , { cart.shippingAddress.city }
-                        { cart.shippingAddress.postalCode } , { cart.shippingAddress.country }
+                        { cart.shippingAddress.address } , { cart.shippingAddress.city } ,
+                         { cart.shippingAddress.postalCode } , { cart.shippingAddress.country }
                     </div>
                 </div> 
                 <div>
@@ -117,7 +117,7 @@ function PlaceOrderScreen(props) {
                     <div>${itemsPrice.toFixed(2)}</div>
                 </li>
                 <li>
-                    <div>shippingAddress</div>
+                    <div>shipping Address</div>
                     <div>${shippingPrice.toFixed(2)}</div>
                 </li>
                 <li>

@@ -331,7 +331,7 @@ tbody > tr:nth-child(odd) {
   padding-top: 1rem;
 }
 .checkout-steps > div.active {
-  border-top: #f08000 solid;
+  border-top-color: #f08000 solid;
   color: #f08000;
 }
 /* place an order */
@@ -403,7 +403,7 @@ tbody > tr:nth-child(odd) {
   position: relative;
 }
 .form label {
-  display: block;
+
   margin: 1rem 0;
 }
 .dropdown-content {
