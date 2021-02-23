@@ -80,7 +80,7 @@ route.put('/profile', isAuth, async(req, res)=> {
             user.password = bcrypt.hashSync(req.body.password, 8);            
         }
         const updatedUser = await user.save();
-        const {_id, name, email, isAdmin} = updatedUser;
+        const {_id, name, email, isAdmin} = updatedUser;        
         return res.status(200).send({_id, name, email, isAdmin, token:getToken(updatedUser), message:'Profile updated successfully'});
 
     }
