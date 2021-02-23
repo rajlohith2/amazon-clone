@@ -403,7 +403,7 @@ tbody > tr:nth-child(odd) {
   position: relative;
 }
 .form label {
-  display: block;
+
   margin: 1rem 0;
 }
 .dropdown-content {

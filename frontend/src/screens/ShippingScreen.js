@@ -6,8 +6,9 @@ import CheckoutSteps from '../components/CheckoutSteps';
 
 function ShippingScreen(props){
 
-    const cart = useSelector(state =>state.cart);
-    const { shippingAddress } = cart;
+   
+    const cart = useSelector(state => state.cart);
+    const {  shippingAddress } = cart;
 
    const [fullName, setFullName] = useState(shippingAddress.fullName);
    const [address, setAddress] = useState(shippingAddress.address);
@@ -23,7 +24,7 @@ function ShippingScreen(props){
   
     if(!userInfo) {
         props.history.push("/signin");
-        // window.location.assign("/signin");
+        
     }
   
     
@@ -32,7 +33,7 @@ function ShippingScreen(props){
         e.preventDefault();
         dispatch(saveShipping({address, postalCode, country, city,fullName}));
         props.history.push('payment');
-        // window.location.assign("/payment");
+        
 
     }
     
