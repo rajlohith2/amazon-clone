@@ -133,8 +133,8 @@ function ProductsScreen(props){
     
             <div className="product-list">
                 
-                    { error && <div>{error}</div> }
-                    { loading && <div>Loadig ...</div> }
+                    { error && <MessageBox variant="danger" msg={error} /> }
+                    { loading && <LoadingBox />}
                 
                 <table className="table">
                     <thead>
@@ -149,7 +149,7 @@ function ProductsScreen(props){
                     </thead>
                     <tbody>
                         {
-                            products.map(product => (
+                         products && products.map(product => (
                             <tr key={product._id}>
                                 <td>    {product._id}       </td>
                                 <td>    {product.name}      </td>
