@@ -16,7 +16,7 @@ export default function ProfileSCreen() {
     const signedInUser = useSelector(state => state.userSignin);
     const { userInfo } = signedInUser;
     const profile = useSelector(state=>state.userProfile);
-    const {profileLoading, error, user} =  profile;
+    const { profileLoading, error, user} =  profile;
 
     const updatedProfile = useSelector(state => state.userProfileUpdate);
     const { loading:loadingUpdate, error:errorUpdate, success: successUpdate } = updatedProfile
@@ -24,12 +24,10 @@ export default function ProfileSCreen() {
     const dispatch = useDispatch();
    
     const submitHandler = (e)=>{
-        e.preventDefault();
-        
+        e.preventDefault();        
         if(password !== confirmationPassword) {
             alert("Password does not match");
         }else {
-
             dispatch(updateUserProfile({userId: user._id, name, email, password}));
         }
     }
@@ -37,28 +35,30 @@ export default function ProfileSCreen() {
         if(!user) {
             dispatch({ type:USER_UPDATE_PROFILE_RESET });
             dispatch(userDetails(userInfo._id));
-        }else { //after loading data from backend
+        }else { 
             setName(user.name);
             setEmail(user.email); 
-        }
-        
-     }, [user, dispatch]);
-     //}, [user, userInfo._id, dispatch]); TODO: I userinfor id has to be changed as it reloads
-   
+        }        
+     
+     }, [user, userInfo._id, dispatch]); //TODO: I userinfor id has to be changed as it reloads
+     
     return  (
-            <li>
-                { profileLoading ? <LoadingBox />:
-                     error &&  <MessageBox variant="danger" msg={error} />
-                    }
-                    { loadingUpdate ? <LoadingBox /> :
-                      errorUpdate ? <MessageBox variant="danger" msg={errorUpdate} /> :
-                      successUpdate && <MessageBox variant="success" msg={"Profile updated"} />      
-                    }
+            <>
+                
                     { user && (
                       <form onSubmit={submitHandler} className="form">
                           <ul className="form-container">                         
-                                <h1> User Profile</h1>                                       
-                            
+                                <h1> User Profile</h1> 
+                                <li>
+                                    { profileLoading ? <LoadingBox />:
+                                        error &&  <MessageBox variant="danger" msg={error} />
+                                        }
+                                        { loadingUpdate ? <LoadingBox /> :
+                                        errorUpdate ? <MessageBox variant="danger" msg={errorUpdate} /> :
+                                        successUpdate && <MessageBox variant="success" msg={"Profile Updated Successfully"} />      
+                                    } 
+                                </li>                                         
+
                                 <li>
                                     <label htmlFor="Name">Name</label>
                                     <input type="text" 
@@ -101,7 +101,7 @@ export default function ProfileSCreen() {
                 }
                     
                 
-            </li>
+            </>
     )
    
 }
