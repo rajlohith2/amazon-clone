@@ -38,7 +38,7 @@ const saveProduct = (product) => async (dispatch) => {
             dispatch({type: pl.PRODUCT_SAVE_SUCCESS, payload: data});
             
         } else {
-            alert(product._id);
+            
             const { data } = await axios.put(`/api/products/${product._id}`, product,headers);
             dispatch({type: pl.PRODUCT_SAVE_SUCCESS, payload: data});
             
@@ -55,7 +55,7 @@ const deleteProduct = (productId) => async(dispatch) => {
        dispatch({ type: pl.PRODUCT_DELETE_REQUEST, payload: productId });
        const { data } = await axios.delete(`/api/products/${productId}`,headers);
        dispatch({type: pl.PRODUCT_DELETE_SUCCESS, payload: data, success: true});
-       
+        
    } catch (error) {
        dispatch({type: pl.PRODUCT_DELETE_FAIL, payload: error.message});
    }

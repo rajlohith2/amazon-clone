@@ -53,6 +53,39 @@ export const listMyOrders = () => async(dispatch) => {
         const message = error.response && error.response.data.message ? error.response.data.message: error.message;
         dispatch({type:oc.ORDER_MINE_LIST_FAIL, payload: message});
 
-    }
- 
+    } 
 }
+export const listAllOrders = () => async(dispatch) => {
+    dispatch({type: oc.ORDER_LIST_REQUEST});
+    try {
+        const { data } = await axios.get('/api/orders/', headers);
+        dispatch({type: oc.ORDER_LIST_SUCCESS, payload: data});
+        
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        dispatch({type:oc.ORDER_LIST_FAIL, payload: message});
+    }
+}
+export const deleteOrder = (orderId) => async(dispatch) => {
+   dispatch({type: oc.ORDER_DELETE_REQUEST, payload: orderId});
+    try {
+        //console.log('it rerenders automatically');
+        const { data } = await axios.delete(`/api/orders/${orderId}`, headers);
+        dispatch({type: oc.ORDER_DELETE_SUCCESS, payload: data });
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message : error.message;
+        dispatch({type:oc.ORDER_DELETE_FAIL, payload: message });
+    }
+}
+
+export const deliverOrder = (orderId) => async(dispatch) => {
+    dispatch({type: oc.ORDER_DELIVER_REQUEST, payload: orderId } );
+    try {
+        const { data } = await axios.put(`/api/orders/${orderId}/deliver`, headers);
+        dispatch({type: oc.ORDER_DELIVER_SUCCESS, payload: data});
+        
+    } catch (error) {
+        const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+        dispatch({type:oc.ORDER_DELIVER_FAIL, payload: message});
+    }
+} 

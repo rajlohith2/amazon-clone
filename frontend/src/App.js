@@ -19,6 +19,8 @@ import OrderHistory from './screens/OrderHistory';
 import ProfileSCreen from './screens/ProfileScreen';
 import PrivateRoute from './components/PrivateRoute';
 import { useState } from 'react';
+import AdminRoute from './components/AdminRoute';
+import OrdersListScreen from './screens/OrdersListScreen';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -103,7 +105,7 @@ function App() {
         </aside>
         <main className="main">  
             <div className="content"> 
-                <Route path="/products" component={ProductsScreen} />
+                {/* <Route path="/products" component={ProductsScreen} /> */}
                 <Route path="/product/:id" component={ProductScreen} />
                 
                 <Route path="/shipping" component={ShippingScreen} />
@@ -115,7 +117,9 @@ function App() {
                 <Route path="/placeorder" component={PlaceOrderScreen} />   
                 <Route path="/order/:id" component={OrderScreen} />   
                 <Route path="/orderHistory" component={OrderHistory} />   
-                <PrivateRoute path="/profile" component={ProfileSCreen} />   
+                <PrivateRoute path="/profile" component={ProfileSCreen} /> 
+                <AdminRoute path="/products" component={ProductsScreen} />
+                <AdminRoute path="/orderlist" component={OrdersListScreen} />
                
                 
             </div>            

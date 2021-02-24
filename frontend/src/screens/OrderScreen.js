@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PayPalButton } from'react-paypal-button-v2';
-import { detailsOrder, payOrder } from '../actions/orderActions';
+import { detailsOrder, payOrder, deliverOrder} from '../actions/orderActions';
 import {  useDispatch, useSelector} from "react-redux";
 import { LoadingBox } from "../components/LoadingBox";
 import { MessageBox } from "../components/MessageBox";
@@ -13,10 +13,17 @@ function OrderScreen(props) {
     const[sdkReady, setSdkReady] = useState(false);
     const orderDetails = useSelector(state => state.orderDetails);
     const { error, order, loading } = orderDetails;
+    const orderDeliver = useSelector(state => state.orderDeliver);
+    const userSignin = useSelector(state => state.userSignin);
+    const {userInfo} = userSignin;
+    const { loading:loadingDeliver, success:successDeliver, error: errorDeliver} = orderDeliver;
     
     const dispatch = useDispatch();
     const orderPay = useSelector( state => state.orderPay);
     const { success:successPay, error:errorPay, loading:loadingPay } = orderPay;
+    const deliverHandler = ()=> {
+        dispatch(deliverOrder(order._id));
+    }
     
     useEffect(() => {
          
@@ -43,7 +50,7 @@ function OrderScreen(props) {
             }
         }
        
-    }, [dispatch, order, orderId, sdkReady]);
+    }, [dispatch, order, orderId, sdkReady, successPay]);
     
     const successPaymentHandler = (paymentResult) =>{
         //TODO: set payment handler
@@ -138,6 +145,11 @@ function OrderScreen(props) {
                      </>
               
               )}
+                {userInfo.isAdmin && order.isPaid && !order.isDelivered &&(
+                  <li>
+                      <button onClick={deliverHandler} type="button" className="button primary"> Deliver Order </button>
+                  </li>
+              ) }
             </ul>
                
             </div>

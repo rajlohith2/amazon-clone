@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
   
 import { saveProduct, listProducts, deleteProduct } from "../actions/productActions";
+import { PRODUCT_DELETE_RESET } from "../constants/productConstants";
 import { useSelector, useDispatch } from 'react-redux';
 import { LoadingBox } from '../components/LoadingBox';
 import { MessageBox } from '../components/MessageBox';
+import { headers } from '../config/userInfo';
+import axios from "axios";
 
 
 function ProductsScreen(props){
@@ -30,7 +33,7 @@ function ProductsScreen(props){
     const productDelete = useSelector(state => state.productDelete);
     const {loading:loadingDelete,  success: successDelete, error: errorDelete } = productDelete;
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch(); 
     
     const submitHandler = (e) => {
         e.preventDefault();
@@ -38,17 +41,40 @@ function ProductsScreen(props){
 
     };
     const deleteHandler = (product) => {
-        dispatch(deleteProduct(product._id));
+        if(window.confirm('Are you sure you want to delete?')){
+             dispatch(deleteProduct(product._id));
+        }
     };
+    const [loadingUpload, setLoadingUpload] = useState(false);
+    const [errorUpload, setErrorUpload] = useState('');
+
+    const handleImageUpload = async (e)=>{
+        e.preventDefault();
+        const file = e.target.files[0];
+        const bodyFormData = new FormData();        
+        bodyFormData.append('imageFile', file);        
+        setLoadingUpload(true);
+        try {
+            const contentType = {'Content-Type': 'multipart/form-data'};
+            
+             const { data } = await axios.post('/api/uploads', bodyFormData, {...headers, ...contentType});
+             setImage(data);
+             setLoadingUpload(false);
+        } catch (error) {
+            setErrorUpload(error.message);
+            setLoadingUpload(false);
+            
+        }
+    }
 
     useEffect(() => {
         if(successSave){
             setModalVisible(false);
         }
         dispatch(listProducts());
-        return () => {
-
-        }
+       if(successDelete){
+           dispatch({type: PRODUCT_DELETE_RESET});
+       }
     }, [successSave, successDelete]);
 
     const openModal = (product) => {
@@ -81,6 +107,9 @@ function ProductsScreen(props){
                         { loadingSave && <LoadingBox />}
                         { errorSave && <MessageBox variant="danger" msg={errorSave}/> }
                         
+                        { loadingDelete && <LoadingBox />}
+                        { errorDelete && <MessageBox variant="danger" msg={errorDelete}/> }
+                        
                         </li>
                         <li>
                             <label htmlFor="name">  Name </label>                          
@@ -109,6 +138,12 @@ function ProductsScreen(props){
                             <label htmlFor="image">  Image </label>                          
                             <input type="text" name="image" id="image" value={image} onChange={(e)=> setImage(e.target.value)} />
                         </li>
+                        <li>
+                            <label htmlFor="imageFile">  Image File </label>                          
+                            <input type="file" name="imageFile" id="imageFile" label="Choose Image" onChange={handleImageUpload} />
+                            {loadingUpload && <LoadingBox />}
+                            {errorUpload && <MessageBox variant="danger" msg={errorUpload} />}
+                        </li>
                         
                         
                         <li>
@@ -135,37 +170,41 @@ function ProductsScreen(props){
                 
                     { error && <MessageBox variant="danger" msg={error} /> }
                     { loading && <LoadingBox />}
+
+                {
+                    !modalVisible &&
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>Brand</th>
+                                <th>Action</th>
+                            </tr>   
+                        </thead>
+                        <tbody>
+                            {
+                            products && products.map(product => (
+                                <tr key={product._id}>
+                                    <td>    {product._id}       </td>
+                                    <td>    {product.name}      </td>
+                                    <td>    {product.price}     </td>
+                                    <td>    {product.category}  </td>
+                                    <td>    {product.brand}     </td>
+                                    <td>
+                                        <button className="button" onClick={ () =>openModal(product)}> Edit   </button>
+                                        {''}
+                                        <button className="button" onClick={ () => deleteHandler(product)}> Delete     </button>
+                                    </td>
+                                </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                }
                 
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Brand</th>
-                            <th>Action</th>
-                        </tr>   
-                    </thead>
-                    <tbody>
-                        {
-                         products && products.map(product => (
-                            <tr key={product._id}>
-                                <td>    {product._id}       </td>
-                                <td>    {product.name}      </td>
-                                <td>    {product.price}     </td>
-                                <td>    {product.category}  </td>
-                                <td>    {product.brand}     </td>
-                                <td>
-                                    <button className="button" onClick={ () =>openModal(product)}> Edit   </button>
-                                     {''}
-                                    <button className="button" onClick={ () => deleteHandler(product)}> Delete     </button>
-                                </td>
-                            </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
             </div>
         </div>
        

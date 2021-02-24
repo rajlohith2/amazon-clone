@@ -1,7 +1,7 @@
 import expressAsyncHandler  from "express-async-handler";
 import Order from "../models/Order";
 import express from "express";
-import { isAuth } from "../middleware/auth";
+import { isAuth,isAdmin } from "../middleware/auth";
 
 const orderRouter = express.Router();
 orderRouter.post('/', isAuth, expressAsyncHandler( async (req, res)=> {    
@@ -28,13 +28,27 @@ orderRouter.get('/:id',isAuth, expressAsyncHandler( async(req, res) => {
  const order = await Order.findById(req.params.id);
  return order ? res.send(order): res.status(404).send({message:'Order not Found'});
 }));
+orderRouter.get('/',isAuth, isAdmin, expressAsyncHandler( async(req, res)=>{
+    try {
+        const orders = await Order.find({}).populate('user', 'name');
+        return orders ? res.status(200).send(orders): res.status(404).send({message:'No Order found so far'});
+    } catch (error) {
+        return res.status(500).send({message: error.message});
+    }
+  
+}));
+orderRouter.delete('/:id',isAuth, isAdmin, expressAsyncHandler( async(req, res) => {
+    console.log(`Order delete attempt`);
+    const orderToDelete = await Order.findByIdAndDelete(req.params.id);
+    return orderToDelete ? res.status(200).send({order:orderToDelete, message:'Order is deleted'}): res.status(404).send({message: 'Order not found'});
+}));
 orderRouter.get('/client/orders', isAuth, expressAsyncHandler( async(req, res)=> {
         const orders = await Order.find({user: req.user._id});
         return orders ? res.status(200).send(orders) : res.status(404).send({message: 'Order not Found'});
 }));
 orderRouter.put('/:id/pay', isAuth, expressAsyncHandler( async(req, res)=> {
     const order = await Order.findById(req.params.id);
-    console.log("payment route is visited");
+    
     if(order) {
         const {id, status, update_time, email_address} = req.body;
         order.isPaid = true;
@@ -51,5 +65,9 @@ orderRouter.put('/:id/pay', isAuth, expressAsyncHandler( async(req, res)=> {
     } else {
         return res.status(400).send({message: 'Order not Found'});
     }
-}))
+}));
+orderRouter.put('/:id/deliver', expressAsyncHandler( async(req, res)=>{
+ const deliverOrder = await Order.updateOne({_id:req.params.id}, {isDelivered:true, deliveredAt: Date.now()});
+ return deliverOrder ? res.status(200).send({order:deliverOrder}): res.status(404).send({message: 'Order is delivered'});
+}));
 export default orderRouter;
