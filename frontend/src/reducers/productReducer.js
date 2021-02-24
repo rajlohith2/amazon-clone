@@ -9,7 +9,7 @@ function productListReducer( state = { products: [] }, action) {
      case pl.PRODUCT_LIST_FAIL:
          return { loading: false, error: action.payload }; 
      default:
-         return state;
+         return state; 
  }   
 }
 
@@ -43,6 +43,9 @@ function productDeleteReducer( state = {product:{}}, action) {
             return {loading: true};
         case pl.PRODUCT_DELETE_SUCCESS:
             return {loading: false, product: action.payload, success: true};
+            case pl.PRODUCT_DELETE_RESET:
+                return { };
+
         case pl.PRODUCT_DELETE_FAIL:
             return {loading: false, error: action.payload};
         default:
