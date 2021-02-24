@@ -6,7 +6,7 @@ import { LoadingBox } from "../components/LoadingBox";
 import { MessageBox } from "../components/MessageBox";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { ORDER_PAY_RESET } from "../constants/OrderConstants";
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../constants/OrderConstants";
 
 function OrderScreen(props) {
     const orderId = props.match.params.id;
@@ -36,8 +36,9 @@ function OrderScreen(props) {
             script.onload = () => setSdkReady(true);            
             document.body.appendChild(script);
         };        
-        if(!order || successPay || (order && order._id !== orderId)) {
+        if(!order || successPay || successDeliver || (order && order._id !== orderId)) {
             dispatch({ type: ORDER_PAY_RESET });
+            dispatch({ type: ORDER_DELIVER_RESET });
             dispatch(detailsOrder(orderId));            
             
         }else {
@@ -50,7 +51,7 @@ function OrderScreen(props) {
             }
         }
        
-    }, [dispatch, order, orderId, sdkReady, successPay]);
+    }, [dispatch, order, orderId, sdkReady, successPay, successDeliver]);
     
     const successPaymentHandler = (paymentResult) =>{
         //TODO: set payment handler
@@ -147,7 +148,9 @@ function OrderScreen(props) {
               )}
                 {userInfo.isAdmin && order.isPaid && !order.isDelivered &&(
                   <li>
-                      <button onClick={deliverHandler} type="button" className="button primary"> Deliver Order </button>
+                      {loadingDeliver && <LoadingBox />}
+                      {errorDeliver && <MessageBox variant="danger" msg={error} />}
+                      <button onClick={deliverHandler} type="button" className="button block"> Deliver Order </button>
                   </li>
               ) }
             </ul>

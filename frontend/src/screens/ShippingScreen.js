@@ -19,7 +19,7 @@ function ShippingScreen(props){
   
 
 
-    useEffect(() =>   { });
+    useEffect(() =>   { },[]);
      
   
     if(!userInfo) {
