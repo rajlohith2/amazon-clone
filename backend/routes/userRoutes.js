@@ -1,7 +1,8 @@
 import express from "express";
 import User from '../models/userModel';
-import {getToken, isAuth}  from '../middleware/auth';
+import {getToken, isAuth, isAdmin}  from '../middleware/auth';
 import  bcrypt  from "bcrypt";
+import expressAsyncHandler from "express-async-handler";
 const route =  express.Router();
 
 route.post('/signin', async(req, res) => { 
@@ -35,7 +36,8 @@ route.post('/register', async (req, res)=>{
     return newUser ? res.status(200).send({user:newUser, token:getToken(user)}) : res.status(404).send({message: 'invalid user data'});
         
     } catch (error) {
-       return res.status(500).send({message: error.message}); 
+        console.log(error.message);
+       return res.status(500).send({message: 'email is already taken please contact admin'}); 
     }
     
 });
@@ -89,5 +91,21 @@ route.put('/profile', isAuth, async(req, res)=> {
     }
     
 });
+route.get('/', isAuth, isAdmin, expressAsyncHandler(async(req, res)=> {
+    const users = await User.find();
+    return users ? res.send(users) : res.send({message:"Users is empty"});
+}));
+route.delete("/:id/delete", isAuth, isAdmin, expressAsyncHandler(async(req, res)=>{
+    
+    const user =await User.findById(req.params.id);
+        if(user) {
+            if (user.isAdmin){
+                return res.status(400).send({message: `Can not Delete Admin`});
+            } 
+            return res.status(200).send({message: 'User deleted', user: await user.remove()}) ;
+        }
+        return res.status(404).send({message: 'User not found'});
+  
+}))
 
 export default route;

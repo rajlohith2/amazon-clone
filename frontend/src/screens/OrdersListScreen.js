@@ -32,6 +32,7 @@ return (
         <div>
             <h1> Orders</h1>
             {loading ? <LoadingBox /> : error && <MessageBox variant="danger" msg={error} />}
+            {loadingDelete ? <LoadingBox /> : errorDelete && <MessageBox variant="danger" msg={errorDelete} />}
         </div>
         <table className="table">
             <thead>
