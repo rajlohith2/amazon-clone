@@ -53,7 +53,7 @@ const deleteProduct = (productId) => async(dispatch) => {
    try {
        
        dispatch({ type: pl.PRODUCT_DELETE_REQUEST, payload: productId });
-       const { data } = await axios.delete(`/api/products/${productId}`,headers);
+       const { data } = await axios.delete(`/api/products/${productId}`, headers);
        dispatch({type: pl.PRODUCT_DELETE_SUCCESS, payload: data, success: true});
         
    } catch (error) {

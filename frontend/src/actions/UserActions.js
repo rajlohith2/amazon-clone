@@ -37,7 +37,7 @@ const register = (userData) => async(dispatch) => {
   } catch (error) {
     const message = error.response && error.response.data.message ? error.response.data.message: error.message;
     dispatch({type: uc.USER_REGISTER_FAIL, payload: message});
-    alert(message);
+   
     
   }
 }
@@ -69,6 +69,29 @@ const register = (userData) => async(dispatch) => {
       dispatch({type: uc.USER_UPDATE_PROFILE_FAIL, payload: message});
     }
   }
+  const listUsers = () => async (dispatch)=> {
+    dispatch({type: uc.USER_LIST_REQUEST});
+    try {
+      const { data } = await axios.get('/api/users', headers);
+      dispatch({type: uc.USER_LIST_SUCCESS, payload: data});
+    } catch (error) {
+      const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+      dispatch({type: uc.USER_LIST_FAIL, payload: message});
+    }
+  }
+
+  const eraseUser = (userId) => async (dispatch) => {
+    dispatch({ type: uc.USER_DELETE_REQUEST, payload: userId });
+    try {
+      const { data } = await axios.delete(`/api/users/${userId}/delete`, headers);
+      dispatch({ type: uc.USER_DELETE_SUCCESS, payload: data });
+     
+      
+    } catch (error) {
+      const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+      dispatch({ type: uc.USER_DELETE_FAIL, payload: message });
+    }
+  }
 
 const signout =() =>(dispatch) => {
   localStorage.removeItem("userInfo"); 
@@ -78,4 +101,4 @@ const signout =() =>(dispatch) => {
   window.location.assign("/");
 }
 
-export { signin, register, signout,userDetails, updateUserProfile };
+export { signin, register, signout,userDetails, updateUserProfile, listUsers, eraseUser };
