@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "build": "cd frontent && npm install && npm run build",
     "start": "nodemon --watch backend --exec babel-node backend/server.js"
   },
   "repository": {
@@ -33,5 +34,9 @@
     "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.5",
     "nodemon": "^2.0.4"
-  }
+  },
+  "engines": {
+    "node":"12.4.0",
+     "npm": "6.9.0"
+    }
 }
