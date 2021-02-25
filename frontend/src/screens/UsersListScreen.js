@@ -29,7 +29,7 @@ export default function UserListScreen() {
 
                 {deleteLoading && <LoadingBox />}
                 {deleteError && <MessageBox variant="danger" msg={deleteError} />}
-                {deleteSuccess && <MessageBox variant="danger" msg={`User deleted successfully`} />}
+                {deleteSuccess && <MessageBox variant="success" msg={`User deleted successfully`} />}
 
                 <table className="table">
                     <thead>
