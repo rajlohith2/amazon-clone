@@ -22,6 +22,7 @@ import { useState } from 'react';
 import AdminRoute from './components/AdminRoute';
 import OrdersListScreen from './screens/OrdersListScreen';
 import UserListScreen from './screens/UsersListScreen';
+import UserEditScreen from './screens/UserEditScreen';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -122,6 +123,7 @@ function App() {
                 <AdminRoute path="/products" component={ProductsScreen} />
                 <AdminRoute path="/orderlist" component={OrdersListScreen} />
                 <AdminRoute path="/users" component={UserListScreen} />
+                <AdminRoute path="/user/:id/edit" component={UserEditScreen} />
                
                 
             </div>            

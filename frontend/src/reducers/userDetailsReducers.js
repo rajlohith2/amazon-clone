@@ -1,6 +1,6 @@
 
 import * as uc from '../constants/userConstants';
-export const profileReducer =(state = {}, action) =>{
+export const userDetailsReducer =(state = {}, action) =>{
     switch (action.type) {
         case uc.USER_DETAILS_REQUEST:
             return {profileLoading: true };

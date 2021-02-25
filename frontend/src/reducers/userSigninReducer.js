@@ -70,6 +70,25 @@
             default:
                 return state;
         }
- }
- export  {userSigninReducer, UserRegisterReducer, updateProfileReducer, userListReducer, deleteUserReducer }
+    }
+    function userUpdateReducer(state = { }, action) {
+        switch (action.type) {
+            case uc.USER_EDIT_REQUEST: 
+                    return { loading: true };
+        
+                case uc.USER_EDIT_SUCCESS:
+                   return { loading: false, success: true};  
+                
+                case uc.USER_EDIT_FAIL:
+                    return { loading:false, error: action.payload };
+                
+                case uc.USER_EDIT_RESET:
+                    return { };
+            
+                default:
+                    return state;
+        }
+    }
+ 
+ export  {userSigninReducer, UserRegisterReducer, updateProfileReducer, userListReducer, deleteUserReducer, userUpdateReducer }
  
