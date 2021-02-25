@@ -106,6 +106,14 @@ route.delete("/:id/delete", isAuth, isAdmin, expressAsyncHandler(async(req, res)
         }
         return res.status(404).send({message: 'User not found'});
   
-}))
+}));
+
+route.put("/:id/edit", isAuth, isAdmin, expressAsyncHandler(async(req, res)=> {
+    const user = await User.findOneAndUpdate({_id:req.params.id},req.body);
+    if(user) {
+        return res.status(200).send({message: 'User is updated', user});
+    }
+    return res.status(404).send({message: 'User not found'});
+}));
 
 export default route;

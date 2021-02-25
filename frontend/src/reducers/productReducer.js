@@ -16,7 +16,7 @@ function productListReducer( state = { products: [] }, action) {
 function productDetailsReducer(state = { product: {} }, action) {
     switch(action.type) {
         case pl.PRODUCT_DETAILS_REQUEST:
-            return { loading: true };
+            return { loading: true }; 
          case pl.PRODUCT_DETAILS_SUCCESS: 
               return { loading: false, product: action.payload };
          case pl.PRODUCT_DETAILS_FAIL:

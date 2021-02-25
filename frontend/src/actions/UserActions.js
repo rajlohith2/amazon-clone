@@ -100,5 +100,16 @@ const signout =() =>(dispatch) => {
   dispatch({type: uc.USER_SIGNOUT});
   window.location.assign("/");
 }
+const updateUserInfo = (userEditedInfo) => async (dispatch)=> {
+  dispatch({ type: uc.USER_EDIT_REQUEST, payload: userEditedInfo});
+  try {
+      const {data} = await axios.put(`/api/users/${userEditedInfo._id}/edit`, userEditedInfo, headers);
+      dispatch({ type: uc.USER_EDIT_SUCCESS, payload: data});
+  } catch (error) {
+      const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+      dispatch({type: uc.USER_EDIT_FAIL, payload: message});
+    
+  }
+}
 
-export { signin, register, signout,userDetails, updateUserProfile, listUsers, eraseUser };
+export { signin, register, signout,userDetails, updateUserProfile, listUsers, eraseUser, updateUserInfo };

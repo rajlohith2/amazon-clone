@@ -14,7 +14,7 @@ const listProducts = () => async (dispatch) => {
        dispatch({ type: pl.PRODUCT_LIST_FAIL, payload: error.message });     
     }
     
-}
+} 
 const detailsProduct = (productId) => async (dispatch) => {
 try {
 
