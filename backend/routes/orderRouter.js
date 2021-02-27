@@ -1,7 +1,7 @@
 import expressAsyncHandler  from "express-async-handler";
 import Order from "../models/Order";
 import express from "express";
-import { isAuth,isAdmin } from "../middleware/auth";
+import { isAuth,isAdmin, isSellerOrAdmin } from "../middleware/auth";
 
 const orderRouter = express.Router();
 orderRouter.post('/', isAuth, expressAsyncHandler( async (req, res)=> {    
@@ -10,6 +10,7 @@ orderRouter.post('/', isAuth, expressAsyncHandler( async (req, res)=> {
     }else {
        
         const order = new Order({
+            seller: req.body.orderItems[0].seller,
             orderItems: req.body.orderItems,
             shippingAddress: req.body.shippingAddress,
             paymentMethod: req.body.payment,
@@ -28,9 +29,11 @@ orderRouter.get('/:id',isAuth, expressAsyncHandler( async(req, res) => {
  const order = await Order.findById(req.params.id);
  return order ? res.send(order): res.status(404).send({message:'Order not Found'});
 }));
-orderRouter.get('/',isAuth, isAdmin, expressAsyncHandler( async(req, res)=>{
+orderRouter.get('/',isAuth, isSellerOrAdmin, expressAsyncHandler( async(req, res)=>{
     try {
-        const orders = await Order.find({}).populate('user', 'name');
+        const seller = req.query.seller || '';
+        const sellerFilter = seller ? { seller }: {};
+        const orders = await Order.find({...sellerFilter}).populate('user', 'name');
         return orders ? res.status(200).send(orders): res.status(404).send({message:'No Order found so far'});
     } catch (error) {
         return res.status(500).send({message: error.message});
