@@ -55,10 +55,10 @@ export const listMyOrders = () => async(dispatch) => {
 
     } 
 }
-export const listAllOrders = () => async(dispatch) => {
+export const listAllOrders = ({seller = ''}) => async(dispatch) => {
     dispatch({type: oc.ORDER_LIST_REQUEST});
     try {
-        const { data } = await axios.get('/api/orders/', headers);
+        const { data } = await axios.get(`/api/orders?seller${seller}`, headers);
         dispatch({type: oc.ORDER_LIST_SUCCESS, payload: data});
         
     } catch (error) {
