@@ -21,7 +21,7 @@ export default function UserEditScreen(props) {
 
     useEffect( () => {
         if(successUpdate) {
-           dispatch({ type:USER_EDIT_RESET});
+           dispatch({ type:USER_EDIT_RESET });
             props.history.push('/users');
         }
         if(!user) {           

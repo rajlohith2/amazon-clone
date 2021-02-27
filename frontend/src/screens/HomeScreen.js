@@ -13,8 +13,7 @@ function HomeScreen(props){
     const dispatch = useDispatch();
     
     useEffect(() => { 
-
-        dispatch(listProducts());
+        dispatch(listProducts({}));
 
     },[dispatch]);  
     return ( loading ? <LoadingBox />:

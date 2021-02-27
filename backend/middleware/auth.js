@@ -8,7 +8,8 @@ const getToken = (user) => {
              _id: user._id,
              name: user.name,
              email: user.email,
-             isAdmin: user.isAdmin
+             isAdmin: user.isAdmin,
+             isSeller: user.isSeller
             }, 
             config.JWT_SECRET || `somethingsecret`,   {
             expiresIn: '48h'
@@ -45,4 +46,17 @@ const isAdmin = (req, res, next) => {
     }
     return res.status(403).send({message: 'Admin is not valid'});
 }
-export { getToken, isAuth, isAdmin } ;
+const isSeller = (req, res, next) => {    
+    if(req.user && req.user.isSeller) {
+        return next();
+    }
+    return res.status(403).send({message: 'Seller is not valid'});
+}
+
+const isSellerOrAdmin = (req, res, next) => {    
+    if(req.user && (req.user.isAdmin || req.user.isSeller) ) {
+        return next();
+    }
+    return res.status(403).send({message: 'Seller is not valid'});
+}
+export { getToken, isAuth, isAdmin, isSeller, isSellerOrAdmin } ;

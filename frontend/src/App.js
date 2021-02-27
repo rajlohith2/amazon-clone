@@ -23,6 +23,7 @@ import AdminRoute from './components/AdminRoute';
 import OrdersListScreen from './screens/OrdersListScreen';
 import UserListScreen from './screens/UsersListScreen';
 import UserEditScreen from './screens/UserEditScreen';
+import SellerRoute from './components/SellerRoute';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -76,6 +77,17 @@ function App() {
                     <Link to="/signin"> Sign in </Link>  
 
                     )}
+                    {userInfo && userInfo.isSeller &&(
+                        <div className="dropdown">
+                            <Link to="/#admin"> Seller <i className="fa fa-caret-down"></i>
+                            </Link>
+                         <ul className="dropdown-content">                             
+                             <li><Link to="/products/seller"> Products </Link></li>
+                             <li><Link to="/orders/seller"> Orders </Link></li>                             
+                         </ul>   
+                        </div>
+
+                    )}
                     {userInfo && userInfo.isAdmin &&(
                         <div className="dropdown">
                             <Link to="/#admin"> Admin <i className="fa fa-caret-down"></i>
@@ -89,6 +101,7 @@ function App() {
                         </div>
 
                     )}
+                    
             </div>            
         </header>
         <aside className="sidebar">
@@ -120,10 +133,14 @@ function App() {
                 <Route path="/order/:id" component={OrderScreen} />   
                 <Route path="/orderHistory" component={OrderHistory} />   
                 <PrivateRoute path="/profile" component={ProfileSCreen} /> 
-                <AdminRoute path="/products" component={ProductsScreen} />
-                <AdminRoute path="/orderlist" component={OrdersListScreen} />
-                <AdminRoute path="/users" component={UserListScreen} />
+
+                <AdminRoute path="/products" component={ProductsScreen} exact />
+                <AdminRoute path="/orderlist" component={OrdersListScreen} exact />
+                <AdminRoute path="/users" component={UserListScreen} />                
                 <AdminRoute path="/user/:id/edit" component={UserEditScreen} />
+                
+                <SellerRoute path="/products/seller" component={ProductsScreen}  />
+                <SellerRoute path="/orders/seller" component={OrdersListScreen} />
                
                 
             </div>            
