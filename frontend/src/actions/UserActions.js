@@ -47,7 +47,7 @@ const register = (userData) => async(dispatch) => {
        
            const { data } = await axios.get(`/api/users/${userId}/details`, headers);           
            dispatch({type: uc.USER_DETAILS_SUCCESS, payload: data});
-           
+          
      } catch (error) {
        // TODO: I will change this message once project is complete to one function of response error 
        const message = error.response && error.response.data.message ?error.response.data.message :error.message;

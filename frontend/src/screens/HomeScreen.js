@@ -5,6 +5,7 @@ import { listProducts } from '../actions/productActions';
 import Rating from '../components/Rating';
 import { LoadingBox } from '../components/LoadingBox';
 import { MessageBox } from '../components/MessageBox';
+import Product from '../components/Product';
 
 function HomeScreen(props){
    
@@ -20,24 +21,9 @@ function HomeScreen(props){
              error ? <MessageBox variant="danger" msg={ error } />:
         <ul className="products">
                 {  
-                    products.map(product =>
-                        <li key={product._id}>
-                                <div className="product"> 
-                                <Link to={`/product/${product._id}`}>
-                                     <img src={product.image} alt="" className="product-image"></img>
-                                </Link>  
-                                <div className="product-name"> 
-                                    <Link to={'/product/ '+ product._id } >{product.name}</Link>
-                                </div>
-                                <div className="product-brand"> {product.brand}</div>
-                                <div className="product-rating"> {product.rating} Stars ({product.numReviews } Reviews) </div>
-                                <Rating rates={product.rating} numReviews={product.numReviews} />
-                                <div className="product-price"> ${product.price} </div>
-
-                            </div>    
-                        </li>
-                        
-                    ) 
+                    products && products.map(product => <Product product={ product } />)
+                             
+                    
                 }                        
         </ul>
     );

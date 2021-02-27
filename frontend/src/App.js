@@ -24,6 +24,7 @@ import OrdersListScreen from './screens/OrdersListScreen';
 import UserListScreen from './screens/UsersListScreen';
 import UserEditScreen from './screens/UserEditScreen';
 import SellerRoute from './components/SellerRoute';
+import SellerScreen from './screens/SellerScreen';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -121,6 +122,7 @@ function App() {
         <main className="main">  
             <div className="content"> 
                 {/* <Route path="/products" component={ProductsScreen} /> */}
+                <Route path="/seller/:id" component={SellerScreen} />
                 <Route path="/product/:id" component={ProductScreen} />
                 
                 <Route path="/shipping" component={ShippingScreen} />
