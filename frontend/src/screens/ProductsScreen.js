@@ -11,6 +11,7 @@ import axios from "axios";
 
 
 function ProductsScreen(props){
+    const sellerMode = props.match.path.indexOf('/seller') >= 0;
 
     const [modalVisible, setModalVisible] = useState(false);
     
@@ -32,6 +33,9 @@ function ProductsScreen(props){
 
     const productDelete = useSelector(state => state.productDelete);
     const {loading:loadingDelete,  success: successDelete, error: errorDelete } = productDelete;
+    
+    const userSignin = useSelector(state => state.userSignin);
+    const { userInfo } = userSignin;
 
     const dispatch = useDispatch(); 
     
@@ -71,7 +75,7 @@ function ProductsScreen(props){
         if(successSave){
             setModalVisible(false);
         }
-        dispatch(listProducts());
+        dispatch(listProducts({seller: sellerMode ? userInfo._id: ''}));
        if(successDelete){
            dispatch({type: PRODUCT_DELETE_RESET});
        }

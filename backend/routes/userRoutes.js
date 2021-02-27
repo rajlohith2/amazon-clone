@@ -14,8 +14,8 @@ route.post('/signin', async(req, res) => {
             return res.status(404).send({ message: 'Invalid Email or Password ' })
          } else {
                 if(bcrypt.compareSync(password, loggedUser.password)) {
-                    const {_id, name, email, isAdmin} = loggedUser;
-                    return res.status(200).send({ _id, name,email, isAdmin,token:getToken(loggedUser)});
+                    const {_id, name, email, isAdmin, isSeller} = loggedUser;
+                    return res.status(200).send({ _id, name,email, isAdmin, isSeller, token:getToken(loggedUser)});
                 }else {
                     return res.status(404).send({message: 'Invalid Credentials'});
                 }
@@ -78,12 +78,22 @@ route.put('/profile', isAuth, async(req, res)=> {
     if(user) {
         user.name = req.body.name;
         user.email = req.body.email;
-        if(req.body.password) {
-            user.password = bcrypt.hashSync(req.body.password, 8);            
+        if(user.isSeller) {
+            user.seller.name = req.body.sellerName || user.seller.name;
+            user.seller.logo = req.body.sellerLogo || user.seller.logo;
+            user.seller.description = req.body.sellerDescription || user.seller.description;
+            
+            if(req.body.password) {
+                user.password = bcrypt.hashSync(req.body.password, 8);            
+            }
         }
+         
+        
         const updatedUser = await user.save();
-        const {_id, name, email, isAdmin} = updatedUser;        
-        return res.status(200).send({_id, name, email, isAdmin, token:getToken(updatedUser), message:'Profile updated successfully'});
+        const {_id, name, email, isAdmin,isSeller} = updatedUser;  
+        console.log(updatedUser);   
+        return res.status(200).send({_id, name, email, isAdmin, isSeller, token:getToken(updatedUser), message:'Profile updated successfully'});
+        //return res.status(200).send({updatedUser, token:getToken(updatedUser), message:'Profile updated successfully'});
 
     }
     } catch (error) {

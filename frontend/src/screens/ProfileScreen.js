@@ -11,6 +11,10 @@ export default function ProfileSCreen() {
     const[email, setEmail] = useState('');
     const[password, setPassword] = useState('');
     const[confirmationPassword, setConfirmationPassword] = useState('');
+    const[sellerName, setSellerName] = useState('');
+    const[sellerLogo, setSellerLogo] = useState('');
+    const[sellerDescription, setSellerDescription] = useState('');
+
  
 
     const signedInUser = useSelector(state => state.userSignin);
@@ -28,7 +32,7 @@ export default function ProfileSCreen() {
         if(password !== confirmationPassword) {
             alert("Password does not match");
         }else {
-            dispatch(updateUserProfile({userId: user._id, name, email, password}));
+            dispatch(updateUserProfile({userId: user._id, name, email, password, sellerName, sellerLogo, sellerDescription}));
         }
     }
      useEffect(() => {
@@ -37,11 +41,17 @@ export default function ProfileSCreen() {
             dispatch(userDetails(userInfo._id));
         }else { 
             setName(user.name);
-            setEmail(user.email); 
-        }        
+            setEmail(user.email);
+            if(user.seller){
+                setSellerName(user.seller.name);
+                setSellerLogo(user.seller.logo);
+                setSellerDescription(user.seller.description);
+
+            } 
+        }         //sellerName, sellerLogo, sellerDescription
      
      }, [user, userInfo._id, dispatch]); //TODO: I userinfor id has to be changed as it reloads
-     
+    console.log(JSON.stringify(user));
     return  (
             <>
                 
@@ -90,8 +100,37 @@ export default function ProfileSCreen() {
                                             id="confirmPassword" 
                                             onChange={(e)=>setConfirmationPassword(e.target.value)} />
                                 </li>
+                                
+                                {user&& user.isSeller && 
+                                    <>  <h1>Seller</h1>
+                                        <li>
+                                            <label htmlFor="sellerName">Seller Name</label>
+                                            <input type="text" 
+                                                    placeholder="Enter Seller Name" 
+                                                    id="sellerName" 
+                                                    value={sellerName}
+                                                    onChange={(e)=>setSellerName(e.target.value)} />
+                                        </li>
+                                        <li>
+                                            <label htmlFor="sellerLogo">seller Logo</label>
+                                            <input type="text" 
+                                                    placeholder="Enter Seller Logo" 
+                                                    id="sellerLogo" 
+                                                    value ={sellerLogo} 
+                                                    onChange={(e)=>setSellerLogo(e.target.value)} />
+                                       </li>
+                                       <li>
+                                            <label htmlFor="sellerDescription">seller Description</label>
+                                            <input type="text" 
+                                                    placeholder="Enter Seller Description" 
+                                                    id="sellerDescription" 
+                                                    value= {sellerDescription}
+                                                    onChange={(e)=>setSellerDescription(e.target.value)} />
+                                       </li>
+                                    </>   
+                                }
                                 <li>
-                                    <label />
+                                   
                                     <button type="submit" className="button primary"> Update</button>
                                 </li>
                           </ul>

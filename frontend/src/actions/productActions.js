@@ -3,15 +3,17 @@ import * as pl from "../constants/productConstants";
 import axios from "axios";
 import { headers } from "../config/userInfo";
 
-const listProducts = () => async (dispatch) => {
+const listProducts = ({seller = ''}) => async (dispatch) => {
     try {
-
+ 
         dispatch({ type: pl.PRODUCT_LIST_REQUEST });
-        const { data } = await axios.get("/api/products");
+        const { data } = await axios.get(`/api/products?seller=${seller}`);
         dispatch({ type: pl.PRODUCT_LIST_SUCCESS, payload: data });
 
     } catch(error) {
-       dispatch({ type: pl.PRODUCT_LIST_FAIL, payload: error.message });     
+       const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+       dispatch({ type: pl.PRODUCT_LIST_FAIL, payload: message });  
+     
     }
     
 } 
