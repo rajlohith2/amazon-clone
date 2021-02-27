@@ -35,8 +35,8 @@ const orderSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Users',
         required:true,
-        
     },
+    seller: {type:mongoose.Schema.Types.ObjectId, ref:'Users'},
     isPaid: {type:Boolean, default:false},
     paidAt: {type: Date},
     isDelivered: {type: Boolean, default:false},
