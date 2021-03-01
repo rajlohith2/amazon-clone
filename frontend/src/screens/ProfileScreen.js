@@ -51,7 +51,7 @@ export default function ProfileSCreen() {
         }         //sellerName, sellerLogo, sellerDescription
      
      }, [user, userInfo._id, dispatch]); //TODO: I userinfor id has to be changed as it reloads
-    console.log(JSON.stringify(user));
+   
     return  (
             <>
                 

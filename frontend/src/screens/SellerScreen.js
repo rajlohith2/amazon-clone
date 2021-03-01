@@ -8,33 +8,36 @@ import Product from '../components/Product';
 import Rating from '../components/Rating';
 
 export default function SellerScreen(props){
-    const sellerId = props.match.params.id
-    const dispatch = useDispatch();
-    const userProfile = useSelector(state => state.userProfile);
-    const { loading, error, user} = userProfile;
+    const sellerId = props.match.params.id;   
     
+    const userProfile = useSelector(state => state.userProfile);
+    const { profileLoading, user, error } = userProfile; 
     const productList = useSelector(state => state.productList);
-    const { loading:loadingProducts, error:errorProducts, products } = productList;
+    const  {loading, products,errorProducts } = productList; 
+    
+     console.log(`list wallah: ${JSON.stringify(productList)}`)
+    const dispatch = useDispatch();
+
 //
     useEffect(() => {
-        dispatch(userDetails( sellerId ));
+        dispatch(userDetails(sellerId)); 
         dispatch(listProducts({ seller: sellerId }));
 
     },[dispatch, sellerId]);
-  
-    return(
-    
+    //typeof user object 
+    // return <div>${ user && Object.keys(user.user.seller.name)} </div>
+    return(    
        <div className="row top">
             <div className="col-1">
 
-            </div>
-            <div className="col-3">
+            </div> 
+            <div className="col-1">
                 { 
-                    loading ? (
+                    profileLoading ? (
                         <LoadingBox />
                     ): error ? (
                         <MessageBox variant="danger" msg={error} />
-                    ):(
+                    ): user && (
                         <ul className="card card-body">
                             <li>
                                 <div className="row">
@@ -44,7 +47,7 @@ export default function SellerScreen(props){
                                         
                                     </div>
                                     <div>
-                                        <h1>{user.seller.name}</h1>
+                                        <h1>{user.seller && user.seller.name}</h1>
                                     </div>
                                 </div>
                             </li>
@@ -61,9 +64,9 @@ export default function SellerScreen(props){
             </div>
             <div className="col-3">
                 {
-                    loadingProducts ? (<LoadingBox />) : (
+                    loading ? (<LoadingBox />) : (
                        errorProducts ? <MessageBox variant="danger" msg={errorProducts} /> : (
-                        products.length === 0 ? (<MessageBox variant="danger" msg={'No product found'} /> ): (
+                        products.length === 0 ? (<MessageBox variant="danger" msg={'No product found From this user.seller'} /> ): (
                             <ul className="card card-body">
                                 <li>
                                     <div className="row center">
@@ -80,6 +83,7 @@ export default function SellerScreen(props){
             </div>
         </div>
         
-    )
-   
+    ) 
+  
+
 } 

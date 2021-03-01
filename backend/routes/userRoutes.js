@@ -67,7 +67,9 @@ route.get('/admins',async(req, res)=>{
     return res.send({data: await User.find({isAdmin:true})});
 });
 route.get('/:id/details', isAuth, async(req, res)=> {   
-        const user = await User.findById(req.params.id)
+        
+        const user = await User.findById(req.params.id);
+        console.log(user);
         return user ? res.status(200).send(user):res.status(404).send({message: 'User Not found'}); 
 });
 

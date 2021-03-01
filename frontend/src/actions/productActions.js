@@ -9,6 +9,8 @@ const listProducts = ({seller = ''}) => async (dispatch) => {
         dispatch({ type: pl.PRODUCT_LIST_REQUEST });
         const { data } = await axios.get(`/api/products?seller=${seller}`);
         dispatch({ type: pl.PRODUCT_LIST_SUCCESS, payload: data });
+        console.log(JSON.stringify(data));
+        
 
     } catch(error) {
        const message = error.response && error.response.data.message ? error.response.data.message: error.message;

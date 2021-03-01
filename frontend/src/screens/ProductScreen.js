@@ -48,12 +48,16 @@ function ProductScreen(props){
                         <div class="col-1">
                             <div class="card card-body">
                                 <ul>
-                                    <li>
-                                        Seller { ` `}
-                                        <h2> 
-                                            <Link to={`/Seller/${product.seller._id}`}> {product.seller.seller.name} </Link>
-                                        </h2>
-                                        <Rating numReviews={product.seller.seller.numReviews} rates={product.seller.seller.ratings} />
+                                    <li> 
+                                        Seller { ` `} 
+                                        { product.seller &&
+                                            <>
+                                                <h2> 
+                                                    <Link to={`/Seller/${product.seller._id}`}> {product.seller.seller.name} </Link>
+                                                </h2>
+                                                <Rating numReviews={product.seller.seller.numReviews} rates={product.seller.seller.ratings} />
+                                            </>
+                                        }
                                     </li>
                                     <li>
                                         <div className="row">
