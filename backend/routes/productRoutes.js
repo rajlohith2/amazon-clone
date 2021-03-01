@@ -10,7 +10,7 @@ productRoute.get('/', expressAsyncHandler(async(req, res) => {
    try {
     const seller = req.query.seller || '';
     const sellerFilter = req.query.seller ? { seller }: {};  
-    const products = await Product.find({...sellerFilter}); //  (...) were used to deconstruct {} and only get SELLER
+    const products = await Product.find({...sellerFilter}).populate('seller', 'seller.name seller.logo'); //  (...) were used to deconstruct {} and only get SELLER
     return res.send(products);
     
    } catch (error) {
@@ -19,8 +19,9 @@ productRoute.get('/', expressAsyncHandler(async(req, res) => {
    } 
 }));
 productRoute.get('/:id', async(req, res)=> {
+    
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id).populate('seller', 'seller.name seller.logo seller.numReviews seller.rating');
         return product ?  res.status(200).send(product): res.status(404).send({message: 'Product not Found'});
     } catch (error) {
               
