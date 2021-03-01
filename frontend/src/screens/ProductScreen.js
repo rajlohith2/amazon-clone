@@ -57,7 +57,7 @@ function ProductScreen(props){
                                                 </h2>
                                                 <Rating numReviews={product.seller.seller.numReviews} rates={product.seller.seller.ratings} />
                                             </>
-                                        }
+                                    }
                                     </li>
                                     <li>
                                         <div className="row">
