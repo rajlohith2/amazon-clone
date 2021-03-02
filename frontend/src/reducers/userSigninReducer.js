@@ -101,5 +101,18 @@
                 return state; 
         }
     }
- export  {userSigninReducer, UserRegisterReducer, updateProfileReducer, userListReducer, deleteUserReducer, userUpdateReducer, userDetailsReducer }
+    function topSellersReducer(state = { }, action) {
+        switch (action.type) {
+            case uc.USER_TOP_SELLERS_LIST_REQUEST:
+                return { loading: true };
+            case uc.USER_TOP_SELLERS_LIST_SUCCESS:
+               return { loading: false, users: action.payload};  
+            case uc.USER_TOP_SELLERS_LIST_FAIL:
+                return { loading:false, error: action.payload };
+        
+            default:
+                return state;
+        }
+    }
+ export  {userSigninReducer, UserRegisterReducer, updateProfileReducer, userListReducer, deleteUserReducer, userUpdateReducer, userDetailsReducer, topSellersReducer }
  

@@ -482,7 +482,11 @@ display: block;
 .p-1 {
   padding: 1rem;  /* 16px*/
 }
-
+/* Carousal */
+.carousel .slide img {
+  width: 640px;
+  min-height: 300px;
+}
 .danger, .success { padding: 8px; color: #96613d; font-weight: 900;}
 .danger { background: #fbdaef; }
 .success {  background: #aff5b2; }
