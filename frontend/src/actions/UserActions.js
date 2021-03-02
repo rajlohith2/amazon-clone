@@ -111,5 +111,15 @@ const updateUserInfo = (userEditedInfo) => async (dispatch)=> {
     
   }
 }
+const listTopSellers = ()=> async (dispatch, getState)=> {
+  dispatch({type: uc.USER_TOP_SELLERS_LIST_REQUEST});
+    try {
+      const { data } = await axios.get('/api/users/top-sellers');
+      dispatch({type: uc.USER_TOP_SELLERS_LIST_SUCCESS, payload: data});
+    } catch (error) {
+      const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+      dispatch({type: uc.USER_TOP_SELLERS_LIST_FAIL, payload: message});
+    }
+}
 
-export { signin, register, signout,userDetails, updateUserProfile, listUsers, eraseUser, updateUserInfo };
+export { signin, register, signout,userDetails, updateUserProfile, listUsers, eraseUser, updateUserInfo,listTopSellers };

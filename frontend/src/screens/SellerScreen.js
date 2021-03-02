@@ -15,7 +15,7 @@ export default function SellerScreen(props){
     const productList = useSelector(state => state.productList);
     const  {loading, products,errorProducts } = productList; 
     
-     console.log(`list wallah: ${JSON.stringify(productList)}`)
+     
     const dispatch = useDispatch();
 
 //
@@ -24,8 +24,7 @@ export default function SellerScreen(props){
         dispatch(listProducts({ seller: sellerId }));
 
     },[dispatch, sellerId]);
-    //typeof user object 
-    // return <div>${ user && Object.keys(user.user.seller.name)} </div>
+    
     return(    
        <div className="row top">
             <div className="col-1">
@@ -40,8 +39,9 @@ export default function SellerScreen(props){
                     ): user && (
                         <ul className="card card-body">
                             <li>
-                                <div className="row">
-                                    <div> { 
+                                <div className="row start">
+                                    <div> 
+                                        { 
                                             user.seller && <img src={user.seller.logo} alt={user.seller.name}/>
                                         }
                                         
