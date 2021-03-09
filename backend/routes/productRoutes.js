@@ -9,8 +9,10 @@ productRoute.get('/', expressAsyncHandler(async(req, res) => {
     
    try {
     const seller = req.query.seller || '';
-    const sellerFilter = req.query.seller ? { seller }: {};  
-    const products = await Product.find({...sellerFilter}).populate('seller', 'seller.name seller.logo'); //  (...) were used to deconstruct {} and only get SELLER
+    const name = req.query.name || '';
+    const sellerFilter = seller ? { seller }: {};  
+    const nameFilter = name ? { name: {$regex: name, $options: 'i'} }: {};  
+    const products = await Product.find({...sellerFilter, ...nameFilter}).populate('seller', 'seller.name seller.logo'); //  (...) were used to deconstruct {} and only get SELLER
     return res.send(products);
     
    } catch (error) {
