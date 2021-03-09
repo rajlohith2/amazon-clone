@@ -25,6 +25,8 @@ import UserListScreen from './screens/UsersListScreen';
 import UserEditScreen from './screens/UserEditScreen';
 import SellerRoute from './components/SellerRoute';
 import SellerScreen from './screens/SellerScreen';
+import SearchBox from './components/SearchBox';
+import SearchScreen from './screens/SearchScreen';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -51,6 +53,9 @@ function App() {
             <div className="brand">
                 <button onClick={openMenu}> &#9776; </button>
                 <Link to="/">Amazona </Link>
+            </div>
+            <div>
+                 <Route render={({history})=> <SearchBox history={history} />} ></Route>
             </div>
             <div className="header-links">
                 <Link to="/cart"> Cart { cartItems && cartItems.length > 0 &&  <span className="badge">{cartItems.length}</span>}</Link>  
@@ -133,7 +138,9 @@ function App() {
                 <Route path="/payment" component={PaymentScreen} /> 
                 <Route path="/placeorder" component={PlaceOrderScreen} />   
                 <Route path="/order/:id" component={OrderScreen} />   
-                <Route path="/orderHistory" component={OrderHistory} />   
+                <Route path="/orderHistory" component={OrderHistory} />
+
+                <Route path="/search/name/:name?" component={SearchScreen} exact />   
                 <PrivateRoute path="/profile" component={ProfileSCreen} /> 
 
                 <AdminRoute path="/products" component={ProductsScreen} exact />

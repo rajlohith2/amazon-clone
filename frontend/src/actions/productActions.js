@@ -3,11 +3,11 @@ import * as pl from "../constants/productConstants";
 import axios from "axios";
 import { headers } from "../config/userInfo";
 
-const listProducts = ({seller = ''}) => async (dispatch) => {
+const listProducts = ({seller = '', name=''}) => async (dispatch) => {
     try {
  
         dispatch({ type: pl.PRODUCT_LIST_REQUEST });
-        const { data } = await axios.get(`/api/products?seller=${seller}`);
+        const { data } = await axios.get(`/api/products?seller=${seller}&&name=${name}`);
         dispatch({ type: pl.PRODUCT_LIST_SUCCESS, payload: data });
         console.log(JSON.stringify(data));
         
