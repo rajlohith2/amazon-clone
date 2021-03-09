@@ -42,6 +42,10 @@ route.post('/register', async (req, res)=>{
     
 });
 
+route.get('/top-sellers', expressAsyncHandler( async(req, res)=>{
+    const topSellers = await User.find({isSeller: true}).sort({'seller.rating':-1}).limit(3);
+    return res.status(200).send(topSellers);
+}));
 route.get('/createadmin', async(req, res) => {
     
     try {

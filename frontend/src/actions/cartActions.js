@@ -5,9 +5,12 @@ import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_SHIPPING, CART_SAVE_PAYMENT,
 const addToCart = (productId, qty) => async (dispatch, getState)=> {
     try {
         const { data } = await axios.get('/api/products/' + productId);
-        const {cart: { cartItems } } = getState();      
+        const {cart: { cartItems } } = getState();   
+        
         if(cartItems.length > 0 && data.seller._id !== cartItems[0].seller._id ){
-            dispatch({ type:CART_ADD_ITEM_FAIL, payload:`Can't Add To Cart. Buy from ${cartItems[0].seller.name} at a time`});
+           
+            dispatch({ type:CART_ADD_ITEM_FAIL,
+                 payload:`Can't Add To Cart. Buy from ${cartItems[0].seller.seller.name} in this order`});
         }else {
             dispatch({
                 type:CART_ADD_ITEM, payload: {
@@ -21,10 +24,12 @@ const addToCart = (productId, qty) => async (dispatch, getState)=> {
                 }
             });
         }
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));         
+        localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));         
 
     } catch (error) {
         console.log(error.message); 
+        const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+        dispatch({type:CART_ADD_ITEM_FAIL, payload: message});
     }
 }
 const removeFromCart = (productId) => async (dispatch, getState) => {
