@@ -31,9 +31,7 @@ const isAuth = (req, res, next) => {
             }else {
             req.user = decode;
             return next();
-
             }
-
         });
     } else {
         return res.status(401).send({message: 'Token is not supplied'});

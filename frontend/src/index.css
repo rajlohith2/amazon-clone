@@ -280,8 +280,6 @@ a > .rating > span:last-child {
   border: .1rem #c0c0c0 solid;
   border-radius: .5rem;
   list-style: none;
-
-
 }
 .form-container li {
   display: flex;;
@@ -422,6 +420,21 @@ input:hover, select:hover,textarea:hover, button:hover{
 .ml-4 {
   margin-left: 16px;
 }
+.card {
+  border: 0.1rem #c0c0c0 solid;
+  background-color: #f8f8f8;
+  border-radius: 0.5rem;
+  margin: 1rem;
+}
+.card-body {
+  padding: 1rem;
+}
+.card-body > * {
+  margin-bottom: 0.5rem;
+}
+.price {
+  font-size: 2rem;
+}
 /* Dropdown */
 .dropdown {
   display: inline-block;
@@ -484,11 +497,28 @@ display: block;
 }
 /* Carousal */
 .carousel .slide img {
-  width: 640px;
-  min-height: 300px;
+  max-width: 30rem;
 }
 .danger, .success { padding: 8px; color: #96613d; font-weight: 900;}
 .danger { background: #fbdaef; }
 .success {  background: #aff5b2; }
 .text-success {color: #69c353;}
 .text-danger {color: #f67e7e;}
+
+img {
+  border-radius: 0.5rem;
+}
+img.small {
+  max-width: 5rem;
+  width: 100%;
+}
+img.medium {
+  max-width: 29rem;
+  width: 100%;
+}
+img.large {
+  width: 100%;
+}
+ul li {
+   list-style-type: none;
+}
