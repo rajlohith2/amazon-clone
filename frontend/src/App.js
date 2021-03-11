@@ -27,6 +27,9 @@ import SellerRoute from './components/SellerRoute';
 import SellerScreen from './screens/SellerScreen';
 import SearchBox from './components/SearchBox';
 import SearchScreen from './screens/SearchScreen';
+import {listProductCategories} from './actions/productActions'
+import { LoadingBox } from './components/LoadingBox';
+import { MessageBox } from './components/MessageBox';
  
 const openMenu = () => {
     document.querySelector(".sidebar").classList.add("open");
@@ -37,12 +40,19 @@ const closeMenu = () => {
 
 function App() {
     const cartInfo = useSelector(state=>state.cart);
+    const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
     const { cartItems } = cartInfo;
     const { userInfo } = useSelector(state => state.userSignin);    
     const [user, setUser] = useState(null);
     const dispatch = useDispatch();
-    const signoutHandler = () => dispatch(signout());       
-    useEffect(() =>  setUser(userInfo) )
+    const signoutHandler = () => dispatch(signout()); 
+    
+     const pLCategories = useSelector((state) => state.productCategoryList);
+     const { loading:loadingCateg, error: errorCateg, categories } = pLCategories;
+    useEffect(() => {
+        setUser(userInfo)
+        dispatch(listProductCategories())
+    }, [dispatch] )
     
     
   return (
@@ -51,7 +61,9 @@ function App() {
         
         <header className="header">
             <div className="brand">
-                <button onClick={openMenu}> &#9776; </button>
+                <button onClick={setSidebarIsOpen(true)}> 
+                    <i className="fa fa-bars"></i>
+                 </button>
                 <Link to="/">Amazona </Link>
             </div>
             <div>
@@ -111,18 +123,34 @@ function App() {
             </div>            
         </header>
         <aside className="sidebar">
-            <h3>Shopping Categories</h3>
-            <button onClick={closeMenu} className="sidebar-close-button">X</button>
-            <ul>
+            <ul className="categories">
                 <li>
-                    
-                    <a href="index.html">Pants</a>
+                <strong>Categories</strong>
+                <button
+                    onClick={() => setSidebarIsOpen(false)}
+                    className="close-sidebar"
+                    type="button"
+                >
+                    <i className="fa fa-close"></i>
+                </button>
                 </li>
-                <li>
-                    <a href="index.html"> Shirts</a>
-                </li>
-            </ul>
-            
+                {loadingCateg ? (
+                <LoadingBox />
+                ) : errorCateg ? (
+                <MessageBox variant="danger" error={errorCateg}/>
+                ) : (
+                    categories && categories.map((c) => (
+                    <li key={c}>
+                    <Link
+                        to={`/search/category/${c}`}
+                        onClick={() => setSidebarIsOpen(false)}
+                    >
+                        {c}
+                    </Link>
+                    </li>
+                ))
+                )}
+            </ul>  
         </aside>
         <main className="main">  
             <div className="content"> 
@@ -150,8 +178,6 @@ function App() {
                 
                 <SellerRoute path="/products/seller" component={ProductsScreen}  />
                 <SellerRoute path="/orders/seller" component={OrdersListScreen} />
-               
-                
             </div>            
         </main>
         <footer className="footer">

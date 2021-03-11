@@ -64,4 +64,20 @@ const deleteProduct = (productId) => async(dispatch) => {
        dispatch({type: pl.PRODUCT_DELETE_FAIL, payload: error.message});
    }
 }
-export { listProducts, detailsProduct, saveProduct, deleteProduct }; 
+const listProductCategories = () => async (dispatch) => {
+    try {
+ 
+        dispatch({ type: pl.PRODUCT_CATEGORY_REQUEST });
+        const { data } = await axios.get(`/api/products/categories`);
+        dispatch({ type: pl.PRODUCT_CATEGORY_SUCCESS, payload: data });
+        console.log(JSON.stringify(data));
+        
+
+    } catch(error) {
+       const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+       dispatch({ type: pl.PRODUCT_CATEGORY_REQUEST, payload: message });  
+     
+    }
+    
+} 
+export { listProducts, detailsProduct, saveProduct, deleteProduct, listProductCategories }; 
