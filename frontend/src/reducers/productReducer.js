@@ -12,6 +12,18 @@ function productListReducer( state = { products: [] }, action) {
          return state; 
  }   
 }
+function productCategoryListReducer( state = { categories: [] }, action) {
+    switch(action.type) {
+        case pl.PRODUCT_CATEGORY_REQUEST:
+            return { loading: true , categories: [] };
+        case pl.PRODUCT_CATEGORY_SUCCESS:
+            return { loading: false, categories: action.payload}; 
+        case pl.PRODUCT_CATEGORY_FAIL:
+            return { loading: false, error: action.payload }; 
+        default:
+            return state; 
+    }   
+   }
 
 function productDetailsReducer(state = { product: {} }, action) {
     switch(action.type) {
@@ -53,4 +65,4 @@ function productDeleteReducer( state = {product:{}}, action) {
     }
 }
 
-export { productListReducer, productDetailsReducer, productSaveReducer, productDeleteReducer };
+export { productListReducer, productDetailsReducer, productSaveReducer, productDeleteReducer, productCategoryListReducer };

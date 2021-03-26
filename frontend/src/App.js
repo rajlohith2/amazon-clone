@@ -27,31 +27,36 @@ import SellerRoute from './components/SellerRoute';
 import SellerScreen from './screens/SellerScreen';
 import SearchBox from './components/SearchBox';
 import SearchScreen from './screens/SearchScreen';
+import { listProductCategories } from './actions/productActions';
+import { MessageBox } from './components/MessageBox';
+import { LoadingBox } from './components/LoadingBox';
  
-const openMenu = () => {
-    document.querySelector(".sidebar").classList.add("open");
-}
-const closeMenu = () => {
-    document.querySelector(".sidebar").classList.remove("open");
-}
+const toggleMenu = () => document.querySelector(".sidebar").classList.toggle("open");
 
 function App() {
     const cartInfo = useSelector(state=>state.cart);
     const { cartItems } = cartInfo;
     const { userInfo } = useSelector(state => state.userSignin);    
     const [user, setUser] = useState(null);
+
+    const productCategories = useSelector(state => state.productCategoryList);
+    const { loading:loadingCateg, error:errorCateg, categories }=productCategories;
     const dispatch = useDispatch();
-    const signoutHandler = () => dispatch(signout());       
-    useEffect(() =>  setUser(userInfo) )
+    const signoutHandler = () => dispatch(signout());  
+
+    useEffect(() => {
+        setUser(userInfo)
+        dispatch(listProductCategories())
+    },[dispatch])
     
-    
+
   return (
     <BrowserRouter>
     <div className="grid-container">
         
         <header className="header">
             <div className="brand">
-                <button onClick={openMenu}> &#9776; </button>
+                <button onClick={toggleMenu}> &#9776; </button>
                 <Link to="/">Amazona </Link>
             </div>
             <div>
@@ -112,15 +117,32 @@ function App() {
         </header>
         <aside className="sidebar">
             <h3>Shopping Categories</h3>
-            <button onClick={closeMenu} className="sidebar-close-button">X</button>
-            <ul>
+            
+            <ul className="categories">
                 <li>
-                    
-                    <a href="index.html">Pants</a>
+                    <strong>Categories</strong>
+                    <button
+                        onClick={() => toggleMenu}
+                        className="close-sidebar"
+                        type="button"
+                    >
+                        <i className="fa fa-close"></i>
+                    </button>
                 </li>
-                <li>
-                    <a href="index.html"> Shirts</a>
-                </li>
+                    {loadingCateg ? (<LoadingBox />)  :(errorCateg && (<MessageBox variant="danger" error={errorCateg} /> ))}
+                   {
+                        categories.map((category) => (
+                        <li key={category}>
+                            <Link
+                                to={`/search/category/${category}`}
+                                onClick={toggleMenu}>
+                                {category}
+                            </Link>
+                        </li>
+                        ))
+                    } 
+                   
+                
             </ul>
             
         </aside>
@@ -139,8 +161,12 @@ function App() {
                 <Route path="/placeorder" component={PlaceOrderScreen} />   
                 <Route path="/order/:id" component={OrderScreen} />   
                 <Route path="/orderHistory" component={OrderHistory} />
-
                 <Route path="/search/name/:name?" component={SearchScreen} exact />   
+                <Route path="/search/category/:category" component={SearchScreen} exact />   
+                <Route path="/search/category/:category/name/:name" component={SearchScreen} exact /> 
+                <Route path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order" component={SearchScreen} exact /> 
+                
+                  
                 <PrivateRoute path="/profile" component={ProfileSCreen} /> 
 
                 <AdminRoute path="/products" component={ProductsScreen} exact />
