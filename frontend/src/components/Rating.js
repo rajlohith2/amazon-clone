@@ -27,14 +27,13 @@ export default function Rating ({numReviews, rates, caption}){
                             rates >= 5 ? "fa fa-star" :rates >= 5.5 ? "fa fa-star-half-o":
                             "fa fa-star-o"
                         }></i>
-                        </span>
-                                
-               <div className="ml-4">    
+                        </span>                                
+               
                  { 
                     caption ?(<span>{caption}</span>):(<span>{numReviews} Reviews</span>)
                  }               
                 
-                </div>
+                
             </div>
          
             
