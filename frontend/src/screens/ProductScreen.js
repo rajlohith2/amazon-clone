@@ -46,8 +46,8 @@ function ProductScreen(props){
                                     </li>
                                 </ul>                            
                             </div>
-                            <div class="col-1">
-                                <div class="card card-body">
+                            <div className="col-1">
+                                <div className="card card-body">
                                     <ul>
                                         <li> 
                                             Seller { ` `} 

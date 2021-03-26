@@ -27,43 +27,36 @@ import SellerRoute from './components/SellerRoute';
 import SellerScreen from './screens/SellerScreen';
 import SearchBox from './components/SearchBox';
 import SearchScreen from './screens/SearchScreen';
-import {listProductCategories} from './actions/productActions'
-import { LoadingBox } from './components/LoadingBox';
+import { listProductCategories } from './actions/productActions';
 import { MessageBox } from './components/MessageBox';
+import { LoadingBox } from './components/LoadingBox';
  
-const openMenu = () => {
-    document.querySelector(".sidebar").classList.add("open");
-}
-const closeMenu = () => {
-    document.querySelector(".sidebar").classList.remove("open");
-}
+const toggleMenu = () => document.querySelector(".sidebar").classList.toggle("open");
 
 function App() {
     const cartInfo = useSelector(state=>state.cart);
-    const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
     const { cartItems } = cartInfo;
     const { userInfo } = useSelector(state => state.userSignin);    
     const [user, setUser] = useState(null);
+
+    const productCategories = useSelector(state => state.productCategoryList);
+    const { loading:loadingCateg, error:errorCateg, categories }=productCategories;
     const dispatch = useDispatch();
-    const signoutHandler = () => dispatch(signout()); 
-    
-     const pLCategories = useSelector((state) => state.productCategoryList);
-     const { loading:loadingCateg, error: errorCateg, categories } = pLCategories;
+    const signoutHandler = () => dispatch(signout());  
+
     useEffect(() => {
         setUser(userInfo)
         dispatch(listProductCategories())
-    }, [dispatch] )
+    },[dispatch])
     
-    
+
   return (
     <BrowserRouter>
     <div className="grid-container">
         
         <header className="header">
             <div className="brand">
-                <button onClick={setSidebarIsOpen(true)}> 
-                    <i className="fa fa-bars"></i>
-                 </button>
+                <button onClick={toggleMenu}> &#9776; </button>
                 <Link to="/">Amazona </Link>
             </div>
             <div>
@@ -123,34 +116,35 @@ function App() {
             </div>            
         </header>
         <aside className="sidebar">
+            <h3>Shopping Categories</h3>
+            
             <ul className="categories">
                 <li>
-                <strong>Categories</strong>
-                <button
-                    onClick={() => setSidebarIsOpen(false)}
-                    className="close-sidebar"
-                    type="button"
-                >
-                    <i className="fa fa-close"></i>
-                </button>
-                </li>
-                {loadingCateg ? (
-                <LoadingBox />
-                ) : errorCateg ? (
-                <MessageBox variant="danger" error={errorCateg}/>
-                ) : (
-                    categories && categories.map((c) => (
-                    <li key={c}>
-                    <Link
-                        to={`/search/category/${c}`}
-                        onClick={() => setSidebarIsOpen(false)}
+                    <strong>Categories</strong>
+                    <button
+                        onClick={() => toggleMenu}
+                        className="close-sidebar"
+                        type="button"
                     >
-                        {c}
-                    </Link>
-                    </li>
-                ))
-                )}
-            </ul>  
+                        <i className="fa fa-close"></i>
+                    </button>
+                </li>
+                    {loadingCateg ? (<LoadingBox />)  :(errorCateg && (<MessageBox variant="danger" error={errorCateg} /> ))}
+                   {
+                        categories.map((category) => (
+                        <li key={category}>
+                            <Link
+                                to={`/search/category/${category}`}
+                                onClick={toggleMenu}>
+                                {category}
+                            </Link>
+                        </li>
+                        ))
+                    } 
+                   
+                
+            </ul>
+            
         </aside>
         <main className="main">  
             <div className="content"> 
@@ -167,8 +161,12 @@ function App() {
                 <Route path="/placeorder" component={PlaceOrderScreen} />   
                 <Route path="/order/:id" component={OrderScreen} />   
                 <Route path="/orderHistory" component={OrderHistory} />
-
                 <Route path="/search/name/:name?" component={SearchScreen} exact />   
+                <Route path="/search/category/:category" component={SearchScreen} exact />   
+                <Route path="/search/category/:category/name/:name" component={SearchScreen} exact /> 
+                <Route path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order" component={SearchScreen} exact /> 
+                
+                  
                 <PrivateRoute path="/profile" component={ProfileSCreen} /> 
 
                 <AdminRoute path="/products" component={ProductsScreen} exact />
@@ -178,6 +176,8 @@ function App() {
                 
                 <SellerRoute path="/products/seller" component={ProductsScreen}  />
                 <SellerRoute path="/orders/seller" component={OrdersListScreen} />
+               
+                
             </div>            
         </main>
         <footer className="footer">

@@ -1,9 +1,9 @@
 import React from 'react';
-export default function Rating ({numReviews, rates}){
+export default function Rating ({numReviews, rates, caption}){
     return (
-        <>
-            <div className="product-rating flex">
-                <div>
+      
+            <div className="rating">
+                
                         <span>
                             <i className={
                             rates >= 1 ? "fa fa-star" :rates >= 1.5 ? "fa fa-star-half-o":
@@ -24,16 +24,19 @@ export default function Rating ({numReviews, rates}){
                         </span>
                         <span>
                             <i className={
-                            rates >= 4 ? "fa fa-star" :rates >= 4.5 ? "fa fa-star-half-o":
+                            rates >= 5 ? "fa fa-star" :rates >= 5.5 ? "fa fa-star-half-o":
                             "fa fa-star-o"
                         }></i>
                         </span>
-                </div>                
-               <div className="ml-4">
-                   {numReviews} Reviews
+                                
+               <div className="ml-4">    
+                 { 
+                    caption ?(<span>{caption}</span>):(<span>{numReviews} Reviews</span>)
+                 }               
+                
                 </div>
             </div>
-        </>    
+         
             
     )
 }
