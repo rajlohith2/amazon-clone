@@ -55,6 +55,7 @@ return (<div>
             </div>   
 
                 <div className="row top">
+                   
                     <div className="col-1">
                         <h3>Departments</h3>
                         <div>
@@ -105,7 +106,7 @@ return (<div>
                                         <li key={rate.name}>
                                             <Link to={getFilterUrl({ rating: rate.rating })}
                                               className={`${rate.rating}`?'active':'' }>
-                                                 <Rating rates={rate.rating} caption={rate.name} />
+                                                 <Rating rates={rate.rating} caption={' & up'} />
                                             </Link>
                                         </li>      
                                     ))
@@ -133,7 +134,7 @@ return (<div>
                             </div>
                            </>
                        )} 
-                    </div>
+                    </div> 
                 </div>
             </div>
     
