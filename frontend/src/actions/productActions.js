@@ -23,7 +23,7 @@ const detailsProduct = (productId) => async (dispatch) => {
 try {
 
     dispatch({ type: pl.PRODUCT_DETAILS_REQUEST });
-    const { data } = await axios.get("/api/products/" + productId);
+    const { data } = await axios.get("/api/products/" + productId);    
     dispatch({ type: pl.PRODUCT_DETAILS_SUCCESS, payload: data });
 
 } catch (error) {
@@ -80,4 +80,17 @@ const listProductCategories = () => async (dispatch) => {
     }
     
 } 
-export { listProducts, detailsProduct, saveProduct, deleteProduct, listProductCategories }; 
+
+const createReview = (productId, review) => async (dispatch) => {
+    dispatch({type: pl.PRODUCT_REVIEW_CREATE_REQUEST });
+    try {
+        const { data } = await axios.post(`/api/products/${productId}/reviews`, review, headers);
+        dispatch({type:pl.PRODUCT_REVIEW_CREATE_SUCCESS, payload: data.review});
+
+    } catch(error) {
+        const message = error.response && error.response.data.message ? error.response.data.message: error.message;
+        dispatch({type: pl.PRODUCT_REVIEW_CREATE_FAIL, payload: message});
+    }
+}
+
+export { listProducts, detailsProduct, saveProduct, deleteProduct, listProductCategories, createReview }; 

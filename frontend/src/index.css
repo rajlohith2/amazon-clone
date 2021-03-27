@@ -539,3 +539,14 @@ ul li {
 .active {
   font-weight: bold;
 }
+ 
+
+.form-rate > div {
+  max-width: 60rem;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+}
+.form label {
+  margin: 1rem 0;
+}
