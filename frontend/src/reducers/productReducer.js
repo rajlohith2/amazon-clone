@@ -64,5 +64,19 @@ function productDeleteReducer( state = {product:{}}, action) {
             return state;        
     }
 }
+function productReviewCreateReducer( state = {}, action) {
+    switch(action.type) {
+        case pl.PRODUCT_REVIEW_CREATE_REQUEST:
+            return { loading: true };
+        case pl.PRODUCT_REVIEW_CREATE_SUCCESS: 
+            return { loading: false, success: true, review: action.payload };
+        case pl.PRODUCT_REVIEW_CREATE_FAIL:
+            return { loading: false, error: action.payload };
+        case pl.PRODUCT_REVIEW_CREATE_RESET:
+         return {};
+        default:
+            return state;        
+    }
+}
 
-export { productListReducer, productDetailsReducer, productSaveReducer, productDeleteReducer, productCategoryListReducer };
+export { productListReducer, productDetailsReducer, productSaveReducer, productDeleteReducer, productCategoryListReducer, productReviewCreateReducer };
