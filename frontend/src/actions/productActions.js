@@ -3,15 +3,14 @@ import * as pl from "../constants/productConstants";
 import axios from "axios";
 import { headers } from "../config/userInfo";
 
-const listProducts = ({seller = '', name='', category='', min=0, max=0, rating=0, order=''}) => async (dispatch) => {
+const listProducts = ({seller = '', name='', category='', min=0, max=0, rating=0, order='', pageNumber=''}) => async (dispatch) => {
     try {
- 
-        dispatch({ type: pl.PRODUCT_LIST_REQUEST });
-        const { data } = await axios.get(`/api/products?seller=${seller}&&name=${name}&&category=${category}&&min=${min}&&max=${max}&&rating=${rating}/order/${order}`);
-        dispatch({ type: pl.PRODUCT_LIST_SUCCESS, payload: data });
-        console.log(JSON.stringify(data));
         
-
+        dispatch({ type: pl.PRODUCT_LIST_REQUEST });
+        const { data } = await axios.get(`/api/products?pageNumber=${pageNumber}&&seller=${seller}&&name=${name}&&category=${category}&&min=${min}&&max=${max}&&rating=${rating}/order/${order}`);
+       console.log(pageNumber);
+        dispatch({ type: pl.PRODUCT_LIST_SUCCESS, payload: data });
+       
     } catch(error) {
        const message = error.response && error.response.data.message ? error.response.data.message: error.message;
        dispatch({ type: pl.PRODUCT_LIST_FAIL, payload: message });  
@@ -70,9 +69,7 @@ const listProductCategories = () => async (dispatch) => {
         dispatch({ type: pl.PRODUCT_CATEGORY_REQUEST });
         const { data } = await axios.get(`/api/products/categories`);
         dispatch({ type: pl.PRODUCT_CATEGORY_SUCCESS, payload: data });
-        console.log(JSON.stringify(data));
         
-
     } catch(error) {
        const message = error.response && error.response.data.message ? error.response.data.message: error.message;
        dispatch({ type: pl.PRODUCT_CATEGORY_REQUEST, payload: message });  

@@ -6,9 +6,14 @@ import CheckoutSteps from '../components/CheckoutSteps';
 
 function ShippingScreen(props){
 
-   
     const cart = useSelector(state => state.cart);
     const {  shippingAddress } = cart;
+
+    const mapAddress = useSelector(state =>state.mapAddress);
+    const{ address: addressMap } = mapAddress;
+
+    const [lat, setLat] = useState(shippingAddress.lat);
+    const [lng, setLng] = useState(shippingAddress.lng);
 
    const [fullName, setFullName] = useState(shippingAddress.fullName);
    const [address, setAddress] = useState(shippingAddress.address);
@@ -17,24 +22,32 @@ function ShippingScreen(props){
    const [city, setCity] = useState(shippingAddress.country);
    const { userInfo } = useSelector(state => state.userSignin);
   
-
-
     useEffect(() =>   { },[]);
-     
-  
     if(!userInfo) {
         props.history.push("/signin");
         
     }
-  
-    
     const dispatch = useDispatch();
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(saveShipping({address, postalCode, country, city,fullName}));
-        props.history.push('payment');
-        
-
+        const newLat = addressMap ? addressMap.lat: lat;
+        const newLng = addressMap ? addressMap.lng : lng;
+        if(addressMap) {
+            setLat(addressMap.lat);
+            setLng(addressMap.lng);
+        }
+        let moveOn = true;
+        if(!newLat || !newLng) {
+            moveOn = window.confirm("You Didn\'t Set Your Location on Map. Continue ?");
+        }
+        if(moveOn) {
+            dispatch(saveShipping({address, postalCode, country, city,fullName,lat: newLat, lng: newLng }));
+            props.history.push('payment');
+        }
+    }
+    const chooseOnMap = ()=>{
+        dispatch(saveShipping({ fullName, address,city, postalCode,country,lat, lng }))
+        props.history.push("/map");
     }
     
     return (
@@ -66,6 +79,10 @@ function ShippingScreen(props){
                             <label htmlFor="country">  Country </label>                          
                             <input type="country" name="country" id="country" onChange={(e)=> setCountry(e.target.value)} value={country}/>
                         </li>
+                        
+                        <li>
+                            <button className="button primary" onClick={chooseOnMap}> Choose On Map</button>
+                        </li> 
                         <li>
                             <button className="button primary" type="submit"> Continue</button>
                         </li>                    

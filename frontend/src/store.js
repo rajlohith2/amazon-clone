@@ -2,7 +2,7 @@ import {  createStore, combineReducers, applyMiddleware, compose } from "redux";
 import  thunk from 'redux-thunk';
 import { productListReducer, productDetailsReducer, productSaveReducer, productDeleteReducer, productCategoryListReducer, productReviewCreateReducer } from './reducers/productReducer';
 import {  cartReducer } from "./reducers/cartReducers";
-import  {userSigninReducer, UserRegisterReducer, updateProfileReducer, userListReducer, deleteUserReducer, userUpdateReducer,userDetailsReducer, topSellersReducer}  from './reducers/userSigninReducer';
+import  {userSigninReducer, UserRegisterReducer, updateProfileReducer, userListReducer, deleteUserReducer, userUpdateReducer,userDetailsReducer, topSellersReducer, userAddressMapReducer}  from './reducers/userSigninReducer';
 import { myOrdersReducer, orderCreateReducer, orderDeleteReducer, orderDeliverReducer, orderDetailsReducer, orderPayReducer, ordersListReducer } from "./reducers/orderReducers";
 
 const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
@@ -35,7 +35,8 @@ const reducer = combineReducers({
      userUpdate: userUpdateReducer,
      topSellers: topSellersReducer,
      productCategoryList: productCategoryListReducer,
-    productCreateReview: productReviewCreateReducer
+    productCreateReview: productReviewCreateReducer,
+    mapAddress: userAddressMapReducer
 });
 
 const store = createStore(reducer, initialState, composeEnhancer(applyMiddleware(thunk)));

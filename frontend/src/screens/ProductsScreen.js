@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
   
 import { saveProduct, listProducts, deleteProduct } from "../actions/productActions";
 import { PRODUCT_DELETE_RESET } from "../constants/productConstants";
@@ -8,9 +8,10 @@ import { LoadingBox } from '../components/LoadingBox';
 import { MessageBox } from '../components/MessageBox';
 import { headers } from '../config/userInfo';
 import axios from "axios";
-
+ 
 
 function ProductsScreen(props){
+    const {pageNumber = 1} = useParams();
     const sellerMode = props.match.path.indexOf('/seller') >= 0;
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -25,7 +26,7 @@ function ProductsScreen(props){
     const [ countInStock, setCountInStock] = useState(0);
 
     const productList = useSelector(state => state.productList);
-    const {loading, products, error} = productList;
+    const {loading, products, error, pages, page} = productList;
 
 
     const productSave = useSelector(state => state.productSave);
@@ -75,11 +76,11 @@ function ProductsScreen(props){
         if(successSave){
             setModalVisible(false);
         }
-        dispatch(listProducts({seller: sellerMode ? userInfo._id: ''}));
+        dispatch(listProducts({seller: sellerMode ? userInfo._id: '', pageNumber}));
        if(successDelete){
            dispatch({type: PRODUCT_DELETE_RESET});
        }
-    }, [successSave, successDelete]);
+    }, [successSave, successDelete, pageNumber]);
 
     const openModal = (product) => {
         setModalVisible(true);
@@ -92,7 +93,6 @@ function ProductsScreen(props){
         setDescription(product.description);
         setImage(product.image);
     } 
-    
     
     return ( 
         <div className="content content-margined">
@@ -176,38 +176,51 @@ function ProductsScreen(props){
                     { loading && <LoadingBox />}
 
                 {
-                    !modalVisible &&
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>Brand</th>
-                                <th>Action</th>
-                            </tr>   
-                        </thead>
-                        <tbody>
+                    !modalVisible &&(
+                        <>
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Price</th>
+                                        <th>Category</th>
+                                        <th>Brand</th>
+                                        <th>Action</th>
+                                    </tr>   
+                                </thead>
+                                <tbody>
+                                    {
+                                    products && products.map(product => (
+                                        <tr key={product._id}>
+                                            <td>    {product._id}       </td>
+                                            <td>    {product.name}      </td>
+                                            <td>    {product.price}     </td>
+                                            <td>    {product.category}  </td>
+                                            <td>    {product.brand}     </td>
+                                            <td>
+                                                <button className="button" onClick={ () =>openModal(product)}> Edit   </button>
+                                                {''}
+                                                <button className="button" onClick={ () => deleteHandler(product)}> Delete     </button>
+                                            </td>
+                                        </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                            <div className="row center pagination "> 
                             {
-                            products && products.map(product => (
-                                <tr key={product._id}>
-                                    <td>    {product._id}       </td>
-                                    <td>    {product.name}      </td>
-                                    <td>    {product.price}     </td>
-                                    <td>    {product.category}  </td>
-                                    <td>    {product.brand}     </td>
-                                    <td>
-                                        <button className="button" onClick={ () =>openModal(product)}> Edit   </button>
-                                        {''}
-                                        <button className="button" onClick={ () => deleteHandler(product)}> Delete     </button>
-                                    </td>
-                                </tr>
+                                [...Array(pages).keys()].map(x => (                                    
+                                    <Link to= {`/products/pageNumber/${x+1}`}> {x+1} </Link>                                
+                                 
                                 ))
                             }
-                        </tbody>
-                    </table>
+                            </div>
+                        </>
+                    )
+                    
                 }
+                <Link to= {`/signin`}> Go to </Link>                                 
                 
             </div>
         </div>

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import data from './data';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import ProductsScreen from './screens/ProductsScreen';
 import ProductScreen from './screens/ProductScreen';
@@ -30,6 +30,7 @@ import SearchScreen from './screens/SearchScreen';
 import { listProductCategories } from './actions/productActions';
 import { MessageBox } from './components/MessageBox';
 import { LoadingBox } from './components/LoadingBox';
+import MapScreen from './screens/MapScreen';
  
 const toggleMenu = () => document.querySelector(".sidebar").classList.toggle("open");
 
@@ -148,7 +149,9 @@ function App() {
         </aside>
         <main className="main">  
             <div className="content"> 
+            <Switch>
                 {/* <Route path="/products" component={ProductsScreen} /> */}
+
                 <Route path="/seller/:id" component={SellerScreen} />
                 <Route path="/product/:id" component={ProductScreen} />
                 
@@ -164,12 +167,18 @@ function App() {
                 <Route path="/search/name/:name?" component={SearchScreen} exact />   
                 <Route path="/search/category/:category" component={SearchScreen} exact />   
                 <Route path="/search/category/:category/name/:name" component={SearchScreen} exact /> 
-                <Route path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order" component={SearchScreen} exact /> 
+                <Route path="/search/category/:category/name/:name/min/:min/max/:max/rating/:rating/order/:order/pageNumber/:pageNumber" component={SearchScreen} exact /> 
                 
-                  
                 <PrivateRoute path="/profile" component={ProfileSCreen} /> 
+                <PrivateRoute path="/map" component={MapScreen} /> 
 
                 <AdminRoute path="/products" component={ProductsScreen} exact />
+
+                <AdminRoute 
+                   path="/products/pageNumber/:pageNumber" 
+                   component={ProductsScreen}
+                   exact />
+
                 <AdminRoute path="/orderlist" component={OrdersListScreen} exact />
                 <AdminRoute path="/users" component={UserListScreen} />                
                 <AdminRoute path="/user/:id/edit" component={UserEditScreen} />
@@ -177,7 +186,7 @@ function App() {
                 <SellerRoute path="/products/seller" component={ProductsScreen}  />
                 <SellerRoute path="/orders/seller" component={OrdersListScreen} />
                
-                
+            </Switch>   
             </div>            
         </main>
         <footer className="footer">
