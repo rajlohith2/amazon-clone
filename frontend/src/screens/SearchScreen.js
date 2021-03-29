@@ -9,29 +9,32 @@ import { prices, ratings } from '../utils';
 import Rating from '../components/Rating';
 
 export default function SearchScreen(props){
-const { name= 'all', category='all', min= 0, max= 0, rating, order='newest'} = useParams();
+const { name= 'all', category='all', min= 0, max= 0, rating, order='newest', pageNumber=1} = useParams();
 const dispatch = useDispatch();
 
 const productList = useSelector(state => state.productList);
-const { loading, error, products } = productList;
+const { loading, error, products, page, pages } = productList;
   
 const productCategories = useSelector(state => state.productCategoryList);
 const { loading:loadingCateg, error:errorCateg, categories }=productCategories;
+
 const getFilterUrl = (filter)=> {
+  
 const filterCategory = filter.category || category;
+const filterPage = filter.page || pageNumber;
 const filterName = filter.name || name;
-const filterMin = filter.min ?filter.min: filter.min ===0 ? 0: min;
+const filterMin = filter.min ? filter.min: filter.min ===0 ? 0: min;
 const filterMax = filter.max || max;
 const filterRating = filter.rating || rating;
 const sortOrder = filter.order || order;
 
-return `/search/category/${filterCategory}/name/${filterName}/min/${filterMin}/max/${filterMax}/rating/${filterRating}/order/${sortOrder}`;
+return `/search/category/${filterCategory}/name/${filterName}/min/${filterMin}/max/${filterMax}/rating/${filterRating}/order/${sortOrder}/pageNumber/${filterPage}`;
 
 }
 
 useEffect (() =>{
-    dispatch(listProducts({name: name !=='all' ? name: '', category: category !== 'all' ? category: '', min, max, rating, order}));
-}, [category, dispatch, name, max, min, rating,order]);
+    dispatch(listProducts({ pageNumber, name: name !=='all' ? name: '', category: category !== 'all' ? category: '', min, max, rating, order}));
+}, [category, dispatch, name, max, min, rating,order, pageNumber]);
 
 return (<div> 
             <div className="row">
@@ -131,6 +134,18 @@ return (<div>
                                 { products.map((product)=>(
                                     <Product key={product._id} product={ product } />
                                 ))}
+                            </div>
+                            
+                            <div className="row center pagination "> {/*  Converting pages to Links*/}
+                                {
+                                    [...Array(pages).keys()].map(x => (
+                                        
+                                        <Link key={ x+1 }
+                                              to= { getFilterUrl({ page: x + 1 }) }
+                                              className = {x+1 === page ? 'active':''}
+                                    > {x+1} </Link>
+                                    ))
+                                }
                             </div>
                            </>
                        )} 

@@ -114,5 +114,26 @@
                 return state;
         }
     }
- export  {userSigninReducer, UserRegisterReducer, updateProfileReducer, userListReducer, deleteUserReducer, userUpdateReducer, userDetailsReducer, topSellersReducer }
+
+    function userAddressMapReducer(state = {}, action) {
+        switch (action.type) {
+            case uc.USER_ADDRESS_MAP_CONFIRM:
+                return {address: action.payload};
+            default:
+                return state;
+
+        }
+    }
+ export  {
+     userSigninReducer, 
+    UserRegisterReducer, 
+    updateProfileReducer,
+     userListReducer, 
+     deleteUserReducer, 
+     userUpdateReducer, 
+     userDetailsReducer, 
+     topSellersReducer,
+     userAddressMapReducer
+
+    }
  

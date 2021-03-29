@@ -45,7 +45,7 @@ const register = (userData) => async(dispatch) => {
      dispatch({type: uc.USER_DETAILS_REQUEST, payload:userId});     
      try {
            
-           const { data } = await axios.get(`/api/users/${userId}/details`, headers);           
+           const { data } = await axios.get(`/api/users/${userId}/details`, headers || null);           
            dispatch({type: uc.USER_DETAILS_SUCCESS, payload: data});
           console.log(data);
      } catch (error) {

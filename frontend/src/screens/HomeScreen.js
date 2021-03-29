@@ -48,7 +48,7 @@ function HomeScreen(props){
                 error ? <MessageBox variant="danger" msg={ error } />:
                 <ul className="row center">
                         {
-                        products && products.map(product => <Product product={ product } />)                              
+                        products && products.map(product => <Product product={ product } key={product._id}/>)                              
                         }                        
                 </ul>
             }
