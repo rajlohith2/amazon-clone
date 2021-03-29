@@ -3,5 +3,6 @@
 export default { 
     MONGODB_URL: process.env.MONGODB_URL || 'mongodb://localhost/amazona',
     JWT_SECRET: process.env.JWT_SECRET || 'somethingsecret',
-    NODE_ENV: process.env.DEVELOPMENT || 'production'
+    NODE_ENV: process.env.DEVELOPMENT || 'production',
+    GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY || 'AIzaSyCBd9VZZB04FDJ3kflA28TX9sYcim8sYAM'
 }
