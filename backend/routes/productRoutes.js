@@ -3,6 +3,9 @@ import Product from '../models/Product';
 import {isAdmin, isAuth, isSellerOrAdmin}  from '../middleware/auth';
 import expressAsyncHandler from "express-async-handler";
 
+import User from "../models/userModel";
+import data from '../data';
+
 const productRoute =  express.Router();
 
 productRoute.get('/', expressAsyncHandler(async(req, res) => {
@@ -28,12 +31,24 @@ productRoute.get('/', expressAsyncHandler(async(req, res) => {
      order === 'toprated'?{rating: -1}:
      {_id: -1};
 
+     const pageSize = 1;
+     
+     const page = Number(req.query.pageNumber) || 1;
+     const count = await Product.count({...sellerFilter, ...nameFilter, ...categoryFilter, ...priceFilter, ...ratingFilter});
+
     const products = await Product.find({...sellerFilter, ...nameFilter, ...categoryFilter, ...priceFilter, ...ratingFilter})
-     .populate('seller', 'seller.name seller.logo').sort(sortOrder) //  (...) were used to deconstruct {} and only get SELLER
-    return res.send(products);
+     .populate('seller', 'seller.name seller.logo').sort(sortOrder)      
+     .skip(pageSize * (page - 1))
+     .limit(pageSize);
+     return res.send({         
+         products,
+         page,
+         pages: Math.ceil(count/pageSize)
+     });
+    // return res.status(200).send({products, page, pages: Math.ceil(count/pageSize)});
     
    } catch (error) {
-       console.log(error.message);
+       console.log('Hello', error.message);
        return res.status(500).send(error.message);
    } 
 }));
@@ -48,10 +63,40 @@ productRoute.get('/categories', expressAsyncHandler(async(req, res) => {
         return res.status(500).send(error.message);
     } 
  }));
+
+ productRoute.post('/:id/reviews', isAuth, expressAsyncHandler(async(req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    if(product){
+        if(product.reviews.find(x=> x.name == req.user.name)){
+            return res.status(400).send({message: 'You have already reviewed'});
+        }
+        const review = {
+            name: req.user.name,
+            comment: req.body.comment,
+            rating: Number(req.body.rating)
+        };
+        product.reviews.push(review);
+        
+        product.numReviews = product.reviews.length;
+        product.rating = product.reviews.reduce((a, c)=> a + c.rating, 0) / product.reviews.length;
+        
+        const updatedProduct = await product.save();
+        console.log(updatedProduct);
+        return res.status(201).send({
+            message: 'Review Created',
+            review: updatedProduct.reviews[updatedProduct.reviews.length - 1],
+        });
+    } else{ 
+        return res.status(404).send({message: 'Product Not Found'});
+    }
+ })
+ );
 productRoute.get('/:id', async(req, res)=> {
     
     try {
         const product = await Product.findById(req.params.id).populate('seller', 'seller.name seller.logo seller.numReviews seller.rating');
+         
         return product ?  res.status(200).send(product): res.status(404).send({message: 'Product not Found'});
     } catch (error) {
               
@@ -116,6 +161,17 @@ productRoute.delete('/:id', isAuth,isAdmin, async(req, res)=> {
      }
      return res.status(500).send({message: 'Internal Server Error'});
 });
-
+productRoute.post('/seed', async(req, res)=>{
+    const seller = await User.findOne({isSeller: true});
+    if(seller){
+        const products = data.products.map(product =>({
+            ...product, seller: seller._id
+        }));
+        const createdProduct = await Product.insertMany(products);
+        return res.status(200).send({ createdProduct });
+    }else{
+        return res.status(500).send({message: 'No seller Found first run /api/users/seed'});
+    }
+})
 
 export default productRoute;
