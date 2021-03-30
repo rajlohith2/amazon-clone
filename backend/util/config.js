@@ -7,5 +7,5 @@ export default {
     GOOGLE_MAP_API_KEY: process.env.GOOGLE_MAP_API_KEY || 'AIzaSyCBd9VZZB04FDJ3kflA28TX9sYcim8sYAM',
     NODE_MAILER_USER_ID: process.env.NODE_MAILER_USER_ID || 'real_email_',
     NODE_MAILER_PASSWORD: process.env.NODE_MAILER_PASSWORD || 'real_password'
-
+   // AIzaSyDgSeS_t664A8JSnOGLd9ao36PFvELMDS0
 }
