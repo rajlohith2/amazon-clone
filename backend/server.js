@@ -13,6 +13,7 @@ import path from 'path';
 dotenv.config();
 const mongodbUrl = config.MONGODB_URL;
 
+
 mongoose.connect(mongodbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -38,8 +39,8 @@ app.get('/api/config/paypal', (req, res)=>{
 });
 app.get('/api/config/google', (req, res)=>{
     
-    return res.status(200).send(config.GOOGLE_MAP_API_KEY || '');
+    return res.status(200).send(process.env.GOOGLE_MAP_API_KEY || '');
    
 });
 
-app.listen(config.PORT,()=> { console.log(`Server started at https:localhost:5000`) });
+app.listen(config.PORT,()=> { console.log(`Server started at ${config.PORT} DB connection is ${mongodbUrl}`) });

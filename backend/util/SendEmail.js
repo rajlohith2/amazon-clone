@@ -9,8 +9,8 @@ class SendEmail {
                 port: 587,
                 secure: false,
                 auth: {
-                    user: config.NODE_MAILER_USER_ID ,
-                    pass: config.NODE_MAILER_PASSWORD
+                    user: process.env.NODE_MAILER_USER_ID ,
+                    pass: process.env.NODE_MAILER_PASSWORD
                 }
             });
             let info ={
