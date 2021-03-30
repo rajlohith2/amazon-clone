@@ -2,6 +2,7 @@ import expressAsyncHandler  from "express-async-handler";
 import Order from "../models/Order";
 import express from "express";
 import { isAuth,isAdmin, isSellerOrAdmin } from "../middleware/auth";
+import SendEmail from "../util/SendEmail";
 
 const orderRouter = express.Router();
 orderRouter.post('/', isAuth, expressAsyncHandler( async (req, res)=> {    
@@ -64,6 +65,7 @@ orderRouter.put('/:id/pay', isAuth, expressAsyncHandler( async(req, res)=> {
             email_address
         };
         const updatedOrder = await order.save();
+         SendEmail.sendMessage(req.user.email,updatedOrder);
         return res.send({message: 'order is paid', order:updatedOrder});
     } else {
         return res.status(400).send({message: 'Order not Found'});
