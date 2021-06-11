@@ -31,7 +31,7 @@ productRoute.get('/', expressAsyncHandler(async(req, res) => {
      order === 'toprated'?{rating: -1}:
      {_id: -1};
 
-     const pageSize = 1;
+     const pageSize = 10;
      
      const page = Number(req.query.pageNumber) || 1;
      const count = await Product.count({...sellerFilter, ...nameFilter, ...categoryFilter, ...priceFilter, ...ratingFilter});

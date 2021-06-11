@@ -53,13 +53,11 @@ function ProductScreen(props){
                     <div>
                         <Link to='/'>Back To result </Link>
                         <div className="row top">
-                            <div className="col-2">
+                            <div className="col-1">
                                 <img src={product.image} alt={product.name} className="large" />
                             </div>
-                            <div className="col-1">
-                                <div className="card card-body">
-                                </div>
-                                <ul>
+                            <div className="col-2">                               
+                                <ul className="card card-body">
                                     <li>
                                         <h1>{product.name}</h1>
                                     </li>
@@ -91,7 +89,7 @@ function ProductScreen(props){
                                             </div>
                                         </li>
                                         <li>
-                                            <div className="row">
+                                            <div className="row" style={{padding: '4px'}}>
                                                 <div>Status</div>
                                                 <div>
                                                     { product.countInStock > 0 ? <span className="success"> In Stock</span>:
@@ -103,7 +101,7 @@ function ProductScreen(props){
                                         {product.countInStock > 0 && (
                                             <>
                                                 <li>
-                                                    <div className="row">
+                                                    <div className="row" style={{padding: '8px'}}>
                                                         <div>Qty</div>
                                                             <div>
                                                                 <select name="" id="" value={qty} onChange={(e)=>setQty(e.target.value)}>

@@ -30,18 +30,19 @@ function HomeScreen(props){
             { loadingSellers ? <LoadingBox />:
                 errorSellers ? <MessageBox variant="danger" msg={ errorSellers } /> :
                 sellers && sellers.length === 0 ? <MessageBox variant="danger" msg={ errorSellers } />:
-                <>
+        
+                <div  style={{marginLeft: '20%'}}>
                     <Carousel showArrows autoPlay showThumbs={false} className="carousel">
                         { sellers && sellers.map(seller => (
                             <div key={seller._id}>
                                 <Link to={`/seller/${seller._id}`}>
-                                    <img src={seller.seller.logo} alt= {seller.seller.name} />
+                                    <img src={seller.seller.logo?seller.seller.logo:'/'} alt= {seller.seller.name} />
                                     <p className="legend">{ seller.seller.name } </p>
                                 </Link>
                             </div>
                         ))}
                     </Carousel>
-                </>
+                </div>
             }
             <h2>Featured Products</h2>
             {   loading ? <LoadingBox />:

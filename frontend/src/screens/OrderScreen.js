@@ -61,7 +61,7 @@ function OrderScreen(props) {
          error ? (<MessageBox variant="message" variant="danger" msg={error} /> ):
          (
     <>
-        <h1>Order: {order._id}</h1>
+        <h1>Order: {order && order._id}</h1>
         <div className="placeorder">
             <div className="placeorder-info">
                 <div> 

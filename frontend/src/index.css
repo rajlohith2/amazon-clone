@@ -426,6 +426,11 @@ input:hover, select:hover,textarea:hover, button:hover{
   border-radius: 0.5rem;
   margin: 1rem;
 }
+.product {
+  border: 0.1rem #c0c0c0 solid;
+  margin: 1rem;
+  border-radius: 0.5rem;
+}
 .card-body {
   padding: 1rem;
 }
@@ -501,6 +506,7 @@ display: block;
 /* Carousal */
 .carousel .slide img {
   max-width: 30rem;
+  
 }
 .danger, .success { padding: 8px; color: #96613d; font-weight: 900;}
 .danger { background: #fbdaef; }
@@ -516,8 +522,9 @@ img.small {
   width: 100%;
 }
 img.medium {
-  max-width: 29rem;
-  width: 100%;
+  width: 29rem;
+  height: 29rem;
+  /* width: 100%; */
 }
 img.large {
   width: 100%;
