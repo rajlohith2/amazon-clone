@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "build": "rm -rf dist && babel backend -d dist",
+    "build": "cd frontend && npm install && npm run build",
     "start": "nodemon --watch backend --exec babel-node backend/server.js",
     "heroku-postbuild": "npm run build && cd frontend && npm install && npm run build"
   },
