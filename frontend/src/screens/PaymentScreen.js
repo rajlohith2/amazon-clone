@@ -9,7 +9,7 @@ function PaymentScreen(props){
     const [paymentMethod, setPaymentMethod] = useState('paypal');
     
     const userRegister = useSelector(state => state.userRegister);
-    const { loading, userInfo, error } = userRegister;
+    // const { loading, userInfo, error } = userRegister;
     
     const shippingInfo = useSelector(state=>state.cart);
     const { shippingAddress: shipping } = shippingInfo;
