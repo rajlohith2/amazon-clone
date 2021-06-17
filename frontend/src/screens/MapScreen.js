@@ -21,12 +21,12 @@ export default function MapScreen(){
 
     useEffect(() => {
         const fetch = async() => {
-            const { data } = await axios.get(`/api/config/google`);            
-            setGoogleApiKey(data);
+            const { data } = await axios.get(`/api/config/google`);  
+            setGoogleApiKey(data); 
             getUserCurrentLocation()
         }
         fetch();
-    }, []);
+    }, [googleApiKey]);
 
     const onLoad = (map)=>{
         mapRef.current = map;
@@ -62,7 +62,7 @@ export default function MapScreen(){
                 });
 
         }else {
-            alert("please enter your address")
+            alert("Please enter your address")
         }
     };
     const getUserCurrentLocation = ()=> {
@@ -82,7 +82,7 @@ export default function MapScreen(){
         }
     };
 
- return googleApiKey ? <div className="full-container">
+ return googleApiKey ? <div className="map">
      <LoadScript libraries={libs} googleMapsApiKey={googleApiKey}>
          <GoogleMap
           id="sample-map"
@@ -97,7 +97,7 @@ export default function MapScreen(){
             onPlacesChanged={onPlacesChanged}
         >
             <div className="map-input-box">
-                <input type="text" placeholder=" Enter your Address" />
+                <input type="text" placeholder="Enter your Address"></input>
                 <button onClick={onConfirm} type="button" className="primary"> Confirm </button>
             </div>
 

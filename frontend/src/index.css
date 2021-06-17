@@ -559,9 +559,9 @@ ul li {
 }
 
 /* Map */
-.full-container {
+.map {
   margin: -1rem;
-  height: calc(100% + 2rem);
+  height: calc(100vh + 2rem);
 }
 .map-input-box {
   box-sizing: border-box;
