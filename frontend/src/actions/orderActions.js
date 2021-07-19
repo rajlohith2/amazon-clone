@@ -2,11 +2,12 @@ import * as oc from "../constants/OrderConstants";
 import { CART_EMPTY } from "../constants/cartConstants";
 import axios from "axios"; 
 import { headers } from "../config/userInfo";
+import { PROD_URL } from "../config/shipping";
 export const createOrder = (order)=> async(dispatch, getState) => {
     dispatch({type: oc.ORDER_CREATE_REQUEST,  payload: order});
     try {
         const {userSignin: {userInfo}} = getState();       
-        const { data } = await axios.post(`/api/orders`,order, {headers: {Authorization: `Bearer ${userInfo.token}`},});
+        const { data } = await axios.post(`${PROD_URL}/orders`,order, {headers: {Authorization: `Bearer ${userInfo.token}`},});
         dispatch({type: oc.ORDER_CREATE_SUCCESS, payload: data.order});
         dispatch({type: CART_EMPTY});
         localStorage.removeItem("cartItems");
@@ -19,7 +20,7 @@ export const createOrder = (order)=> async(dispatch, getState) => {
 export const detailsOrder = (orderId)=> async(dispatch, getState)=>{
     dispatch({type: oc.ORDER_DETAILS_REQUEST, payload: orderId});
     try {        
-        const { data } = await axios.get(`/api/orders/${orderId}`, headers);        
+        const { data } = await axios.get(`${PROD_URL}/orders/${orderId}`, headers);        
         dispatch({ type: oc.ORDER_DETAILS_SUCCESS, payload: data });       
 
     } catch (error) {
@@ -34,7 +35,7 @@ export const payOrder = (order, paymentResult) => async(dispatch) => {
     dispatch({type: oc.ORDER_PAY_REQUEST, payload: {order, paymentResult } } );
    
     try {
-        const { data } = await axios.put(`/api/orders/${order._id}/pay`, paymentResult, headers);
+        const { data } = await axios.put(`${PROD_URL}/orders/${order._id}/pay`, paymentResult, headers);
         dispatch({type: oc.ORDER_PAY_SUCCESS, payload: data});
         console.log(data);
         
@@ -46,7 +47,8 @@ export const payOrder = (order, paymentResult) => async(dispatch) => {
 export const listMyOrders = () => async(dispatch) => {
     dispatch({type: oc.ORDER_MINE_LIST_REQUEST });
     try {
-        const {data } = await axios.get('/api/orders/client/orders', headers);
+        const {data } = await axios.get(`${PROD_URL}/orders/client/orders`, headers);
+        
         dispatch({type: oc.ORDER_MINE_LIST_SUCCESS, payload: data});
         
     } catch (error) {
@@ -58,7 +60,7 @@ export const listMyOrders = () => async(dispatch) => {
 export const listAllOrders = ({seller = ''}) => async(dispatch) => {
     dispatch({type: oc.ORDER_LIST_REQUEST});
     try {
-        const { data } = await axios.get(`/api/orders?seller${seller}`, headers);
+        const { data } = await axios.get(`${PROD_URL}/orders?seller${seller}`, headers);
         dispatch({type: oc.ORDER_LIST_SUCCESS, payload: data});
         
     } catch (error) {
@@ -70,7 +72,7 @@ export const deleteOrder = (orderId) => async(dispatch) => {
    dispatch({type: oc.ORDER_DELETE_REQUEST, payload: orderId});
     try {
         //console.log('it rerenders automatically');
-        const { data } = await axios.delete(`/api/orders/${orderId}`, headers);
+        const { data } = await axios.delete(`${PROD_URL}/orders/${orderId}`, headers);
         dispatch({type: oc.ORDER_DELETE_SUCCESS, payload: data });
     } catch (error) {
         const message = error.response && error.response.data.message ? error.response.data.message : error.message;
@@ -81,7 +83,7 @@ export const deleteOrder = (orderId) => async(dispatch) => {
 export const deliverOrder = (orderId) => async(dispatch) => {
     dispatch({type: oc.ORDER_DELIVER_REQUEST, payload: orderId } );
     try {
-        const { data } = await axios.put(`/api/orders/${orderId}/deliver`, headers);
+        const { data } = await axios.put(`${PROD_URL}/orders/${orderId}/deliver`, headers);
         dispatch({type: oc.ORDER_DELIVER_SUCCESS, payload: data});
         
     } catch (error) {

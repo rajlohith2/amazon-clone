@@ -1,10 +1,11 @@
 import axios from "axios";
+import { PROD_URL } from "../config/shipping";
 
 import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_SHIPPING, CART_SAVE_PAYMENT, CART_ADD_ITEM_FAIL } from "../constants/cartConstants";
 
 const addToCart = (productId, qty) => async (dispatch, getState)=> {
     try {
-        const { data } = await axios.get('/api/products/' + productId);
+        const { data } = await axios.get(`${PROD_URL}/products/${productId}`);
         const {cart: { cartItems } } = getState();   
         
         if(cartItems.length > 0 && data.seller._id !== cartItems[0].seller._id ){

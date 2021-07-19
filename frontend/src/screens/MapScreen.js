@@ -4,6 +4,7 @@ import axios from 'axios';
 import { USER_ADDRESS_MAP_CONFIRM } from '../constants/userConstants';
 import { useDispatch } from 'react-redux';
 import { LoadingBox } from '../components/LoadingBox';
+import { PROD_URL } from '../config/shipping';
 
 const libs = ['places'];
 const defaultLocation = {lat: 45.512, lng:-73.56};
@@ -21,7 +22,7 @@ export default function MapScreen(){
 
     useEffect(() => {
         const fetch = async() => {
-            const { data } = await axios.get(`/api/config/google`);  
+            const { data } = await axios.get(`${PROD_URL}/config/google`);  
             setGoogleApiKey(data); 
             getUserCurrentLocation()
         }

@@ -8,6 +8,7 @@ import { LoadingBox } from '../components/LoadingBox';
 import { MessageBox } from '../components/MessageBox';
 import { headers } from '../config/userInfo';
 import axios from "axios";
+import { PROD_URL } from '../config/shipping';
  
 
 function ProductsScreen(props){
@@ -62,7 +63,7 @@ function ProductsScreen(props){
         try {
             const contentType = {'Content-Type': 'multipart/form-data'};
             
-             const { data } = await axios.post('/api/uploads', bodyFormData, {...headers, ...contentType});
+             const { data } = await axios.post(`/${PROD_URL}/uploads`, bodyFormData, {...headers, ...contentType});
              setImage(data);
              setLoadingUpload(false);
         } catch (error) {

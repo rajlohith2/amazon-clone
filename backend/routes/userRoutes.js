@@ -63,9 +63,7 @@ route.get('/createadmin', async(req, res) => {
     }
 });
 
-route.get('/all', async(req, res)=> {
-    return res.send({data: await User.find()});
-});
+route.get('/all', async(req, res)=> res.send( await User.find()));
 
 route.get('/admins',async(req, res)=>{
     return res.send({data: await User.find({isAdmin:true})});

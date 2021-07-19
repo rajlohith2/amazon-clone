@@ -7,6 +7,7 @@ import { MessageBox } from "../components/MessageBox";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../constants/OrderConstants";
+import { PROD_URL } from "../config/shipping";
 
 function OrderScreen(props) {
     const orderId = props.match.params.id;
@@ -28,7 +29,7 @@ function OrderScreen(props) {
     useEffect(() => {
          
         const addPayPalScript = async ()=> {
-            const { data } = await axios.get(`/api/config/paypal`);
+            const { data } = await axios.get(`${PROD_URL}/config/paypal`);
             const script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = `https://wwww.paypal.com/sdk/js?client-id=${data}`;
