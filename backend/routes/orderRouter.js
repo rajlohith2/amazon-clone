@@ -1,5 +1,6 @@
 import expressAsyncHandler  from "express-async-handler";
 import Order from "../models/Order";
+import Product from "../models/Product";
 import express from "express";
 import { isAuth,isAdmin, isSellerOrAdmin } from "../middleware/auth";
 import SendEmail from "../util/SendEmail";
@@ -65,6 +66,22 @@ orderRouter.put('/:id/pay', isAuth, expressAsyncHandler( async(req, res)=> {
             email_address
         };
         const updatedOrder = await order.save();
+        // Update count in stock
+            for (const index in updatedOrder.orderItems) {
+                const item = updatedOrder.orderItems[index];
+                const product = await Product.findById(item.product);
+                product.countInStock -= item.qty;
+                product.sold += item.qty;
+                console.log(product.countInStock)
+                product.transactions.push({
+                user: req.user._id,
+                qty: -item.qty,
+                transactionType: 'SOLD',
+                description: `sold to ${req.user.name} on order ${updatedOrder._id}`,
+                });
+               
+        await product.save();
+      }
          SendEmail.sendMessage(req.user.email,updatedOrder);
         return res.send({message: 'order is paid', order:updatedOrder});
     } else {

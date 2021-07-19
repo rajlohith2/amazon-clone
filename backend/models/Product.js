@@ -8,7 +8,12 @@ const reviewSchema = new mongoose.Schema({
 {
     timestamps: true
 });
-
+const transactionSchema = new mongoose.Schema({
+    user: {type:String},
+    qty: {type:String},
+    transactionType: {type:String},
+    description: {type:String}
+})
 const ProductSchema = new mongoose.Schema({
     name:{ type: String, required: true, unique: true },
     image:{ type: String, required: true },
@@ -19,8 +24,10 @@ const ProductSchema = new mongoose.Schema({
     countInStock:{ type: Number, default: 0, required: true },
     description:{ type: String, required: true },
     rating:{ type: Number, default: 0, required: true },
+    sold: {type: Number, default: 0, required: true },
     reviews: [reviewSchema],
     numReviews:{ type: Number, default: 0, required: true },
+    transactions:[transactionSchema],
 });
 const ProductModel = mongoose.model("products", ProductSchema);
 

@@ -34,7 +34,7 @@ productRoute.get('/', expressAsyncHandler(async(req, res) => {
      const pageSize = 10;
      
      const page = Number(req.query.pageNumber) || 1;
-     const count = await Product.count({...sellerFilter, ...nameFilter, ...categoryFilter, ...priceFilter, ...ratingFilter});
+     const count = await Product.estimatedDocumentCount({...sellerFilter, ...nameFilter, ...categoryFilter, ...priceFilter, ...ratingFilter});
 
     const products = await Product.find({...sellerFilter, ...nameFilter, ...categoryFilter, ...priceFilter, ...ratingFilter})
      .populate('seller', 'seller.name seller.logo').sort(sortOrder)      
@@ -82,7 +82,7 @@ productRoute.get('/categories', expressAsyncHandler(async(req, res) => {
         product.rating = product.reviews.reduce((a, c)=> a + c.rating, 0) / product.reviews.length;
         
         const updatedProduct = await product.save();
-        console.log(updatedProduct);
+      
         return res.status(201).send({
             message: 'Review Created',
             review: updatedProduct.reviews[updatedProduct.reviews.length - 1],

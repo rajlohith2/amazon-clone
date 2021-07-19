@@ -82,7 +82,7 @@ function PlaceOrderScreen(props) {
                             </div>
                             :
                             cartItems.map(item =>
-                            <li>
+                            <li key={item}>
                                 <div className="cart-image">
                                     <img src={item.image} alt="product" />
                                 </div>    
