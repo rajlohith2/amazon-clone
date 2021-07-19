@@ -8,8 +8,8 @@ const listProducts = ({seller = '', name='', category='', min=0, max=0, rating=0
     try {
         
         dispatch({ type: pl.PRODUCT_LIST_REQUEST });
-        const { data } = await axios.get(`https://jz-amazona.herokuapp.com/api/products`);
-        // const { data } = await axios.get(`${PROD_URL}/products?pageNumber=${pageNumber}&&seller=${seller}&&name=${name}&&category=${category}&&min=${min}&&max=${max}&&rating=${rating}/order/${order}`);
+        
+        const { data } = await axios.get(`${PROD_URL}/products?pageNumber=${pageNumber}&&seller=${seller}&&name=${name}&&category=${category}&&min=${min}&&max=${max}&&rating=${rating}/order/${order}`);
         alert(data.products);
         dispatch({ type: pl.PRODUCT_LIST_SUCCESS, payload: data });
        

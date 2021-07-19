@@ -51,9 +51,10 @@ route.get('/createadmin', async(req, res) => {
     try {
         const user = new User({
             name: 'Janvier',
-            email:'Janvier102@example.com',
-            password: bcrypt.hashSync('safepassword', 10),
-            isAdmin: true
+            email:'admin@email.com',
+            password: bcrypt.hashSync('admin', 10),
+            isAdmin: true, 
+            isSeller: true
         });
         const newUser = await user.save();
         return res.send(user);

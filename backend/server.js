@@ -11,7 +11,8 @@ import uploadRoute from './routes/uploadRouter';
 import path from 'path';
 
 dotenv.config();
-const mongodbUrl = config.MONGODB_URL;
+const mongodbUrl = 'mongodb+srv://jz:amazona12@cluster0.mmjph.mongodb.net/amazona?retryWrites=true&w=majority'
+// const mongodbUrl = config.MONGODB_URL;
 
 
 mongoose.connect(mongodbUrl, {
