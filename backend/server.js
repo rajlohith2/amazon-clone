@@ -31,13 +31,13 @@ app.use('/api/orders', orderRouter);
 
 const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname,'/uploads')));
-
+/*
 if(process.env.NODE_ENV === 'production')
     app.use(express.static(path.join(__dirname, '/frontend/build')));
     app.get('*', (req, res)=>{
         return res.sendFile(path.join(__dirname, '/frontend/build/index.html'))
     }) 
-
+*/
 app.get('/api/config/paypal', (req, res)=>{
     return res.send(process.env.PAYPAL_CLIENT_ID || 'sb');
 });
