@@ -71,8 +71,7 @@ orderRouter.put('/:id/pay', isAuth, expressAsyncHandler( async(req, res)=> {
                 const item = updatedOrder.orderItems[index];
                 const product = await Product.findById(item.product);
                 product.countInStock -= item.qty;
-                product.sold += item.qty;
-                console.log(product.countInStock)
+                product.sold += item.qty;                
                 product.transactions.push({
                 user: req.user._id,
                 qty: -item.qty,
